@@ -19,7 +19,7 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
     this.model = [
       {
-        label: 'Home',
+        label: '',
         items: [
           {
             label: 'Dashboard',
@@ -34,12 +34,12 @@ export class MenuComponent implements OnInit {
           {
             label: 'Rögzítés',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/create']
+            routerLink: ['/creator']
           },
           {
             label: 'Lekérdezés',
             icon: 'pi pi-fw pi-list',
-            routerLink: ['/search']
+            routerLink: ['/viewer']
           },
         ]
       },
