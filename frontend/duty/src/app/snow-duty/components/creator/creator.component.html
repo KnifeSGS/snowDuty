@@ -1,38 +1,144 @@
-<div class="grid">
+<div class="col-12 p-fluid grid">
+  <div class="card" [formGroup]="journalForm">
+    <h4>Ügyeleti napló</h4>
+    <div class="p-fluid p-formgrid grid">
+      <div class="field col-12 md:col-6">
+        <input pInputText id="worker" type="text" placeholder="Ügyeletvezető"
+          formControlName="worker" />
+        <small>Enter your name.</small>
+      </div>
+      <div class="field col-12 md:col-6">
+        <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" [showIcon]="true"
+          inputId="icon" formControlName="date">
+        </p-calendar>
+        <p-calendar *ngIf="mobile" dateFormat="yy.MM.dd" [showIcon]="true"
+          inputId="icon" formControlName="date" [touchUI]="true"
+          [readonlyInput]="true">
+        </p-calendar>
+      </div>
+      <div class="p-field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="checking" type="text"
+            formControlName="checking" />
+          <label for="checking">Ellenőrzés</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="temperature" formControlName="temperature" />
+          <label for="temperature">Hőmérséklet</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="percipitation"
+            formControlName="percipitation" />
+          <label for="percipitation">Csapadék</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="sky" formControlName="sky" />
+          <label for="sky">Égbolt</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="visibility" formControlName="visibility" />
+          <label for="visibility">Látási viszonyok</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="roads" formControlName="roads" />
+          <label for="roads">Utak felülete</label>
+        </span>
+      </div>
+      <div class="field col-12">
+        <span class="p-float-label">
+          <textarea pInputTextarea id="comment" rows="3"
+            formControlName="comment"></textarea>
+          <label for="comment">Megjegyzések</label>
+        </span>
+      </div>
+    </div>
+    <div class="p-fluid p-formgrid grid" formGroupName="shifts">
+      <h5 class="field col-12">Műszakok:</h5>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="daytime" formControlName="daytime" />
+          <label for="daytime">Napszak</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="machine" formControlName="machine" />
+          <label for="machine">Rendszám</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="salt" formControlName="salt" />
+          <label for="salt">Só</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="cacl2" formControlName="cacl2" />
+          <label for="cacl2">CaCl2</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="kalcinol" formControlName="kalcinol" />
+          <label for="kalcinol">Kalcinol</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="mixture" formControlName="mixture" />
+          <label for="mixture">Keverék</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="zeokal" formControlName="zeokal" />
+          <label for="zeokal">Zeokal</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="km" formControlName="km" />
+          <label for="km">km</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="workHour" formControlName="workHour" />
+          <label for="workHour">Munkaóra</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="orderedQuantity"
+            formControlName="orderedQuantity" />
+          <label for="orderedQuantity">Megrendelt mennyiség</label>
+        </span>
+      </div>
+    </div>
 
-  <div class="col-12">
-    <div class="card">
-      <h5>Advanced</h5>
-      <div class="p-fluid p-formgrid grid">
-        <div class="field col-12 md:col-6">
-          <label htmlFor="firstname2">Firstname</label>
-          <input pInputText id="firstname2" type="text"
-            placeholder="Firstname" />
-          <small>Enter your firstname.</small>
-        </div>
-        <div class="field col-12 md:col-6">
-          <label htmlFor="lastname2">Lastname</label>
-          <input pInputText id="lastname2" type="text" />
-        </div>
-        <div class="field col-12">
-          <label htmlFor="address">Address</label>
-          <input pInputTextarea id="address" rows="4" />
-        </div>
-        <div class="field col-12 md:col-6">
-          <label htmlFor="city">City</label>
+    <!-- <div class="field col-12 md:col-2">
+          <label for="city">City</label>
           <input pInputText id="city" type="text" />
         </div>
-        <div class="field col-12 md:col-3">
-          <label htmlFor="state">State</label>
-          <p-dropdown [options]="dropdownItems" optionLabel="name"
-            [(ngModel)]="selectedState"></p-dropdown>
+        <div class="field col-12 md:col-2">
+          <label for="state">State</label>
+          <p-dropdown [options]="dropdownItems" optionLabel="name"></p-dropdown>
         </div>
-        <div class="field col-12 md:col-3">
-          <label htmlFor="zip">Zip</label>
+        <div class="field col-12 md:col-2">
+          <label for="zip">Zip</label>
           <input pInputText id="zip" type="text" />
-        </div>
-      </div>
-      <button pButton label="Submit"></button>
-    </div>
+        </div> -->
+    <button pButton label="Submit" (click)="buildForm()"></button>
   </div>
 </div>
