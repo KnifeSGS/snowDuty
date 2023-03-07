@@ -1,4 +1,7 @@
+import { User } from "src/app/models/user";
+
 export class Shift {
+  onDuty: User = new User();
   daytime: number = 0;
   machine: string = "";
   salt: number = 0;

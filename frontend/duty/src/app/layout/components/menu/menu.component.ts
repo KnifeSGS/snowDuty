@@ -22,7 +22,7 @@ export class MenuComponent implements OnInit {
         label: '',
         items: [
           {
-            label: 'Dashboard',
+            label: 'Statisztika',
             icon: 'pi pi-fw pi-home',
             routerLink: ['/']
           }
@@ -32,12 +32,12 @@ export class MenuComponent implements OnInit {
         label: 'Ügyelet',
         items: [
           {
-            label: 'Rögzítés',
+            label: 'Új napló',
             icon: 'pi pi-fw pi-check-square',
             routerLink: ['/creator']
           },
           {
-            label: 'Lekérdezés',
+            label: 'Ügyeletek',
             icon: 'pi pi-fw pi-list',
             routerLink: ['/viewer']
           },

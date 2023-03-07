@@ -1,1 +1,130 @@
-<p>viewer works!</p>
+<p-toast></p-toast>
+
+<div class="card">
+  <p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="New" icon="pi pi-plus"
+        class="p-button-success mr-2" (click)="openNew()"></button>
+      <button pButton pRipple [label]="Delete" icon="pi pi-trash"
+        class="p-button-danger" (click)="deleteSelectedjournals()"
+        [disabled]="!selectedjournals || !selectedjournals.length"></button>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000"
+        label="Import" chooseLabel="Import" class="mr-2 inline-block">
+      </p-fileUpload>
+      <button pButton pRipple label="Export" icon="pi pi-upload"
+        class="p-button-help"></button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="journals" [rows]="10" [paginator]="true"
+    [globalFilterFields]="['_id','country._id','representative._id','status']"
+    [tableStyle]="{'min-width': '75rem'}" [(selection)]="selectedjournals"
+    [rowHover]="true" dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <h5 class="m-0">Manage journals</h5>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text"
+            (input)="dt.filterGlobal($event.target, 'contains')"
+            placeholder="Search..." />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 4rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="_id" style="min-width:15rem">_id <p-sortIcon
+            field="_id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="comment" style="min-width:10rem">comment
+          <p-sortIcon field="comment"></p-sortIcon>
+        </th>
+        <th pSortableColumn="date" style="min-width:10rem">Worker
+          <p-sortIcon field="date"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-journal>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="journal"></p-tableCheckbox>
+        </td>
+        <td>{{journal.date}}</td>
+        <td>{{journal.comment}}</td>
+        <td>
+          <p-rating [ngModel]="journal.rating" [readonly]="true"
+            [cancel]="false"></p-rating>
+        </td>
+        <td>
+          <button pButton pRipple icon="pi pi-pencil"
+            class="p-button-rounded p-button-success mr-2"
+            (click)="editjournal(journal)"></button>
+          <button pButton pRipple icon="pi pi-trash"
+            class="p-button-rounded p-button-warning"
+            (click)="deletejournal(journal)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        In total there are {{journals ? journals.length : 0 }} journals.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="journalDialog" [style]="{width: '450px'}"
+  header="journal Details" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="field">
+      <label for="_id">_id</label>
+      <input type="text" pInputText id="_id" [(ngModel)]="journal._id" required
+        autofocus />
+      <small class="p-error" *ngIf="submitted && !journal._id">_id is
+        required.</small>
+    </div>
+    <div class="field">
+      <label for="worker">worker</label>
+      <textarea id="worker" pInputTextarea [(ngModel)]="journal.worker" required
+        rows="3" cols="20"></textarea>
+    </div>
+
+
+    <div class="field">
+      <label class="mb-3">comment</label>
+      <div class="formgrid grid">
+        <div class="field-radiobutton col-6">
+          <p-radioButton id="comment1" _id="comment" value="Accessories"
+            [(ngModel)]="journal.comment"></p-radioButton>
+          <label for="comment1">Accessories</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="checks">checks</label>
+        <p-inputNumber id="checks" [(ngModel)]="journal.checks">
+        </p-inputNumber>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times"
+      class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check"
+      class="p-button-text" (click)="savejournal()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
