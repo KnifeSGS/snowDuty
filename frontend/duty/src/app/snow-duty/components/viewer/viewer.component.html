@@ -3,83 +3,86 @@
 <div class="card">
   <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
-      <button pButton pRipple label="New" icon="pi pi-plus"
+      <button pButton pRipple [label]="NewJournal" icon="pi pi-plus"
         class="p-button-success mr-2" (click)="openNew()"></button>
       <button pButton pRipple [label]="Delete" icon="pi pi-trash"
-        class="p-button-danger" (click)="deleteSelectedjournals()"
-        [disabled]="!selectedjournals || !selectedjournals.length"></button>
+        class="p-button-danger"
+        (click)="deleteSelectedJournals(selectedJournals)"
+        [disabled]="!selectedJournals || !selectedJournals.length"></button>
     </ng-template>
 
     <ng-template pTemplate="right">
-      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000"
-        label="Import" chooseLabel="Import" class="mr-2 inline-block">
-      </p-fileUpload>
-      <button pButton pRipple label="Export" icon="pi pi-upload"
+      <button pButton pRipple [label]="NewWorker" icon="pi pi-plus"
+        class="p-button-warning mr-2" (click)="openNew()"></button>
+      <!-- <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000"
+        label="Import" [chooseLabel]="Import" class="mr-2 inline-block">
+      </p-fileUpload> -->
+      <button pButton pRipple [label]="Export" icon="pi pi-upload"
         class="p-button-help"></button>
     </ng-template>
   </p-toolbar>
 
-  <p-table #dt [value]="journals" [rows]="10" [paginator]="true"
-    [globalFilterFields]="['_id','country._id','representative._id','status']"
-    [tableStyle]="{'min-width': '75rem'}" [(selection)]="selectedjournals"
-    [rowHover]="true" dataKey="id"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [showCurrentPageReport]="true">
-    <ng-template pTemplate="caption">
-      <div class="flex align-items-center justify-content-between">
-        <h5 class="m-0">Manage journals</h5>
-        <span class="p-input-icon-left">
-          <i class="pi pi-search"></i>
-          <input pInputText type="text"
-            (input)="dt.filterGlobal($event.target, 'contains')"
-            placeholder="Search..." />
-        </span>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th style="width: 4rem">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
-        <th pSortableColumn="_id" style="min-width:15rem">_id <p-sortIcon
-            field="_id"></p-sortIcon>
-        </th>
-        <th pSortableColumn="comment" style="min-width:10rem">comment
-          <p-sortIcon field="comment"></p-sortIcon>
-        </th>
-        <th pSortableColumn="date" style="min-width:10rem">Worker
-          <p-sortIcon field="date"></p-sortIcon>
-        </th>
-        <th></th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-journal>
-      <tr>
-        <td>
-          <p-tableCheckbox [value]="journal"></p-tableCheckbox>
-        </td>
-        <td>{{journal.date}}</td>
-        <td>{{journal.comment}}</td>
-        <td>
-          <p-rating [ngModel]="journal.rating" [readonly]="true"
-            [cancel]="false"></p-rating>
-        </td>
-        <td>
-          <button pButton pRipple icon="pi pi-pencil"
-            class="p-button-rounded p-button-success mr-2"
-            (click)="editjournal(journal)"></button>
-          <button pButton pRipple icon="pi pi-trash"
-            class="p-button-rounded p-button-warning"
-            (click)="deletejournal(journal)"></button>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="summary">
-      <div class="flex align-items-center justify-content-between">
-        In total there are {{journals ? journals.length : 0 }} journals.
-      </div>
-    </ng-template>
-  </p-table>
+  <div class="asnyDiv" *ngIf="journals$ | async as journalsArr">
+    <p-table #dt [value]="journalsArr" [rows]="10" [paginator]="true"
+      [globalFilterFields]="['date', 'comment', 'worker']"
+      [tableStyle]="{'min-width': '75rem'}" [(selection)]="selectedJournals"
+      [rowHover]="true" dataKey="_id"
+      currentPageReportTemplate="Showing {last} to {first} of {totalRecords} entries"
+      [showCurrentPageReport]="true">
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+          <h5 class="m-0">Naplók kezelése</h5>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text"
+              (input)="dt.filterGlobal($event.target, 'contains')"
+              [placeholder]="Search" />
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th pSortableColumn="date" style="min-width:15rem">Dátum <p-sortIcon
+              field="date"></p-sortIcon>
+          </th>
+          <th pSortableColumn="comment" style="min-width:10rem">Megjegyzés
+            <p-sortIcon field="comment"></p-sortIcon>
+          </th>
+          <th pSortableColumn="worker" style="min-width:10rem">Dolgozó
+            <p-sortIcon field="worker"></p-sortIcon>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-journal>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="journal"></p-tableCheckbox>
+          </td>
+          <td>{{journal.date}}</td>
+          <td>{{journal.comment[journal.comment.length - 1]}}</td>
+          <td>{{journal.worker.full_name}}</td>
+          <td>
+            <button pButton pRipple icon="pi pi-pencil"
+              class="p-button-rounded p-button-success mr-2"
+              (click)="editJournal(journal)"></button>
+            <button pButton pRipple icon="pi pi-trash"
+              class="p-button-rounded p-button-warning"
+              (click)="deleteJournal(journal._id, journal.date)"></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+          Összesen {{journalsArr ? journalsArr.length : 0 }}db napló lett
+          rögzítve.
+        </div>
+      </ng-template>
+    </p-table>
+  </div>
 </div>
 
 <p-dialog [(visible)]="journalDialog" [style]="{width: '450px'}"

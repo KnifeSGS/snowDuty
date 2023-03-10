@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import { BehaviorSubject } from 'rxjs';
 import { Journal } from '../../models/journal';
 import { JournalService } from '../../services/journal.service';
 
@@ -12,14 +13,22 @@ import { JournalService } from '../../services/journal.service';
 })
 export class ViewerComponent {
 
-  Delete: string = "Törlés"
+  // feliratok
+  Delete: string = "Törlés";
+  NewJournal: string = "Új napló";
+  NewWorker: string = "Új dolgozó";
+  Import: string = "Feltöltés";
+  Export: string = "Letöltés";
+  Search: string = "Keresés . . .";
+
+
   journalDialog!: boolean;
 
-  journals!: Journal[];
+  journals$: BehaviorSubject<Journal[]> = this.journalService.list$;
 
   journal!: Journal;
 
-  selectedjournals!: Journal[];
+  selectedJournals!: Journal[];
 
   submitted!: boolean;
 
@@ -32,8 +41,7 @@ export class ViewerComponent {
   ) { }
 
   ngOnInit() {
-    this.journalService.getAll().subscribe(data => this.journals = data);
-
+    this.journalService.getAll$();
     this.statuses = [
       { label: 'INSTOCK', value: 'instock' },
       { label: 'LOWSTOCK', value: 'lowstock' },
@@ -47,32 +55,45 @@ export class ViewerComponent {
     this.journalDialog = true;
   }
 
-  deleteSelectedjournals() {
+  deleteSelectedJournals(journals: Journal[]) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected journals?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.journals = this.journals.filter(val => !this.selectedjournals.includes(val));
-        // this.selectedjournals = null;
+        journals.forEach(journal => {
+          if (journal._id) {
+            this.journalService.remove(journal._id).subscribe(
+              () => {
+                this.journalService.getAll$()
+              }
+            )
+          }
+        });
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'journals Deleted', life: 3000 });
       }
     });
-  }
+  };
 
-  editjournal(journal: Journal) {
-    this.journal = { ...journal };
+  editJournal(journal: Journal) {
+    this.journalService.update(journal)
+    // this.journal = { ...journal };
     this.journalDialog = true;
   }
 
-  deletejournal(journal: Journal) {
+  deleteJournal(journalId: string, journalDate?: Date) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + journal.date + '?',
-      header: 'Confirm',
+      message: 'Biztosan törlöd a ' + journalDate + 'napi naplót?',
+      header: 'Megerősítés',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.journals = this.journals.filter(val => val._id !== journal._id);
-        // this.journal = {};
+        if (journalId) {
+          this.journalService.remove(journalId).subscribe(
+            () => {
+              this.journalService.getAll$()
+            }
+          )
+        }
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'journal Deleted', life: 3000 });
       }
     });
@@ -106,12 +127,12 @@ export class ViewerComponent {
 
   findIndexById(id: string): number {
     let index = -1;
-    for (let i = 0; i < this.journals.length; i++) {
-      if (this.journals[i]._id === id) {
-        index = i;
-        break;
-      }
-    }
+    // for (let i = 0; i < this.journals.length; i++) {
+    //   if (this.journals[i]._id === id) {
+    //     index = i;
+    //     break;
+    //   }
+    // }
 
     return index;
   }

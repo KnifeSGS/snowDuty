@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { interval, Observable } from 'rxjs';
+import { BehaviorSubject, interval, Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { ConfigService } from './config.service';
 
@@ -10,6 +10,8 @@ import { ConfigService } from './config.service';
 export class BaseService<T extends { _id?: string, worker?: User, date?: Date }> {
 
   entity: string = '';
+
+  list$: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([])
 
   constructor(
     public config: ConfigService,
@@ -31,6 +33,13 @@ export class BaseService<T extends { _id?: string, worker?: User, date?: Date }>
     //     num => currentData[0].price = Math.round(Math.random() * 10000)
     //   );
     // });
+  }
+
+  getAll$() {
+    this.list$.next([]);
+    this.http.get<T[]>(`${this.config.apiUrl}${this.entity}`).subscribe(
+      entity => this.list$.next(entity)
+    )
   }
 
   get(_id: string): Observable<T> {
