@@ -1,7 +1,7 @@
 import { User } from "src/app/models/user";
 import { Shift } from "./shift";
 
-class Monitoring {
+export class Monitoring {
   checking?: number = 0;
   temperature?: number = 0;
   percipitation?: string = '';
@@ -14,7 +14,7 @@ export class Journal {
   _id?: string = '';
   worker: User = new User();
   date: Date = new Date();
-  checks?: Monitoring[] = [{}];
+  checks?: Monitoring[] = [new Monitoring()];
   shifts?: Shift[] = [new Shift()];
   comment?: [string[]] = [['']]
 }

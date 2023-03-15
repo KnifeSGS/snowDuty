@@ -2,7 +2,7 @@ import { Journal } from "../snow-duty/models/journal";
 import { Shift } from "../snow-duty/models/shift";
 
 export class User {
-  _id: string = '';
+  _id?: string = '';
   first_name: string = "";
   last_name: string = "";
   full_name: string = "";

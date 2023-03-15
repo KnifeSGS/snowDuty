@@ -41,12 +41,12 @@ export class CreatorComponent {
     this.journalForm = this.fb.group({
       worker: [''],
       date: [''],
-      checking: [''],
-      temperature: [''],
-      percipitation: [''],
-      sky: [''],
-      visibility: [''],
-      roads: [''],
+      // checking: [''],
+      // temperature: [''],
+      // percipitation: [''],
+      // sky: [''],
+      // visibility: [''],
+      // roads: [''],
       // shifts: this.fb.group({
       //   daytime: [''],
       //   machine: [''],
@@ -86,7 +86,6 @@ export class CreatorComponent {
   }
 
   journalBuilder() {
-    console.log('journalBuilder started')
     const date = this.journalForm.value.date
     let utcDate = new Date;
     if (date) {
@@ -96,27 +95,18 @@ export class CreatorComponent {
     this.journal = {
       worker: this.journalForm.value.worker._id,
       date: utcDate,
-      checks: [
-        {
-          checking,
-          temperature,
-          percipitation,
-          sky,
-          visibility,
-          roads
-        }
-      ],
       comment: this.journalForm.value.comment
     }
   }
 
   buildForm() {
-    console.log(this.journalForm.value)
+    // console.log(this.journalForm.value)
     this.journalBuilder();
-    console.log(this.journal);
+    // console.log(this.journal);
     this.journalService.create(this.journal)
       .subscribe(
-        p => console.log(p)
+        () => this.journalService.getAll$()
+        // p => console.log(p)
       )
   }
 }

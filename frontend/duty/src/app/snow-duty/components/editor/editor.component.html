@@ -1,1 +1,259 @@
-<p>editor works!</p>
+<p-toast></p-toast>
+
+<!-- <div class="col-12 p-fluid grid"> -->
+<div class="card col-12 p-fluid grid" [formGroup]="journalForm">
+  <h4>Ügyeleti napló</h4>
+  <div class="col-12 p-fluid p-formgrid grid">
+    <div class="workerDate grid col-12" *ngIf="editableWorker; else readWorker">
+      <div class="field col-12 md:col-6">
+        <p-dropdown [options]="users" optionLabel="full_name" [filter]="true"
+          filterBy="full_name" [showClear]="true" placeholder="Válassz dolgozót"
+          formControlName="worker" (onChange)="workerSelected()">
+          <ng-template pTemplate="selectedItem">
+            <div class="worker-item worker-item-value" *ngIf="worker">
+              <div>{{worker.full_name}}</div>
+            </div>
+          </ng-template>
+          <ng-template let-worker pTemplate="item">
+            <div class="worker-item">
+              <div>{{worker.full_name}}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <small>Jelenlegi: {{journal.worker.full_name}}</small>
+        <!-- <input pInputText id="worker" type="text" placeholder="Ügyeletvezető"
+            formControlName="worker" /> -->
+      </div>
+      <div class="field col-12 md:col-6">
+        <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" [showIcon]="true"
+          inputId="icon" formControlName="date"
+          placeholder="Mai dátum, vagy válassz másikat">
+        </p-calendar>
+        <p-calendar *ngIf="mobile" dateFormat="yy.MM.dd" [showIcon]="true"
+          inputId="icon" formControlName="date" [touchUI]="true"
+          [readonlyInput]="true" placeholder="Mai dátum, vagy válassz másikat">
+        </p-calendar>
+        <small>Jelenlegi: {{journal.date}}</small>
+      </div>
+
+    </div>
+    <ng-template #readWorker>
+      <div class="field col-12 md:col-5">
+        <input pInputText id="worker" type="text"
+          placeholder="{{journal.worker.full_name}}" disabled />
+      </div>
+      <div class="field col-12 md:col-5">
+        <input pInputText id="worker" type="text" placeholder="{{journal.date}}"
+          disabled />
+      </div>
+      <div class="col-12 md:col-2">
+        <p-button (onClick)="editWorkerDate()" class="block"
+          icon="pi pi-user-edit" iconPos="left">
+        </p-button>
+      </div>
+    </ng-template>
+
+    <!-- <div class="p-field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="checking" type="text"
+            formControlName="checking" />
+          <label for="checking">Ellenőrzés ideje</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="temperature" formControlName="temperature" />
+          <label for="temperature">Hőmérséklet</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="percipitation"
+            formControlName="percipitation" />
+          <label for="percipitation">Csapadék</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="sky" formControlName="sky" />
+          <label for="sky">Égbolt</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="visibility" formControlName="visibility" />
+          <label for="visibility">Látási viszonyok</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="roads" formControlName="roads" />
+          <label for="roads">Utak felülete</label>
+        </span>
+      </div> -->
+    <div class="field col-12">
+      <span class="p-float-label">
+        <textarea pInputTextarea id="comment" rows="3"
+          formControlName="comment"></textarea>
+        <label for="comment">Megjegyzések</label>
+      </span>
+    </div>
+  </div>
+  <!-- <div class="p-fluid p-formgrid grid" formGroupName="shifts">
+      <h5 class="field col-12">Ügyeletben dolgozók:</h5>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="onDuty" formControlName="onDuty" />
+          <label for="onDuty">Dolgozó</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="daytime" formControlName="daytime" />
+          <label for="daytime">Napszak</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="machine" formControlName="machine" />
+          <label for="machine">Rendszám</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="salt" formControlName="salt" />
+          <label for="salt">Só</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="cacl2" formControlName="cacl2" />
+          <label for="cacl2">CaCl2</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="kalcinol" formControlName="kalcinol" />
+          <label for="kalcinol">Kalcinol</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="mixture" formControlName="mixture" />
+          <label for="mixture">Keverék</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="zeokal" formControlName="zeokal" />
+          <label for="zeokal">Zeokal</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="km" formControlName="km" />
+          <label for="km">km</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-1">
+        <span class="p-float-label">
+          <input pInputText id="workHour" formControlName="workHour" />
+          <label for="workHour">Munkaóra</label>
+        </span>
+      </div>
+      <div class="field col-12 md:col-2">
+        <span class="p-float-label">
+          <input pInputText id="orderedQuantity"
+            formControlName="orderedQuantity" />
+          <label for="orderedQuantity">Megrendelt mennyiség</label>
+        </span>
+      </div>
+    </div> -->
+
+  <!-- <div class="field col-12 md:col-2">
+          <label for="city">City</label>
+          <input pInputText id="city" type="text" />
+        </div>
+        <div class="field col-12 md:col-2">
+          <label for="state">State</label>
+          <p-dropdown [options]="dropdownItems" optionLabel="name"></p-dropdown>
+        </div>
+        <div class="field col-12 md:col-2">
+          <label for="zip">Zip</label>
+          <input pInputText id="zip" type="text" />
+        </div> -->
+
+  <div class="validData col-12" *ngIf="journal.checks">
+    <p-table #dt [value]="journal.checks" [rows]="10" [paginator]="false"
+      [tableStyle]="{'min-width': '60rem'}" [rowHover]="true" dataKey="_id"
+      sortField="checking" [sortOrder]="defaultSortOrder">
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+          <h5 class="m-0">Ellenőrzések:</h5>
+          <span *ngIf="!canAddCheck">
+            <button (click)="addCheck()" pButton pRipple icon="pi pi-plus"
+              class="p-button-rounded p-button-success"></button>
+          </span>
+          <span *ngIf="canAddCheck">
+            <button (click)="addCheck()" pButton pRipple icon="pi pi-minus"
+              class="p-button-rounded p-button-success"></button>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="checking" style="width:8rem">Időpont
+            <p-sortIcon field="checking"></p-sortIcon>
+          </th>
+          <th style="min-width:5rem">Hőmérséklet
+          </th>
+          <th style="min-width:5rem">Csapadék
+          </th>
+          <th style="min-width:5rem">Égbolt
+          </th>
+          <th style="min-width:5rem">Látási viszonyok
+          </th>
+          <th style="min-width:5rem">Utak felülete
+        </tr>
+        <tr *ngIf="canAddCheck" formGroupName="checks">
+          <td> <span class="">
+              <input pInputText id="checking" type="text"
+                formControlName="checking" />
+            </span></td>
+          <td><span class="">
+              <input pInputText id="temperature"
+                formControlName="temperature" />
+            </span></td>
+          <td><span class="">
+              <input pInputText id="percipitation"
+                formControlName="percipitation" />
+            </span></td>
+          <td><span class="">
+              <input pInputText id="sky" formControlName="sky" />
+            </span></td>
+          <td><span class="">
+              <input pInputText id="visibility" formControlName="visibility" />
+            </span></td>
+          <td><span class="">
+              <input pInputText id="roads" formControlName="roads" />
+            </span></td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-checksArr>
+        <tr>
+          <td>{{checksArr.checking}}</td>
+          <td>{{checksArr.temperature}}</td>
+          <td>{{checksArr.percipitation}}</td>
+          <td>{{checksArr.sky}}</td>
+          <td>{{checksArr.visibility}}</td>
+          <td>{{checksArr.roads}}</td>
+        </tr>
+
+      </ng-template>
+
+    </p-table>
+  </div>
+
+  <button pButton class="mt-5" label="Rögzítés" (click)="buildForm()"></button>
+</div>
+<!-- </div> -->

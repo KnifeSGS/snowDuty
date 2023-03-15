@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
+import { User } from 'src/app/models/user';
 import { Journal } from '../../models/journal';
 import { JournalService } from '../../services/journal.service';
+import { UserService } from '../../services/user.service';
+import { CreatorComponent } from '../creator/creator.component';
 
 @Component({
   selector: 'app-viewer',
@@ -13,6 +16,9 @@ import { JournalService } from '../../services/journal.service';
 })
 export class ViewerComponent {
 
+  @ViewChild(CreatorComponent)
+  child!: CreatorComponent;
+
   // feliratok
   Delete: string = "Törlés";
   NewJournal: string = "Új napló";
@@ -21,10 +27,15 @@ export class ViewerComponent {
   Export: string = "Letöltés";
   Search: string = "Keresés . . .";
 
+  paginatorTemplate = "";
+
+  defaultSortOrder: number = -1
 
   journalDialog!: boolean;
 
   journals$: BehaviorSubject<Journal[]> = this.journalService.list$;
+  users$: BehaviorSubject<User[]> = this.userService.list$;
+  userNames: string[] = []
 
   journal!: Journal;
 
@@ -35,18 +46,19 @@ export class ViewerComponent {
   statuses!: any[];
 
   constructor(
+    private userService: UserService,
     private journalService: JournalService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit() {
     this.journalService.getAll$();
-    this.statuses = [
-      { label: 'INSTOCK', value: 'instock' },
-      { label: 'LOWSTOCK', value: 'lowstock' },
-      { label: 'OUTOFSTOCK', value: 'outofstock' }
-    ];
+    this.userService.getAll$();
+    this.users$.subscribe(users => users.forEach(user => {
+      this.userNames.push(user.full_name)
+    }))
+
   }
 
   openNew() {
@@ -75,8 +87,9 @@ export class ViewerComponent {
     });
   };
 
+
   editJournal(journal: Journal) {
-    this.journalService.update(journal)
+    // this.journalService.update(journal)
     // this.journal = { ...journal };
     this.journalDialog = true;
   }
@@ -104,25 +117,10 @@ export class ViewerComponent {
     this.submitted = false;
   }
 
-  savejournal() {
-    this.submitted = true;
-
-    // if (this.journal.name.trim()) {
-    //   if (this.journal.id) {
-    //     this.journals[this.findIndexById(this.journal.id)] = this.journal;
-    //     this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'journal Updated', life: 3000 });
-    //   }
-    //   else {
-    //     this.journal.id = this.createId();
-    //     this.journal.image = 'journal-placeholder.svg';
-    //     this.journals.push(this.journal);
-    //     this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'journal Created', life: 3000 });
-    //   }
-
-    //   this.journals = [...this.journals];
-    //   this.journalDialog = false;
-    //   this.journal = {};
-    // }
+  saveJournal() {
+    this.child.buildForm()
+    this.journalService.getAll$();
+    this.journalDialog = false;
   }
 
   findIndexById(id: string): number {
