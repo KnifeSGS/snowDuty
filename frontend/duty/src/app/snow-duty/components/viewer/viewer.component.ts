@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
@@ -14,7 +14,7 @@ import { CreatorComponent } from '../creator/creator.component';
   styleUrls: ['./viewer.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class ViewerComponent {
+export class ViewerComponent implements OnInit {
 
   @ViewChild(CreatorComponent)
   child!: CreatorComponent;
@@ -82,7 +82,7 @@ export class ViewerComponent {
             )
           }
         });
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'journals Deleted', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Napló törölve', life: 3000 });
       }
     });
   };
@@ -107,7 +107,7 @@ export class ViewerComponent {
             }
           )
         }
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'journal Deleted', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Napló törölve', life: 3000 });
       }
     });
   }

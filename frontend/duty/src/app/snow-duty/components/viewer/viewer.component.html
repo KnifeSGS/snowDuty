@@ -49,7 +49,8 @@
           <th pSortableColumn="date" style="width:15rem">Dátum <p-sortIcon
               field="date"></p-sortIcon>
           </th>
-          <th pSortableColumn="worker.full_name" style="min-width:10rem">Dolgozó
+          <th pSortableColumn="worker.full_name" style="min-width:10rem">
+            Ügyeletvezető
             <p-sortIcon field="worker.full_name"></p-sortIcon>
             <p-columnFilter field="worker.full_name" matchMode="equals"
               [showMatchModes]="false" [showAddButton]="false"
@@ -104,41 +105,6 @@
 <p-dialog [(visible)]="journalDialog"
   [style]="{width: '600px', height: '547px'}" header="Ügyeleti napló"
   [modal]="true" styleClass="p-fluid">
-  <!-- <ng-template pTemplate="content">
-    <div class="field">
-      <label for="_id">_id</label>
-      <input type="text" pInputText id="_id" [(ngModel)]="journal._id" required
-        autofocus />
-      <small class="p-error" *ngIf="submitted && !journal._id">_id is
-        required.</small>
-    </div>
-    <div class="field">
-      <label for="worker">worker</label>
-      <textarea id="worker" pInputTextarea [(ngModel)]="journal.worker" required
-        rows="3" cols="20"></textarea>
-    </div>
-
-
-    <div class="field">
-      <label class="mb-3">comment</label>
-      <div class="formgrid grid">
-        <div class="field-radiobutton col-6">
-          <p-radioButton id="comment1" _id="comment" value="Accessories"
-            [(ngModel)]="journal.comment"></p-radioButton>
-          <label for="comment1">Accessories</label>
-        </div>
-      </div>
-    </div>
-
-    <div class="formgrid grid">
-      <div class="field col">
-        <label for="checks">checks</label>
-        <p-inputNumber id="checks" [(ngModel)]="journal.checks">
-        </p-inputNumber>
-      </div>
-    </div>
-  </ng-template>
- -->
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Mégse" icon="pi pi-times"
       class="p-button-text" (click)="hideDialog()"></button>

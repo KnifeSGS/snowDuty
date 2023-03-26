@@ -35,6 +35,9 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ShiftCreatorComponent } from './components/shift-creator/shift-creator.component';
+import { ShiftViewerComponent } from './components/shift-viewer/shift-viewer.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 
 @NgModule({
@@ -42,7 +45,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SnowDutyComponent,
     CreatorComponent,
     EditorComponent,
-    ViewerComponent
+    ViewerComponent,
+    ShiftCreatorComponent,
+    ShiftViewerComponent
   ],
   imports: [
     FormsModule,
@@ -72,6 +77,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ToolbarModule,
     RatingModule,
     RadioButtonModule,
+    SelectButtonModule
   ],
   providers: [MessageService, ConfirmationService]
 })

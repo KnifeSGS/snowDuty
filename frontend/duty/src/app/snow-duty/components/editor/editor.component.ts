@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { User } from 'src/app/models/user';
 import { Journal } from '../../models/journal';
 import { JournalService } from '../../services/journal.service';
 import { UserService } from '../../services/user.service';
+import { ShiftCreatorComponent } from '../shift-creator/shift-creator.component';
 
 @Component({
   selector: 'app-editor',
@@ -13,7 +15,13 @@ import { UserService } from '../../services/user.service';
 })
 export class EditorComponent implements OnInit {
 
+  @ViewChild(ShiftCreatorComponent)
+  child!: ShiftCreatorComponent;
+  shiftDialog!: boolean;
+  submitted!: boolean;
+
   journal: Journal = new Journal();
+  journalId: string | undefined = '';
   journalUpdateData: Journal = new Journal();
   journalForm!: FormGroup;
   users!: User[];
@@ -28,7 +36,8 @@ export class EditorComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private journalService: JournalService,
     private fb: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private messageService: MessageService
   ) {
     this.getJournal();
     this.createForm();
@@ -42,29 +51,22 @@ export class EditorComponent implements OnInit {
     this.getUsers();
   }
 
+  hideDialog() {
+    this.shiftDialog = false;
+    this.submitted = false;
+  }
+
   createForm() {
     this.journalForm = this.fb.group({
       worker: [''],
       date: [''],
       checks: this.fb.group({
-        checking: [''],
+        checking: ['', Validators.required],
         temperature: [''],
         percipitation: [''],
         sky: [''],
         visibility: [''],
         roads: [''],
-      }),
-      shifts: this.fb.group({
-        daytime: [''],
-        machine: [''],
-        salt: [''],
-        cacl2: [''],
-        kalcinol: [''],
-        mixture: [''],
-        zeokal: [''],
-        km: [''],
-        workHour: [''],
-        orderedQuantity: [''],
       }),
       comment: ['']
     })
@@ -81,7 +83,7 @@ export class EditorComponent implements OnInit {
     this.activatedRoute.params.subscribe(
       params => this.journalService.get(params['id']).subscribe(
         journal => {
-          this.journal = journal
+          this.journal = journal;
           // console.log(this.journal.checks);
         })
     );
@@ -105,14 +107,24 @@ export class EditorComponent implements OnInit {
     if (date) {
       utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
     }
-    const { checks } = this.journalForm.value;
-    this.journalUpdateData = {
-      _id: this.journal._id,
-      worker: this.journalForm.value.worker._id,
-      date: utcDate,
-      checks,
-      comment: this.journalForm.value.comment
+
+    if (this.canAddCheck) {
+      this.journalUpdateData = {
+        _id: this.journal._id,
+        worker: this.journalForm.value.worker._id,
+        date: utcDate,
+        checks: this.journalForm.value.checks,
+        comment: this.journalForm.value.comment
+      }
+    } else {
+      this.journalUpdateData = {
+        _id: this.journal._id,
+        worker: this.journalForm.value.worker._id,
+        date: utcDate,
+        comment: this.journalForm.value.comment
+      }
     }
+
   }
 
   buildForm() {
@@ -123,13 +135,27 @@ export class EditorComponent implements OnInit {
         .subscribe(
           () => {
             this.journalForm.reset();
-            this.addCheck();
+            // this.addCheck();
             this.getUsers();
             this.createForm();
             this.getJournal();
+            this.canAddCheck = false;
           }
         )
     }
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Sikeres',
+      detail: 'Napló frissítve',
+      life: 3000
+    });
+  }
+
+  saveShift() {
+    this.child.createShift()
+    // this.journalService.getAll$();
+    this.getJournal()
+    this.shiftDialog = false;
   }
 
 }

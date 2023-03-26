@@ -14,7 +14,7 @@ export class Journal {
   _id?: string = '';
   worker: User = new User();
   date: Date = new Date();
-  checks?: Monitoring[] = [new Monitoring()];
+  checks?: Monitoring[] | [] = [];
   shifts?: Shift[] = [new Shift()];
   comment?: [string[]] = [['']]
 }

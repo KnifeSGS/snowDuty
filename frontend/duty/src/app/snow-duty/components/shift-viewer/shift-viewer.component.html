@@ -1,0 +1,84 @@
+<div class="col-12" *ngIf="shifts$ | async as shifts">
+  <p-table #dt [value]="shifts" [rows]="10" [paginator]="true"
+    [tableStyle]="{'min-width': '60rem'}" [rowHover]="true" dataKey="_id"
+    sortField="date" [sortOrder]="defaultSortOrder">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <h5 class="m-0">Ügyelet:</h5>
+        <button (click)="addShift()" pButton pRipple icon="pi pi-plus"
+          class="p-button-rounded p-button-success"></button>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="date" style="width:8rem">Idő
+          <p-sortIcon field="date"></p-sortIcon>
+        </th>
+        <th style="min-width:5rem">Dolgozó
+        </th>
+        <th style="min-width:5rem">Műszak
+        </th>
+        <th style="min-width:5rem">Gép
+        </th>
+        <th style="min-width:3rem">Só
+        </th>
+        <th style="min-width:3rem">CaCl2
+        </th>
+        <th style="min-width:3rem">Kalcinol
+        </th>
+        <th style="min-width:3rem">Keverék
+        </th>
+        <th style="min-width:3rem">Zeokal
+        </th>
+        <th style="min-width:3rem">km
+        </th>
+        <th style="min-width:3rem">munkaóra
+        </th>
+        <th style="min-width:5rem">Elrendelt szórási mennyiség
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-shift>
+      <tr>
+        <td>{{shift.date}}</td>
+        <td>{{shift.onDuty.full_name}}</td>
+        <td>
+          <span *ngIf="shift.daytime">
+            Nappali
+          </span>
+          <span *ngIf="!shift.daytime">
+            Esti
+          </span>
+        </td>
+        <td>{{shift.machine}}</td>
+        <td>{{shift.salt}}</td>
+        <td>{{shift.cacl2}}</td>
+        <td>{{shift.kalcinol}}</td>
+        <td>{{shift.mixture}}</td>
+        <td>{{shift.zeokal}}</td>
+        <td>{{shift.km}}</td>
+        <td>{{shift.workHour}}</td>
+        <td>{{shift.orderedQuantity}}</td>
+        <td>
+          <button pButton pRipple icon="pi pi-trash"
+            class="p-button-rounded p-button-danger"
+            (click)="deleteShift(shift)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="shiftDialog" [style]="shiftViewerStyle"
+  header="Új bejegyzés" [modal]="true" styleClass="p-fluid">
+  <app-shift-creator [journalId]="journalId"></app-shift-creator>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Mégse" icon="pi pi-times"
+      class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Mentés" icon="pi pi-check"
+      class="p-button-text" (click)="saveShift()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

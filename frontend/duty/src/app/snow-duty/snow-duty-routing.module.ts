@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CreatorComponent } from './components/creator/creator.component';
 import { EditorComponent } from './components/editor/editor.component';
+import { ShiftViewerComponent } from './components/shift-viewer/shift-viewer.component';
 import { ViewerComponent } from './components/viewer/viewer.component';
 import { SnowDutyComponent } from './snow-duty.component';
 
@@ -11,8 +11,8 @@ const routes: Routes = [
     component: SnowDutyComponent
   },
   {
-    path: 'creator',
-    component: CreatorComponent
+    path: 'shift',
+    component: ShiftViewerComponent
   },
   {
     path: 'viewer',

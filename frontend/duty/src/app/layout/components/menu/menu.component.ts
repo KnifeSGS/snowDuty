@@ -32,14 +32,14 @@ export class MenuComponent implements OnInit {
         label: 'Ügyelet',
         items: [
           {
-            label: 'Új napló',
-            icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/creator']
+            label: 'Naplók',
+            icon: 'pi pi-fw pi-list',
+            routerLink: ['/viewer']
           },
           {
             label: 'Ügyeletek',
-            icon: 'pi pi-fw pi-list',
-            routerLink: ['/viewer']
+            icon: 'pi pi-fw pi-check-square',
+            routerLink: ['/shift']
           },
         ]
       },

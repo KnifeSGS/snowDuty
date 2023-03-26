@@ -15,8 +15,9 @@
   </div>
   <div class="field col-12">
     <p-dropdown [options]="users" optionLabel="full_name" [filter]="true"
-      filterBy="full_name" [showClear]="true" placeholder="Válassz dolgozót"
-      formControlName="worker" (onChange)="workerSelected()">
+      filterBy="full_name" [showClear]="true"
+      placeholder="Válassz ügyeletvezetőt" formControlName="worker"
+      (onChange)="workerSelected()">
       <ng-template pTemplate="selectedItem">
         <div class="worker-item worker-item-value" *ngIf="worker">
           <div>{{worker.full_name}}</div>
