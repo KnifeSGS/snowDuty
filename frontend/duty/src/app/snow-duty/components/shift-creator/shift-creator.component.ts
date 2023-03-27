@@ -105,6 +105,7 @@ export class ShiftCreatorComponent implements OnInit {
   }
 
   createShift() {
+    console.log(this.shiftForm);
     if (this.shiftForm.valid) {
       this.shiftCreator()
       console.log(this.shift);

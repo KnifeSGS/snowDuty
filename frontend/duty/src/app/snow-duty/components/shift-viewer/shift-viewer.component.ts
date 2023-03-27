@@ -83,7 +83,6 @@ export class ShiftViewerComponent implements OnInit {
         }
       }
     );
-    console.log(this.shifts$);
   }
 
   journalIdMatcher() {

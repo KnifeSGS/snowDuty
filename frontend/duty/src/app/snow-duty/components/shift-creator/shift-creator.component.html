@@ -15,6 +15,9 @@
           </div>
         </ng-template>
       </p-dropdown>
+      <small class="p-error block"
+        *ngIf="shiftForm.get('onDuty')?.invalid">Dolgozó felvitele
+        kötelező</small>
     </div>
     <div class="field col-12 md:col-6">
       <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" [showIcon]="true"
@@ -30,7 +33,11 @@
     <div class="field col-6">
       <label for="daytime"><b>Műszak:</b></label>
       <p-selectButton formControlName="daytime" [options]="daytimeOptions"
-        optionLabel="label" optionValue="value" id="daytime" />
+        optionLabel="label" optionValue="value" id="daytime"
+        [ngClass]="shiftForm.value.daytime.valid ? '' : 'ng-invalid ng-dirty'" />
+      <small class="p-error block"
+        *ngIf="shiftForm.get('daytime')?.invalid">Műszak felvitele
+        kötelező</small>
     </div>
     <div class="field col-6">
       <label for="machine"><b>Gép:</b></label>
@@ -91,6 +98,9 @@
         incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
         decrementButtonIcon="pi pi-minus" inputId="workHour"
         formControlName="workHour" />
+      <small class="p-error block" *ngIf="shiftForm.get('workHour')?.invalid || 
+        shiftForm.get('workHour')?.dirty && 
+        shiftForm.value.workHour === 0">Munkaóra felvitele kötelező</small>
     </div>
     <div class="field col-6 md:col-3">
       <label for="cacl2"><b>Elrendelt szórási mennyiség:</b></label>
