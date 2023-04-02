@@ -33,9 +33,15 @@ export class ViewerComponent implements OnInit {
 
   journalDialog!: boolean;
 
-  journals$: BehaviorSubject<Journal[]> = this.journalService.list$;
+  journals$: BehaviorSubject<Journal[]> = this.journalService.journals$;
   users$: BehaviorSubject<User[]> = this.userService.list$;
-  userNames: string[] = []
+  userNames: string[] = [];
+
+  interval: Date[] = [];
+  params: { start?: string, end?: string } = {
+    start: "2023-01-01T00:00:00.000Z",
+    end: new Date().toISOString()
+  }
 
   journal!: Journal;
 
@@ -53,7 +59,7 @@ export class ViewerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.journalService.getAll$();
+    this.journalService.getSelectedInterval(this.params);
     this.userService.getAll$();
     this.users$.subscribe(users => users.forEach(user => {
       this.userNames.push(user.full_name)
@@ -77,7 +83,7 @@ export class ViewerComponent implements OnInit {
           if (journal._id) {
             this.journalService.remove(journal._id).subscribe(
               () => {
-                this.journalService.getAll$()
+                this.journalService.getSelectedInterval(this.params)
               }
             )
           }
@@ -103,7 +109,7 @@ export class ViewerComponent implements OnInit {
         if (journalId) {
           this.journalService.remove(journalId).subscribe(
             () => {
-              this.journalService.getAll$()
+              this.journalService.getSelectedInterval(this.params)
             }
           )
         }
@@ -119,7 +125,7 @@ export class ViewerComponent implements OnInit {
 
   saveJournal() {
     this.child.buildForm()
-    this.journalService.getAll$();
+    this.journalService.getSelectedInterval(this.params);
     this.journalDialog = false;
   }
 
@@ -133,6 +139,20 @@ export class ViewerComponent implements OnInit {
     // }
 
     return index;
+  }
+
+  selectInterval() {
+    console.log(this.interval);
+    const start = this.interval[0];
+    const end = this.interval[1];
+    if (this.interval[0] && this.interval[1]) {
+      this.params.start = new Date(Date.UTC(start.getFullYear(), start.getMonth(), start.getDate())).toISOString();
+      this.params.end = new Date(Date.UTC(end.getFullYear(), end.getMonth(), end.getDate() + 1)).toISOString();
+    }
+    console.log(this.params);
+    if (this.params.end) {
+      this.journalService.getSelectedInterval(this.params)
+    }
   }
 
   createId(): string {

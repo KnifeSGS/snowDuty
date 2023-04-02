@@ -5,12 +5,13 @@
 
   <div class="field col-12">
     <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" [showIcon]="true"
-      inputId="icon" formControlName="date"
+      inputId="icon" formControlName="date" [hideOnDateTimeSelect]="true"
       placeholder="Mai dátum, vagy válassz másikat">
     </p-calendar>
     <p-calendar *ngIf="mobile" dateFormat="yy.MM.dd" [showIcon]="true"
       inputId="icon" formControlName="date" [touchUI]="true"
-      [readonlyInput]="true" placeholder="Mai dátum, vagy válassz másikat">
+      [hideOnDateTimeSelect]="true" [readonlyInput]="true"
+      placeholder="Mai dátum, vagy válassz másikat">
     </p-calendar>
   </div>
   <div class="field col-12">

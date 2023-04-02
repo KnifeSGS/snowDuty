@@ -33,12 +33,18 @@
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
           <h5 class="m-0">Naplók kezelése</h5>
-          <!-- <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
+          <span class="p-input-icon-left">
+            <!-- <i class="pi pi-search"></i>
             <input pInputText type="text"
               (input)="dt.filterGlobal($event.target, 'contains')"
-              [placeholder]="Search" />
-          </span> -->
+              [placeholder]="Search" /> -->
+
+            <p-calendar dateFormat="yy.MM.dd" [showIcon]="true"
+              selectionMode="range" [readonlyInput]="true"
+              [(ngModel)]="interval" placeholder="Válassz időintervallumot"
+              (onSelect)="selectInterval()">
+            </p-calendar>
+          </span>
         </div>
       </ng-template>
       <ng-template pTemplate="header">

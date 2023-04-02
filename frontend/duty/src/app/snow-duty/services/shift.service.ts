@@ -22,7 +22,7 @@ export class ShiftService extends BaseService<Shift>  {
 
   getAllForOneJournal$(_id: string) {
     this.shifts$.next([]);
-    this.http.get<Shift[]>(`${this.config.apiUrl}${this.entity}/${_id}/${_id}`).subscribe(
+    this.http.get<Shift[]>(`${this.config.apiUrl}${this.entity}/${_id}/shifts`).subscribe(
       entity => this.shifts$.next(entity)
     )
   }
