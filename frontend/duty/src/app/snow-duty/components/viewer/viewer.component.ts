@@ -142,14 +142,12 @@ export class ViewerComponent implements OnInit {
   }
 
   selectInterval() {
-    console.log(this.interval);
     const start = this.interval[0];
     const end = this.interval[1];
     if (this.interval[0] && this.interval[1]) {
       this.params.start = new Date(Date.UTC(start.getFullYear(), start.getMonth(), start.getDate())).toISOString();
       this.params.end = new Date(Date.UTC(end.getFullYear(), end.getMonth(), end.getDate() + 1)).toISOString();
     }
-    console.log(this.params);
     if (this.params.end) {
       this.journalService.getSelectedInterval(this.params)
     }

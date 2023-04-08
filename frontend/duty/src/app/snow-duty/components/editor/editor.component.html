@@ -1,7 +1,16 @@
 <p-toast></p-toast>
 
-<div class="card col-12 p-fluid grid" [formGroup]="journalForm">
-  <h4>Ügyeleti napló</h4>
+<div class="card col-12 p-fluid" [formGroup]="journalForm">
+  <p-toolbar styleClass=" mb-4 gap-2">
+    <ng-template pTemplate="left">
+      <h4>Ügyeleti napló</h4>
+    </ng-template>
+    <ng-template pTemplate="right">
+      <app-pdf-creator (click)="generatePDF()"></app-pdf-creator>
+
+    </ng-template>
+
+  </p-toolbar>
   <div class="col-12 p-fluid p-formgrid grid">
     <div class="workerDate grid col-12" *ngIf="editableWorker; else readWorker">
       <div class="field col-12 md:col-6">

@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { SnowDutyRoutingModule } from './snow-duty-routing.module';
-import { SnowDutyComponent } from './snow-duty.component';
-import { CreatorComponent } from './components/creator/creator.component';
-import { EditorComponent } from './components/editor/editor.component';
-import { ViewerComponent } from './components/viewer/viewer.component';
 
 
 import { AutoCompleteModule } from "primeng/autocomplete";
@@ -32,12 +28,17 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToolbarModule } from 'primeng/toolbar';
 import { RatingModule } from 'primeng/rating';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SnowDutyRoutingModule } from './snow-duty-routing.module';
+import { SnowDutyComponent } from './snow-duty.component';
+import { CreatorComponent } from './components/creator/creator.component';
+import { EditorComponent } from './components/editor/editor.component';
+import { ViewerComponent } from './components/viewer/viewer.component';
 import { ShiftCreatorComponent } from './components/shift-creator/shift-creator.component';
 import { ShiftViewerComponent } from './components/shift-viewer/shift-viewer.component';
-import { SelectButtonModule } from 'primeng/selectbutton';
+import { PdfCreatorComponent } from './components/pdf-creator/pdf-creator.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     EditorComponent,
     ViewerComponent,
     ShiftCreatorComponent,
-    ShiftViewerComponent
+    ShiftViewerComponent,
+    PdfCreatorComponent
   ],
   imports: [
     FormsModule,
