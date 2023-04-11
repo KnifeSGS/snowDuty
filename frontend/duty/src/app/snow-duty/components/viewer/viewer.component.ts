@@ -38,8 +38,9 @@ export class ViewerComponent implements OnInit {
   userNames: string[] = [];
 
   interval: Date[] = [];
+  thisMonthFirstDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString()
   params: { start?: string, end?: string } = {
-    start: "2023-01-01T00:00:00.000Z",
+    start: this.thisMonthFirstDay,
     end: new Date().toISOString()
   }
 
@@ -65,6 +66,7 @@ export class ViewerComponent implements OnInit {
       this.userNames.push(user.full_name)
     }))
 
+    console.log(this.thisMonthFirstDay);
   }
 
   openNew() {
@@ -149,6 +151,7 @@ export class ViewerComponent implements OnInit {
       this.params.end = new Date(Date.UTC(end.getFullYear(), end.getMonth(), end.getDate() + 1)).toISOString();
     }
     if (this.params.end) {
+      console.log(this.params);
       this.journalService.getSelectedInterval(this.params)
     }
   }

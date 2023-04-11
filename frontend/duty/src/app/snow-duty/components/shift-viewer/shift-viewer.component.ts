@@ -33,6 +33,26 @@ export class ShiftViewerComponent implements OnInit {
   shiftViewerStyle: {} = {};
   submitted = false;
 
+  sums: {
+    salt: number,
+    cacl2: number,
+    kalcinol: number,
+    mixture: number,
+    zeokal: number,
+    km: number,
+    workHour: number,
+    orderedQuantity: number,
+  } = {
+      salt: 0,
+      cacl2: 0,
+      kalcinol: 0,
+      mixture: 0,
+      zeokal: 0,
+      km: 0,
+      workHour: 0,
+      orderedQuantity: 0,
+    }
+
   // @Input() shiftsArr: Shift[] | undefined = []
 
   constructor(
@@ -75,6 +95,14 @@ export class ShiftViewerComponent implements OnInit {
               if (journal._id) {
                 this.shiftService.getAllForOneJournal$(journal._id);
                 this.journalId = journal._id;
+                this.getSums('salt', journal._id)
+                this.getSums('cacl2', journal._id)
+                this.getSums('kalcinol', journal._id)
+                this.getSums('mixture', journal._id)
+                this.getSums('zeokal', journal._id)
+                this.getSums('km', journal._id)
+                this.getSums('workHour', journal._id)
+                this.getSums('orderedQuantity', journal._id)
               }
             })
         } else {
@@ -83,6 +111,14 @@ export class ShiftViewerComponent implements OnInit {
         }
       }
     );
+  }
+
+  getSums(field: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity", journalId: string) {
+    let fieldName: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity" = field
+    this.shiftService.getSumOfShiftsField({ field, journalId }).subscribe(sum => {
+      this.sums[fieldName] = sum[0].total
+      console.log(this.sums);
+    });
   }
 
   journalIdMatcher() {
