@@ -8,7 +8,8 @@ import { ConfigService } from './config.service';
 class Summa {
   _id: string | null = null;
   total: number = 0;
-  count: number = 0
+  count: number = 0;
+  average: number = 0;
 }
 
 @Injectable({

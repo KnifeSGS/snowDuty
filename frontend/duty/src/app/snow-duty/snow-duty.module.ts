@@ -29,7 +29,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { RatingModule } from 'primeng/rating';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { SelectButtonModule } from 'primeng/selectbutton';
-
+import { ChartModule } from 'primeng/chart';
 
 import { SnowDutyRoutingModule } from './snow-duty-routing.module';
 import { SnowDutyComponent } from './snow-duty.component';
@@ -79,7 +79,8 @@ import { PdfCreatorComponent } from './components/pdf-creator/pdf-creator.compon
     ToolbarModule,
     RatingModule,
     RadioButtonModule,
-    SelectButtonModule
+    SelectButtonModule,
+    ChartModule
   ],
   providers: [MessageService, ConfirmationService]
 })
