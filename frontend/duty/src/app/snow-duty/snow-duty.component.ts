@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { ShiftService } from './services/shift.service';
 
 class Sum {
@@ -15,6 +16,10 @@ class Sum {
 class DateRequest {
   gte: string = '';
   lte: string = ''
+}
+
+class FieldNames {
+  fieldName: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity" = "salt"
 }
 
 @Component({
@@ -60,31 +65,38 @@ export class SnowDutyComponent implements OnInit {
 
 
   ngOnInit() {
+
+    // this.getSums('salt')
+    // this.getSums('cacl2')
+    // this.getSums('kalcinol')
+    // this.getSums('mixture')
+    // this.getSums('zeokal')
+    // this.getSums('km')
+    // this.getSums('workHour')
+    // this.getSums('orderedQuantity')
+    this.getAllSums()
+
+    // this.getSums('salt', this.startingDay)
+    // this.getSums('cacl2', this.startingDay)
+    // this.getSums('kalcinol', this.startingDay)
+    // this.getSums('mixture', this.startingDay)
+    // this.getSums('zeokal', this.startingDay)
+    // this.getSums('km', this.startingDay)
+    // this.getSums('workHour', this.startingDay)
+    // this.getSums('orderedQuantity', this.startingDay)
+    this.getAllSums(this.startingDay)
+
     this.initChart();
-
-    this.getSums('salt')
-    this.getSums('cacl2')
-    this.getSums('kalcinol')
-    this.getSums('mixture')
-    this.getSums('zeokal')
-    this.getSums('km')
-    this.getSums('workHour')
-    this.getSums('orderedQuantity')
-
-    this.getSums('salt', this.startingDay)
-    this.getSums('cacl2', this.startingDay)
-    this.getSums('kalcinol', this.startingDay)
-    this.getSums('mixture', this.startingDay)
-    this.getSums('zeokal', this.startingDay)
-    this.getSums('km', this.startingDay)
-    this.getSums('workHour', this.startingDay)
-    this.getSums('orderedQuantity', this.startingDay)
   }
 
-  getSums(field: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity", gte?: string) {
+  getSums(field: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity", gte?: string, lte?: string) {
     let fieldName: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity" = field
 
-    if (gte) {
+    if (gte && lte) {
+      this.shiftService.getSumOfShiftsField({ field, gte, lte }).subscribe(sum => {
+        this.sums[fieldName] = sum[0].total
+      });
+    } else if (gte && !lte) {
       this.shiftService.getSumOfShiftsField({ field, gte }).subscribe(sum => {
         this.sumsYear[fieldName] = sum[0].total
       });
@@ -92,7 +104,50 @@ export class SnowDutyComponent implements OnInit {
       this.shiftService.getSumOfShiftsField({ field }).subscribe(sum => {
         this.sums[fieldName] = sum[0].total
       });
+    }
+  };
 
+  getAllSums(gte?: string) {
+    // let field: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity"
+    let fields:
+      ["salt", "cacl2", "kalcinol", "mixture", "zeokal", "km", "workHour", "orderedQuantity"] =
+      ["salt", "cacl2", "kalcinol", "mixture", "zeokal", "km", "workHour", "orderedQuantity"];
+
+    fields.forEach(field => {
+      // field = field
+      if (gte) {
+        this.shiftService.getSumOfShiftsField({ field, gte }).subscribe(sum => {
+          this.sumsYear[field] = sum[0].total
+        });
+      } else {
+        this.shiftService.getSumOfShiftsField({ field }).subscribe(sum => {
+          this.sums[field] = sum[0].total
+        });
+
+      }
+    });
+  }
+
+  getChartData(field: string, gte?: string, lte?: string) {
+    // new Date(Date.UTC(new Date().getFullYear(), 0, 1)).toISOString()
+    let today = new Date()
+    let thisYear = today.getFullYear()
+    let thisMonth = today.getMonth()
+
+    let array: number[] = []
+    for (let i = 0; i <= thisMonth; i++) {
+      let gte = new Date(thisYear, i, 1).toISOString()
+      let lte = new Date(thisYear, i + 1, 0).toISOString()
+
+      this.shiftService.getSumOfShiftsField({ field, gte, lte }).subscribe(sum => {
+        if (sum[0]) {
+          array.push(sum[0].total)
+        } else {
+          array.push(0)
+        }
+        // console.log(array);
+        return array
+      })
     }
   }
 
@@ -102,12 +157,15 @@ export class SnowDutyComponent implements OnInit {
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
+    // let cacl2 = this.getChartData("cacl2")
+
     this.chartData = {
-      labels: ['január', 'február', 'március', 'április', 'május', 'június', 'július'],
+      labels: ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'],
       datasets: [
         {
           label: 'Só',
-          data: [65, 59, 80, 81, 56, 55, 40],
+          // data: this.getChartData("salt"),
+          data: [11, 19],
           fill: false,
           backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
           borderColor: documentStyle.getPropertyValue('--bluegray-700'),
@@ -115,7 +173,7 @@ export class SnowDutyComponent implements OnInit {
         },
         {
           label: 'CaCl2',
-          data: [28, 48, 40, 19, 86, 27, 90],
+          data: [8, 2],
           fill: false,
           backgroundColor: documentStyle.getPropertyValue('--green-600'),
           borderColor: documentStyle.getPropertyValue('--green-600'),

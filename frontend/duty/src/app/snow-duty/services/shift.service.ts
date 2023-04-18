@@ -37,4 +37,6 @@ export class ShiftService extends BaseService<Shift>  {
   getSumOfShiftsField(params: {}): Observable<Summa[]> {
     return this.http.get<Summa[]>(`${this.config.apiUrl}${this.entity}/summarizeField`, { params })
   }
+
+
 }

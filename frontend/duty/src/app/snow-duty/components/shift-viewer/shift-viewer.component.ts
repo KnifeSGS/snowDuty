@@ -95,14 +95,18 @@ export class ShiftViewerComponent implements OnInit {
               if (journal._id) {
                 this.shiftService.getAllForOneJournal$(journal._id);
                 this.journalId = journal._id;
-                this.getSums('salt', journal._id)
-                this.getSums('cacl2', journal._id)
-                this.getSums('kalcinol', journal._id)
-                this.getSums('mixture', journal._id)
-                this.getSums('zeokal', journal._id)
-                this.getSums('km', journal._id)
-                this.getSums('workHour', journal._id)
-                this.getSums('orderedQuantity', journal._id)
+                if (journal.shifts!.length > 0) {
+                  this.getAllSums(journal._id)
+
+                }
+                // this.getSums('salt', journal._id)
+                // this.getSums('cacl2', journal._id)
+                // this.getSums('kalcinol', journal._id)
+                // this.getSums('mixture', journal._id)
+                // this.getSums('zeokal', journal._id)
+                // this.getSums('km', journal._id)
+                // this.getSums('workHour', journal._id)
+                // this.getSums('orderedQuantity', journal._id)
               }
             })
         } else {
@@ -118,6 +122,22 @@ export class ShiftViewerComponent implements OnInit {
     this.shiftService.getSumOfShiftsField({ field, journalId }).subscribe(sum => {
       this.sums[fieldName] = sum[0].total
       console.log(this.sums);
+    });
+  }
+
+  getAllSums(journalId: string) {
+    // let field: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity"
+    let fields:
+      ["salt", "cacl2", "kalcinol", "mixture", "zeokal", "km", "workHour", "orderedQuantity"] =
+      ["salt", "cacl2", "kalcinol", "mixture", "zeokal", "km", "workHour", "orderedQuantity"];
+
+    fields.forEach(field => {
+      // field = field
+      this.shiftService.getSumOfShiftsField({ field, journalId }).subscribe(sum => {
+        this.sums[field] = sum[0].total
+        console.log(this.sums);
+      });
+
     });
   }
 

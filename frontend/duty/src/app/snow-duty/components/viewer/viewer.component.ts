@@ -65,8 +65,6 @@ export class ViewerComponent implements OnInit {
     this.users$.subscribe(users => users.forEach(user => {
       this.userNames.push(user.full_name)
     }))
-
-    console.log(this.thisMonthFirstDay);
   }
 
   openNew() {
