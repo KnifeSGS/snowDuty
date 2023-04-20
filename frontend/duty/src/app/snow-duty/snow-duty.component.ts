@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Datacontainer } from './models/datacontainer';
+import { DatacontainerService } from './services/datacontainer.service';
 import { ShiftService } from './services/shift.service';
 
 class Sum {
@@ -28,6 +30,8 @@ class FieldNames {
   styleUrls: ['./snow-duty.component.scss']
 })
 export class SnowDutyComponent implements OnInit {
+
+  sumOfDataFields$: BehaviorSubject<Datacontainer[]> = this.dataService.list$
 
   chartData: any;
 
@@ -58,9 +62,10 @@ export class SnowDutyComponent implements OnInit {
   }
 
   constructor(
-    private shiftService: ShiftService
+    private shiftService: ShiftService,
+    private dataService: DatacontainerService
   ) {
-
+    this.dataService.getAll$()
   }
 
 
@@ -87,6 +92,7 @@ export class SnowDutyComponent implements OnInit {
     this.getAllSums(this.startingDay)
 
     this.initChart();
+    this.sumOfDataFields$.subscribe(data => console.log(data));
   }
 
   getSums(field: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity", gte?: string, lte?: string) {
@@ -128,6 +134,15 @@ export class SnowDutyComponent implements OnInit {
     });
   }
 
+  getDataFromContainer(year: number, month?: number) {
+    const params = {
+      year: year,
+      month: month
+    }
+
+    return this.dataService.getOneMonth(params)
+  }
+
   getChartData(field: string, gte?: string, lte?: string) {
     // new Date(Date.UTC(new Date().getFullYear(), 0, 1)).toISOString()
     let today = new Date()
@@ -165,7 +180,8 @@ export class SnowDutyComponent implements OnInit {
         {
           label: 'Só',
           // data: this.getChartData("salt"),
-          data: [11, 19],
+          // data: [null, null, 11, 19, null, null, null,],
+          data: [null, null, 11, 19, null, null, null,],
           fill: false,
           backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
           borderColor: documentStyle.getPropertyValue('--bluegray-700'),

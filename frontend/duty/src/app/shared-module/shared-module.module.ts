@@ -1,12 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChartComponent } from './components/chart/chart.component';
+import { ChartModule } from 'primeng/chart';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ChartComponent
+  ],
   imports: [
-    CommonModule
+    CommonModule,
+    ChartModule
+  ],
+  exports: [
+    ChartModule,
+    ChartComponent
   ]
 })
-export class SharedModuleModule { }
+export class SharedModule { }

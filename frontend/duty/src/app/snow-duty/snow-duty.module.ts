@@ -39,6 +39,9 @@ import { ViewerComponent } from './components/viewer/viewer.component';
 import { ShiftCreatorComponent } from './components/shift-creator/shift-creator.component';
 import { ShiftViewerComponent } from './components/shift-viewer/shift-viewer.component';
 import { PdfCreatorComponent } from './components/pdf-creator/pdf-creator.component';
+import { ChartComponent } from '../shared-module/components/chart/chart.component';
+
+import { SharedModule } from '../shared-module/shared-module.module';
 
 
 @NgModule({
@@ -49,9 +52,11 @@ import { PdfCreatorComponent } from './components/pdf-creator/pdf-creator.compon
     ViewerComponent,
     ShiftCreatorComponent,
     ShiftViewerComponent,
-    PdfCreatorComponent
+    PdfCreatorComponent,
+    // ChartComponent
   ],
   imports: [
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
@@ -79,8 +84,7 @@ import { PdfCreatorComponent } from './components/pdf-creator/pdf-creator.compon
     ToolbarModule,
     RatingModule,
     RadioButtonModule,
-    SelectButtonModule,
-    ChartModule
+    SelectButtonModule
   ],
   providers: [MessageService, ConfirmationService]
 })
