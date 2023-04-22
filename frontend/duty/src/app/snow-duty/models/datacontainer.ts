@@ -12,3 +12,7 @@ export class Datacontainer {
   month: number = 0;
   lastUpdate: Date = new Date()
 }
+
+export class FieldNames {
+  fieldName: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity" = "salt"
+}

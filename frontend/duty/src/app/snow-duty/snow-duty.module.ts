@@ -56,10 +56,9 @@ import { SharedModule } from '../shared-module/shared-module.module';
     // ChartComponent
   ],
   imports: [
-    SharedModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule,
     SnowDutyRoutingModule,
     AutoCompleteModule,
     CalendarModule,
@@ -84,7 +83,8 @@ import { SharedModule } from '../shared-module/shared-module.module';
     ToolbarModule,
     RatingModule,
     RadioButtonModule,
-    SelectButtonModule
+    SelectButtonModule,
+    SharedModule,
   ],
   providers: [MessageService, ConfirmationService]
 })

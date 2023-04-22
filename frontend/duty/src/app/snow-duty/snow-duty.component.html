@@ -71,11 +71,25 @@
     </div>
   </div>
 
-  <div class="col-12 xl:col-6">
-    <div class="card">
+  <!-- <div class="col-12">
+    <div class="card col-6">
       <h5>Anyagfelhasználás</h5>
       <p-chart type="line" [data]="chartData" [options]="chartOptions">
       </p-chart>
+    </div>
+  </div> -->
+</div>
+<div class="grid">
+  <div class="col-12 xl:col-6">
+    <div class="card" *ngIf="chartDataSums!.length > 0">
+      <app-chart [chartSums]="chartDataSums" [chartFields]="chartFields[0]">
+      </app-chart>
+    </div>
+  </div>
+  <div class="col-12 xl:col-6">
+    <div class="card" *ngIf="chartDataSums!.length > 0">
+      <app-chart [chartSums]="chartDataSums" [chartFields]="chartFields[1]">
+      </app-chart>
     </div>
   </div>
 </div>

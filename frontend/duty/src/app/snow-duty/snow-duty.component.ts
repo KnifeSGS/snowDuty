@@ -20,9 +20,7 @@ class DateRequest {
   lte: string = ''
 }
 
-class FieldNames {
-  fieldName: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity" = "salt"
-}
+type FieldName = "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity"
 
 @Component({
   selector: 'app-snow-duty',
@@ -32,10 +30,13 @@ class FieldNames {
 export class SnowDutyComponent implements OnInit {
 
   sumOfDataFields$: BehaviorSubject<Datacontainer[]> = this.dataService.list$
+  chartDataSums: Datacontainer[] | null = null
+  chartFields: FieldName[][] =
+    [
+      ["salt", "cacl2"],
+      ["km", "workHour"]
+    ];
 
-  chartData: any;
-
-  chartOptions: any;
 
   startingDay: string = new Date(Date.UTC(new Date().getFullYear(), 0, 1)).toISOString()
 
@@ -66,6 +67,7 @@ export class SnowDutyComponent implements OnInit {
     private dataService: DatacontainerService
   ) {
     this.dataService.getAll$()
+    this.sumOfDataFields$.subscribe(data => this.chartDataSums = data);
   }
 
 
@@ -90,9 +92,6 @@ export class SnowDutyComponent implements OnInit {
     // this.getSums('workHour', this.startingDay)
     // this.getSums('orderedQuantity', this.startingDay)
     this.getAllSums(this.startingDay)
-
-    this.initChart();
-    this.sumOfDataFields$.subscribe(data => console.log(data));
   }
 
   getSums(field: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity", gte?: string, lte?: string) {
@@ -132,101 +131,6 @@ export class SnowDutyComponent implements OnInit {
 
       }
     });
-  }
-
-  getDataFromContainer(year: number, month?: number) {
-    const params = {
-      year: year,
-      month: month
-    }
-
-    return this.dataService.getOneMonth(params)
-  }
-
-  getChartData(field: string, gte?: string, lte?: string) {
-    // new Date(Date.UTC(new Date().getFullYear(), 0, 1)).toISOString()
-    let today = new Date()
-    let thisYear = today.getFullYear()
-    let thisMonth = today.getMonth()
-
-    let array: number[] = []
-    for (let i = 0; i <= thisMonth; i++) {
-      let gte = new Date(thisYear, i, 1).toISOString()
-      let lte = new Date(thisYear, i + 1, 0).toISOString()
-
-      this.shiftService.getSumOfShiftsField({ field, gte, lte }).subscribe(sum => {
-        if (sum[0]) {
-          array.push(sum[0].total)
-        } else {
-          array.push(0)
-        }
-        // console.log(array);
-        return array
-      })
-    }
-  }
-
-  initChart() {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-    // let cacl2 = this.getChartData("cacl2")
-
-    this.chartData = {
-      labels: ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'],
-      datasets: [
-        {
-          label: 'Só',
-          // data: this.getChartData("salt"),
-          // data: [null, null, 11, 19, null, null, null,],
-          data: [null, null, 11, 19, null, null, null,],
-          fill: false,
-          backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-          borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-          tension: .4
-        },
-        {
-          label: 'CaCl2',
-          data: [8, 2],
-          fill: false,
-          backgroundColor: documentStyle.getPropertyValue('--green-600'),
-          borderColor: documentStyle.getPropertyValue('--green-600'),
-          tension: .4
-        }
-      ]
-    };
-
-    this.chartOptions = {
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: textColorSecondary
-          },
-          grid: {
-            color: surfaceBorder,
-            drawBorder: false
-          }
-        },
-        y: {
-          ticks: {
-            color: textColorSecondary
-          },
-          grid: {
-            color: surfaceBorder,
-            drawBorder: false
-          }
-        }
-      }
-    };
   }
 
 }
