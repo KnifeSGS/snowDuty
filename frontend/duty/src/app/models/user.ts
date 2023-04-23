@@ -7,10 +7,10 @@ export class User {
   last_name: string = "";
   full_name: string = "";
   email: string = "";
-  password: string = "";
   role: number = 0;
-  token: string = "";
   active: boolean = true;
-  journals: Journal[] = [];
-  shifts: Shift[] = []
+  token?: string = "";
+  password?: string = "";
+  journals?: Journal[] = [];
+  shifts?: Shift[] = []
 }

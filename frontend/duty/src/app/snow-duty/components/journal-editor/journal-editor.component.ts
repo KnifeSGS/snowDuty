@@ -12,11 +12,11 @@ import { PdfCreatorComponent } from '../pdf-creator/pdf-creator.component';
 import { ShiftCreatorComponent } from '../shift-creator/shift-creator.component';
 
 @Component({
-  selector: 'app-editor',
-  templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.scss']
+  selector: 'app-journal-editor',
+  templateUrl: './journal-editor.component.html',
+  styleUrls: ['./journal-editor.component.scss']
 })
-export class EditorComponent implements OnInit {
+export class JournalEditorComponent implements OnInit {
 
   @ViewChild(PdfCreatorComponent)
   pdf!: PdfCreatorComponent;

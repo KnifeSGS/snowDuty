@@ -6,18 +6,22 @@ import { User } from 'src/app/models/user';
 import { Journal } from '../../models/journal';
 import { JournalService } from '../../services/journal.service';
 import { UserService } from '../../services/user.service';
-import { CreatorComponent } from '../creator/creator.component';
+import { JournalCreatorComponent } from '../journal-creator/journal-creator.component';
+import { UserCreatorComponent } from '../user-creator/user-creator.component';
 
 @Component({
-  selector: 'app-viewer',
-  templateUrl: './viewer.component.html',
-  styleUrls: ['./viewer.component.scss'],
+  selector: 'app-journal-viewer',
+  templateUrl: './journal-viewer.component.html',
+  styleUrls: ['./journal-viewer.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class ViewerComponent implements OnInit {
+export class JournalViewerComponent implements OnInit {
 
-  @ViewChild(CreatorComponent)
-  child!: CreatorComponent;
+  @ViewChild(JournalCreatorComponent)
+  childJournal!: JournalCreatorComponent;
+
+  @ViewChild(UserCreatorComponent)
+  childUser!: UserCreatorComponent;
 
   // feliratok
   Delete: string = "Törlés";
@@ -31,7 +35,12 @@ export class ViewerComponent implements OnInit {
 
   defaultSortOrder: number = -1
 
-  journalDialog!: boolean;
+
+  openedDialogName!: string
+  dialogs: { [key: string]: boolean } = {
+    journalDialog: false,
+    userDialog: false
+  }
 
   journals$: BehaviorSubject<Journal[]> = this.journalService.journals$;
   users$: BehaviorSubject<User[]> = this.userService.list$;
@@ -39,9 +48,14 @@ export class ViewerComponent implements OnInit {
 
   interval: Date[] = [];
   thisMonthFirstDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString()
+  today = new Date();
+  thisYear = this.today.getFullYear();
+  thisMonth = this.today.getMonth();
+  thisDay = this.today.getDate();
+  thisHour = this.today.getHours();
   params: { start?: string, end?: string } = {
     start: this.thisMonthFirstDay,
-    end: new Date().toISOString()
+    end: new Date(this.thisYear, this.thisMonth, this.thisDay, this.thisHour + 1).toISOString()
   }
 
   journal!: Journal;
@@ -67,11 +81,20 @@ export class ViewerComponent implements OnInit {
     }))
   }
 
-  openNew() {
-    this.journal = new Journal();
+  openDialog(event: any) {
+    this.openedDialogName = event.target.parentElement.id
+    if (this.openedDialogName === "journalDialog") {
+      this.journal = new Journal();
+    }
     this.submitted = false;
-    this.journalDialog = true;
+    this.dialogs[event.target.parentElement.id] = true;
   }
+  // openNewUser(event: any) {
+  //   this.openedDialogName = event.target.parentElement.id
+  //   // this.journal = new Journal();
+  //   this.submitted = false;
+  //   this.dialogs['userDialog'] = true;
+  // }
 
   deleteSelectedJournals(journals: Journal[]) {
     this.confirmationService.confirm({
@@ -97,7 +120,7 @@ export class ViewerComponent implements OnInit {
   editJournal(journal: Journal) {
     // this.journalService.update(journal)
     // this.journal = { ...journal };
-    this.journalDialog = true;
+    // this.journalDialog = true;
   }
 
   deleteJournal(journalId: string, journalDate?: Date) {
@@ -119,14 +142,20 @@ export class ViewerComponent implements OnInit {
   }
 
   hideDialog() {
-    this.journalDialog = false;
+    this.dialogs[this.openedDialogName] = false
     this.submitted = false;
   }
 
   saveJournal() {
-    this.child.buildForm()
+    this.childJournal.buildForm();
+    this.dialogs[this.openedDialogName] = false;
     this.journalService.getSelectedInterval(this.params);
-    this.journalDialog = false;
+  }
+  saveUser() {
+    this.childUser.buildForm();
+    this.userService.getAll$();
+    this.childJournal.getUsers();
+    this.dialogs[this.openedDialogName] = false;
   }
 
   findIndexById(id: string): number {

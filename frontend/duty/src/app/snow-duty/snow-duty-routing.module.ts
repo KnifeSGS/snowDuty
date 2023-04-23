@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EditorComponent } from './components/editor/editor.component';
+import { JournalEditorComponent } from './components/journal-editor/journal-editor.component';
 import { ShiftViewerComponent } from './components/shift-viewer/shift-viewer.component';
-import { ViewerComponent } from './components/viewer/viewer.component';
+import { JournalViewerComponent } from './components/journal-viewer/journal-viewer.component';
 import { SnowDutyComponent } from './snow-duty.component';
 
 const routes: Routes = [
@@ -16,11 +16,11 @@ const routes: Routes = [
   },
   {
     path: 'viewer',
-    component: ViewerComponent
+    component: JournalViewerComponent
   },
   {
     path: 'viewer/:id',
-    component: EditorComponent
+    component: JournalEditorComponent
   },
 ];
 

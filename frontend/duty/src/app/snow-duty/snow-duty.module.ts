@@ -33,26 +33,28 @@ import { ChartModule } from 'primeng/chart';
 
 import { SnowDutyRoutingModule } from './snow-duty-routing.module';
 import { SnowDutyComponent } from './snow-duty.component';
-import { CreatorComponent } from './components/creator/creator.component';
-import { EditorComponent } from './components/editor/editor.component';
-import { ViewerComponent } from './components/viewer/viewer.component';
+import { JournalCreatorComponent } from './components/journal-creator/journal-creator.component';
+import { JournalEditorComponent } from './components/journal-editor/journal-editor.component';
+import { JournalViewerComponent } from './components/journal-viewer/journal-viewer.component';
 import { ShiftCreatorComponent } from './components/shift-creator/shift-creator.component';
 import { ShiftViewerComponent } from './components/shift-viewer/shift-viewer.component';
 import { PdfCreatorComponent } from './components/pdf-creator/pdf-creator.component';
 import { ChartComponent } from '../shared-module/components/chart/chart.component';
 
 import { SharedModule } from '../shared-module/shared-module.module';
+import { UserCreatorComponent } from './components/user-creator/user-creator.component';
 
 
 @NgModule({
   declarations: [
     SnowDutyComponent,
-    CreatorComponent,
-    EditorComponent,
-    ViewerComponent,
+    JournalCreatorComponent,
+    JournalEditorComponent,
+    JournalViewerComponent,
     ShiftCreatorComponent,
     ShiftViewerComponent,
     PdfCreatorComponent,
+    UserCreatorComponent,
     // ChartComponent
   ],
   imports: [

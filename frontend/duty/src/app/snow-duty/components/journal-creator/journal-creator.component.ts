@@ -16,11 +16,11 @@ export function minNameLengthValidator(min: number): ValidatorFn {
 }
 
 @Component({
-  selector: 'app-creator',
-  templateUrl: './creator.component.html',
-  styleUrls: ['./creator.component.scss']
+  selector: 'app-journal-creator',
+  templateUrl: './journal-creator.component.html',
+  styleUrls: ['./journal-creator.component.scss']
 })
-export class CreatorComponent {
+export class JournalCreatorComponent {
 
   worker: User = new User();
   users$: Observable<User[]> = new Observable<User[]>()

@@ -3,10 +3,12 @@
 <div class="card">
   <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
-      <button pButton pRipple [label]="NewJournal" icon="pi pi-plus"
-        class="p-button-success mr-2" (click)="openNew()"></button>
-      <button pButton pRipple [label]="NewWorker" icon="pi pi-plus"
-        class="p-button-warning mr-2" (click)="openNew()"></button>
+      <button pButton pRipple [label]="NewJournal" id="journalDialog"
+        icon="pi pi-plus" class="p-button-success mr-2"
+        (click)="openDialog($event)"></button>
+      <button pButton pRipple [label]="NewWorker" id="userDialog"
+        icon="pi pi-plus" class="p-button-warning mr-2"
+        (click)="openDialog($event)"></button>
     </ng-template>
 
     <ng-template pTemplate="right">
@@ -108,7 +110,7 @@
   </div>
 </div>
 
-<p-dialog [(visible)]="journalDialog"
+<p-dialog [(visible)]="dialogs['journalDialog']"
   [style]="{width: '600px', height: '547px'}" header="Ügyeleti napló"
   [modal]="true" styleClass="p-fluid">
   <ng-template pTemplate="footer">
@@ -117,7 +119,19 @@
     <button pButton pRipple label="Mentés" icon="pi pi-check"
       class="p-button-text" (click)="saveJournal()"></button>
   </ng-template>
-  <app-creator></app-creator>
+  <app-journal-creator></app-journal-creator>
+</p-dialog>
+
+<p-dialog [(visible)]="dialogs['userDialog']"
+  [style]="{width: '600px', height: '547px'}" header="Ügyeleti napló"
+  [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Mégse" icon="pi pi-times"
+      class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Mentés" icon="pi pi-check"
+      class="p-button-text" (click)="saveUser()"></button>
+  </ng-template>
+  <app-user-creator></app-user-creator>
 </p-dialog>
 
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
