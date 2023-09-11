@@ -41,6 +41,11 @@ export class MenuComponent implements OnInit {
             icon: 'pi pi-fw pi-check-square',
             routerLink: ['/shift']
           },
+          {
+            label: 'Raktárkészlet',
+            icon: 'pi pi-fw pi-inbox',
+            routerLink: ['/inventory']
+          },
         ]
       },
     ]

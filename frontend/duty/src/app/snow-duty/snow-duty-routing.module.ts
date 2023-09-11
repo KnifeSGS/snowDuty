@@ -4,6 +4,7 @@ import { JournalEditorComponent } from './components/journal-editor/journal-edit
 import { ShiftViewerComponent } from './components/shift-viewer/shift-viewer.component';
 import { JournalViewerComponent } from './components/journal-viewer/journal-viewer.component';
 import { SnowDutyComponent } from './snow-duty.component';
+import { InventoryViewerComponent } from './components/inventory-viewer/inventory-viewer.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'viewer/:id',
     component: JournalEditorComponent
+  },
+  {
+    path: 'inventory',
+    component: InventoryViewerComponent
   },
 ];
 

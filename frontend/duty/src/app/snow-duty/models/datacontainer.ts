@@ -1,6 +1,7 @@
 export class Datacontainer {
   _id?: string;
   salt: number = 0;
+  basalt: number = 0;
   cacl2: number = 0;
   kalcinol: number = 0;
   mixture: number = 0;
@@ -14,5 +15,5 @@ export class Datacontainer {
 }
 
 export class FieldNames {
-  fieldName: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity" = "salt"
+  fieldName: "salt" | "basalt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity" = "salt"
 }

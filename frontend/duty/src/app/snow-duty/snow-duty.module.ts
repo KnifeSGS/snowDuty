@@ -43,6 +43,8 @@ import { ChartComponent } from '../shared-module/components/chart/chart.componen
 
 import { SharedModule } from '../shared-module/shared-module.module';
 import { UserCreatorComponent } from './components/user-creator/user-creator.component';
+import { InventoryViewerComponent } from './components/inventory-viewer/inventory-viewer.component';
+import { InventoryEditorComponent } from './components/inventory-editor/inventory-editor.component';
 
 
 @NgModule({
@@ -55,6 +57,8 @@ import { UserCreatorComponent } from './components/user-creator/user-creator.com
     ShiftViewerComponent,
     PdfCreatorComponent,
     UserCreatorComponent,
+    InventoryViewerComponent,
+    InventoryEditorComponent,
     // ChartComponent
   ],
   imports: [

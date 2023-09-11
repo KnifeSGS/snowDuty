@@ -32,6 +32,7 @@ export class ChartComponent implements OnInit {
   initChart() {
     const fieldNamesTranslate = {
       salt: "Só",
+      basalt: "Bazalt",
       cacl2: "CaCl2",
       kalcinol: "Kalcinol",
       mixture: "Keverék",
