@@ -10,7 +10,7 @@ import { ConfigService } from './config.service';
 })
 export class InventoryService extends BaseService<Inventory>   {
 
-  items$: BehaviorSubject<Inventory[]> = new BehaviorSubject<Inventory[]>([])
+  items$: BehaviorSubject<Inventory> = new BehaviorSubject<Inventory>(new Inventory())
 
   constructor(
     public override config: ConfigService,
@@ -18,11 +18,12 @@ export class InventoryService extends BaseService<Inventory>   {
   ) {
     super(config, http);
     this.entity = 'inventory';
+    this.getLastInventoryData$()
   }
 
   getLastInventoryData$() {
-    this.items$.next([]);
-    this.http.get<Inventory[]>(`${this.config.apiUrl}${this.entity}/last`).subscribe(
+    this.items$.next({});
+    this.http.get<Inventory>(`${this.config.apiUrl}${this.entity}/last`).subscribe(
       entity => this.items$.next(entity)
     )
   }
