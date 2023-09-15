@@ -222,7 +222,7 @@ export class PdfCreatorComponent {
           table: {
             headerRows: 1,
             alignment: 'center',
-            widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', '*'],
+            widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', '*'],
             body: [
               [{
                 text: 'Ügyeletben dolgozók',
@@ -238,6 +238,10 @@ export class PdfCreatorComponent {
                 style: 'shiftHeader'
               }, {
                 text: 'só (t)',
+                alignment: 'center',
+                style: 'shiftHeader'
+              }, {
+                text: 'bazalt (t)',
                 alignment: 'center',
                 style: 'shiftHeader'
               }, {
@@ -275,6 +279,7 @@ export class PdfCreatorComponent {
                 shifts.daytime ? 'nappali' : 'esti',
                 shifts.machine,
                 shifts.salt,
+                shifts.basalt,
                 shifts.cacl2,
                 shifts.kalcinol,
                 shifts.mixture,
@@ -299,16 +304,16 @@ export class PdfCreatorComponent {
             alignment: 'center',
             widths: ['auto', '*'],
             body: [
-              [{
-                text: '',
-                alignment: 'center',
-                style: 'shiftHeader'
-              }, {
-                text: 'Megjegyzések:',
-                alignment: 'center',
-                style: 'shiftHeader'
-              },
-              ],
+              // [{
+              //   text: '',
+              //   alignment: 'center',
+              //   style: 'shiftHeader'
+              // }, {
+              //   text: 'Megjegyzések:',
+              //   alignment: 'center',
+              //   style: 'shiftHeader'
+              // },
+              // ],
               ...journal.comment.map((comment: any) => [comment[0], comment[1]])
             ]
 

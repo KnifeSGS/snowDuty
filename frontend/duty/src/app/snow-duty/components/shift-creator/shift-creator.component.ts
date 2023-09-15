@@ -50,6 +50,7 @@ export class ShiftCreatorComponent implements OnInit {
       daytime: ['', Validators.required],
       machine: [''],
       salt: [''],
+      basalt: [''],
       cacl2: [''],
       kalcinol: [''],
       mixture: [''],
@@ -85,7 +86,7 @@ export class ShiftCreatorComponent implements OnInit {
     if (date) {
       utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
     }
-    const { daytime, machine, salt, cacl2, kalcinol, mixture, zeokal, km, workHour, orderedQuantity } = this.shiftForm.value;
+    const { daytime, machine, salt, basalt, cacl2, kalcinol, mixture, zeokal, km, workHour, orderedQuantity } = this.shiftForm.value;
 
     this.shift = {
       journalId: this.journalId,
@@ -94,6 +95,7 @@ export class ShiftCreatorComponent implements OnInit {
       daytime,
       machine,
       salt,
+      basalt,
       cacl2,
       kalcinol,
       mixture,

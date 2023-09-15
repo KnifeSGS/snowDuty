@@ -51,7 +51,7 @@
           placeholder="{{journal.worker.full_name}}" disabled />
       </div>
       <div class="field col-12 md:col-5">
-        <input pInputText id="worker" type="text" placeholder="{{journal.date}}"
+        <input pInputText id="date" type="text" placeholder="{{journal.date}}"
           disabled />
       </div>
       <div class="col-12 md:col-2">
@@ -71,7 +71,15 @@
     <div class="field col-12">
       <label for="comment">Korábbi megjegyzések:</label>
       <div class="comments" *ngFor="let comment of journal.comment">
-        <p>{{comment[0]}}: {{comment[1]}}</p>
+        <div *ngIf="journal.comment!.length > 1">
+          <div *ngIf="comment === journal.comment![0]"></div>
+          <div *ngIf="comment !== journal.comment![0]">
+            <p>{{comment[0]}}: {{comment[1]}}</p>
+          </div>
+        </div>
+        <div *ngIf="journal.comment!.length <= 1">
+          <p>-</p>
+        </div>
       </div>
     </div>
   </div>

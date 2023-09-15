@@ -35,6 +35,7 @@ export class ShiftViewerComponent implements OnInit {
 
   sums: {
     salt: number,
+    basalt: number,
     cacl2: number,
     kalcinol: number,
     mixture: number,
@@ -44,6 +45,7 @@ export class ShiftViewerComponent implements OnInit {
     orderedQuantity: number,
   } = {
       salt: 0,
+      basalt: 0,
       cacl2: 0,
       kalcinol: 0,
       mixture: 0,
@@ -117,8 +119,8 @@ export class ShiftViewerComponent implements OnInit {
     );
   }
 
-  getSums(field: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity", journalId: string) {
-    let fieldName: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity" = field
+  getSums(field: "salt" | "basalt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity", journalId: string) {
+    let fieldName: "salt" | "basalt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity" = field
     this.shiftService.getSumOfShiftsField({ field, journalId }).subscribe(sum => {
       this.sums[fieldName] = sum[0].total
       console.log(this.sums);
@@ -128,8 +130,8 @@ export class ShiftViewerComponent implements OnInit {
   getAllSums(journalId: string) {
     // let field: "salt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity"
     let fields:
-      ["salt", "cacl2", "kalcinol", "mixture", "zeokal", "km", "workHour", "orderedQuantity"] =
-      ["salt", "cacl2", "kalcinol", "mixture", "zeokal", "km", "workHour", "orderedQuantity"];
+      ["salt", "basalt", "cacl2", "kalcinol", "mixture", "zeokal", "km", "workHour", "orderedQuantity"] =
+      ["salt", "basalt", "cacl2", "kalcinol", "mixture", "zeokal", "km", "workHour", "orderedQuantity"];
 
     fields.forEach(field => {
       // field = field
