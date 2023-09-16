@@ -21,9 +21,6 @@
     "chart.js": "^3.3.2",
     "lodash": "^4.17.21",
     "pdfmake": "^0.2.7",
-    "primeflex": "^3.3.0",
-    "primeicons": "^6.0.1",
-    "primeng": "^15.2.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
