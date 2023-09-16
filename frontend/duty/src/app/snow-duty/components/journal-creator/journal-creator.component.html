@@ -4,19 +4,20 @@
   <!-- <div class="p-fluid p-formgrid grid"> -->
 
   <div class="field col-12">
-    <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" [showIcon]="true"
-      inputId="icon" formControlName="date" [hideOnDateTimeSelect]="true"
+    <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" appendTo="body"
+      [showIcon]="true" inputId="icon" formControlName="date"
+      [hideOnDateTimeSelect]="true"
       placeholder="Mai dátum, vagy válassz másikat">
     </p-calendar>
-    <p-calendar *ngIf="mobile" dateFormat="yy.MM.dd" [showIcon]="true"
-      inputId="icon" formControlName="date" [touchUI]="true"
+    <p-calendar appendTo="body" *ngIf="mobile" dateFormat="yy.MM.dd"
+      [showIcon]="true" inputId="icon" formControlName="date" [touchUI]="true"
       [hideOnDateTimeSelect]="true" [readonlyInput]="true"
       placeholder="Mai dátum, vagy válassz másikat">
     </p-calendar>
   </div>
   <div class="field col-12">
-    <p-dropdown [options]="users" optionLabel="full_name" [filter]="true"
-      filterBy="full_name" [showClear]="true"
+    <p-dropdown appendTo="body" [options]="users" optionLabel="full_name"
+      [filter]="true" filterBy="full_name" [showClear]="true"
       placeholder="Válassz ügyeletvezetőt" formControlName="worker"
       (onChange)="workerSelected()">
       <ng-template pTemplate="selectedItem">
@@ -71,13 +72,13 @@
           <label for="roads">Utak felülete</label>
         </span>
       </div> -->
-  <div class="field col-12">
+  <!-- <div class="field col-12">
     <span class="p-float-label">
       <textarea pInputTextarea id="comment" rows="4"
         formControlName="comment"></textarea>
       <label for="comment">Megjegyzések</label>
     </span>
-  </div>
+  </div> -->
   <!-- </div> -->
   <!-- <div class="p-fluid p-formgrid grid" formGroupName="shifts">
       <h5 class="field col-12">Ügyeletben dolgozók:</h5>

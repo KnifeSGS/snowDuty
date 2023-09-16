@@ -49,8 +49,8 @@
       <p-inputNumber suffix=" t" [showButtons]="true" buttonLayout="horizontal"
         spinnerMode="horizontal" decrementButtonClass="p-button-danger"
         incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
-        decrementButtonIcon="pi pi-minus" inputId="salt"
-        formControlName="salt" />
+        decrementButtonIcon="pi pi-minus" inputId="salt" formControlName="salt"
+        [step]="0.01" [minFractionDigits]="2" [maxFractionDigits]="2" />
     </div>
     <div class="field col-6 md:col-3">
       <label for="basalt"><b>Bazalt:</b></label>

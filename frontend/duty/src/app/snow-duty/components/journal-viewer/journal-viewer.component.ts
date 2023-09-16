@@ -66,6 +66,8 @@ export class JournalViewerComponent implements OnInit {
 
   statuses!: any[];
 
+  mobile: boolean = false
+
   constructor(
     private userService: UserService,
     private journalService: JournalService,
@@ -79,6 +81,10 @@ export class JournalViewerComponent implements OnInit {
     this.users$.subscribe(users => users.forEach(user => {
       this.userNames.push(user.full_name)
     }))
+
+    if (window.screen.width < 420) { // 768px portrait
+      this.mobile = true;
+    };
   }
 
   openDialog(event: any) {

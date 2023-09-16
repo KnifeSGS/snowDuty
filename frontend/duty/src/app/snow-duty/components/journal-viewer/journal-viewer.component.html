@@ -37,9 +37,16 @@
           <h5 class="m-0">Naplók kezelése</h5>
           <span class="p-input-icon-left">
 
-            <p-calendar dateFormat="yy.MM.dd" [showIcon]="true"
+            <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" [showIcon]="true"
               selectionMode="range" [readonlyInput]="true"
-              [(ngModel)]="interval" placeholder="Válassz időintervallumot"
+              [hideOnDateTimeSelect]="true" [(ngModel)]="interval"
+              placeholder="Válassz időintervallumot"
+              (onSelect)="selectInterval()">
+            </p-calendar>
+            <p-calendar *ngIf="mobile" dateFormat="yy.MM.dd" [showIcon]="true"
+              selectionMode="range" [readonlyInput]="true" [touchUI]="true"
+              [hideOnDateTimeSelect]="true" [(ngModel)]="interval"
+              placeholder="Válassz időintervallumot"
               (onSelect)="selectInterval()">
             </p-calendar>
             <span>
@@ -118,7 +125,7 @@
 </div>
 
 <p-dialog [(visible)]="dialogs['journalDialog']"
-  [style]="{width: '600px', height: '547px'}" header="Ügyeleti napló"
+  [style]="{width: '600px', height: 'auto'}" header="Ügyeleti napló"
   [modal]="true" styleClass="p-fluid">
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Mégse" icon="pi pi-times"
@@ -130,8 +137,8 @@
 </p-dialog>
 
 <p-dialog [(visible)]="dialogs['userDialog']"
-  [style]="{width: '600px', height: '547px'}" header="Ügyeleti napló"
-  [modal]="true" styleClass="p-fluid">
+  [style]="{width: 'auto', height: '547px'}" header="Új dolgozó" [modal]="true"
+  styleClass="p-fluid">
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Mégse" icon="pi pi-times"
       class="p-button-text" (click)="hideDialog()"></button>

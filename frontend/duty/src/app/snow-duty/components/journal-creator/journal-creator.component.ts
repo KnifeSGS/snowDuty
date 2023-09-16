@@ -59,7 +59,7 @@ export class JournalCreatorComponent {
       //   workHour: [''],
       //   orderedQuantity: [''],
       // }),
-      comment: ['']
+      // comment: ['']
     })
   }
 
@@ -95,7 +95,7 @@ export class JournalCreatorComponent {
     this.journal = {
       worker: this.journalForm.value.worker._id,
       date: utcDate,
-      comment: this.journalForm.value.comment
+      // comment: this.journalForm.value.comment
     }
   }
 
