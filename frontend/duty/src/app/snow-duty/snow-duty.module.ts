@@ -83,7 +83,7 @@ import { InventoryEditorComponent } from './components/inventory-editor/inventor
     SliderModule,
     ContextMenuModule,
     DialogModule,
-    ButtonModule,
+    // ButtonModule,
     ProgressBarModule,
     FileUploadModule,
     ToolbarModule,

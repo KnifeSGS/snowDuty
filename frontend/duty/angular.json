@@ -38,6 +38,11 @@
             ],
             "scripts": [
               "node_modules/chart.js/dist/chart.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "vfs_fonts",
+              "pdfmake"
             ]
           },
           "configurations": {
