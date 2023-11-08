@@ -1,19 +1,27 @@
-<p-card header="Advanced Card" subheader="Card Subheader"
-  [style]="{ width: '360px' }">
+<p-card [style]="{ width: '200px' }">
   <ng-template pTemplate="header">
-    <img alt="Card"
-      src="https://primefaces.org/cdn/primeng/images/usercard.png" />
+    <img alt="{{material.k}}" [src]="material.src" />
   </ng-template>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed
-    consequuntur error repudiandae numquam deserunt quisquam repellat libero
-    asperiores earum nam nobis, culpa ratione quam perferendis esse,
-    cupiditate neque
-    quas!
-  </p>
-  <ng-template pTemplate="footer">
-    <p-button label="Save" icon="pi pi-check"></p-button>
-    <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-secondary"
-      [style]="{ 'margin-left': '.5em' }">
-    </p-button>
-  </ng-template>
+  <div class="header">
+    {{material.name}} mennyisége:
+  </div>
+  <div class="subHeader">
+    {{material.v}}
+    {{ (material.k === 'kalcinol') ? 'l' : 't'}}
+  </div>
+  <div class="content">
+    <ng-content></ng-content>
+  </div>
+  <!-- <p>
+    {{item}} : {{value}}
+  </p> -->
+  <!-- <ng-template pTemplate="footer"> -->
+  <!-- <div class="flex justify-content-between flex-wrap"> -->
+  <!-- <p-button label="Save" icon="pi pi-check" styleClass="p-button-success"> -->
+  <!-- </p-button> -->
+  <!-- <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-warning" -->
+  <!-- [style]="{ 'margin-left': '.5em' }"> -->
+  <!-- </p-button> -->
+  <!-- </div> -->
+  <!-- </ng-template> -->
+</p-card>

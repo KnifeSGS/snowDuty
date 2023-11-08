@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
@@ -13,7 +13,8 @@ import { UserCreatorComponent } from '../user-creator/user-creator.component';
   selector: 'app-journal-viewer',
   templateUrl: './journal-viewer.component.html',
   styleUrls: ['./journal-viewer.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  providers: [MessageService, ConfirmationService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JournalViewerComponent implements OnInit {
 
@@ -73,6 +74,7 @@ export class JournalViewerComponent implements OnInit {
     private journalService: JournalService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private ref: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -85,6 +87,7 @@ export class JournalViewerComponent implements OnInit {
     if (window.screen.width < 420) { // 768px portrait
       this.mobile = true;
     };
+    this.ref.detectChanges();
   }
 
   openDialog(event: any) {
@@ -155,7 +158,11 @@ export class JournalViewerComponent implements OnInit {
   saveJournal() {
     this.childJournal.buildForm();
     this.dialogs[this.openedDialogName] = false;
-    this.journalService.getSelectedInterval(this.params);
+    this.journalService.getAll().subscribe(
+      () => {
+        this.journalService.getSelectedInterval(this.params);
+      }
+    )
   }
   saveUser() {
     this.childUser.buildForm();
@@ -189,13 +196,13 @@ export class JournalViewerComponent implements OnInit {
     }
   }
 
-  createId(): string {
-    let id = '';
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
+  // createId(): string {
+  //   let id = '';
+  //   var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  //   for (var i = 0; i < 5; i++) {
+  //     id += chars.charAt(Math.floor(Math.random() * chars.length));
+  //   }
+  //   return id;
+  // }
 
 }

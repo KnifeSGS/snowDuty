@@ -1,3 +1,40 @@
-<div class="card flex justify-content-center">
-  <app-card></app-card>
+<!-- <div *ngIf="(items$ | async) as items">
+  <div class="card flex flex-wrap justify-content-evenly">
+    <app-card *ngFor="let item of items" class="m-3 flex" [item]="item.name"
+      [value]="item.quantity">
+      <pre>{{items | json}}</pre>
+    </app-card>
+  </div>
+</div> -->
+
+<!-- <div *ngIf="(sums$ | async) as items"> -->
+<!-- <div class="card flex flex-wrap justify-content-evenly"> -->
+<!-- <app-card *ngFor="let item of items" class="m-3 flex" [item]="item.k" -->
+<!-- [value]="item.v"> -->
+<!-- <pre>{{item | json}}</pre> -->
+<!-- </app-card> -->
+<!-- </div> -->
+<!-- </div> -->
+
+<div *ngIf="stock()">
+  <div class="card flex flex-wrap justify-content-evenly"
+    [formGroup]="stockForm">
+    <app-card *ngFor="let item of stock()" class="m-3 flex" [material]="item">
+      <!-- <pre>{{item['name'] | json}}</pre> -->
+      <div class="stockForm">
+        <input pInputText [id]="item['k']" [formControlName]="item['k']"
+          type="number">
+        <!-- <p-inputNumber class="inpNum" suffix="" [showButtons]="false"
+          buttonLayout="horizontal" spinnerMode="horizontal"
+          decrementButtonClass="p-button-danger"
+          incrementButtonClass="p-button-success"
+          incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
+          inputId="item['k']" [formControlName]="item['k']" /> -->
+      </div>
+    </app-card>
+    <div class="submit ">
+      <button pButton pRipple label="Mentés" icon="pi pi-check"
+        class="p-button-text" (click)="buildStock()"></button>
+    </div>
+  </div>
 </div>

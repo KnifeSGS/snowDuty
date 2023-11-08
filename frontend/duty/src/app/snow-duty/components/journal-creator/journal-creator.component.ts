@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { User } from 'src/app/models/user';
@@ -36,7 +36,8 @@ export class JournalCreatorComponent {
   constructor(
     private fb: FormBuilder,
     private journalService: JournalService,
-    private userService: UserService
+    private userService: UserService,
+    private ref: ChangeDetectorRef
   ) {
     this.journalForm = this.fb.group({
       worker: [''],
@@ -108,5 +109,7 @@ export class JournalCreatorComponent {
         () => this.journalService.getAll$()
         // p => console.log(p)
       )
+
+    this.ref.markForCheck()
   }
 }
