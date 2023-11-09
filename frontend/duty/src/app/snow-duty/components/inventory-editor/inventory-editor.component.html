@@ -17,22 +17,24 @@
 <!-- </div> -->
 
 <div *ngIf="stock()">
-  <div class="card flex flex-wrap justify-content-evenly"
-    [formGroup]="stockForm">
+  <div class="flex flex-wrap justify-content-evenly" [formGroup]="stockForm">
     <app-card *ngFor="let item of stock()" class="m-3 flex" [material]="item">
       <!-- <pre>{{item['name'] | json}}</pre> -->
-      <div class="stockForm">
-        <input pInputText [id]="item['k']" [formControlName]="item['k']"
-          type="number">
-        <!-- <p-inputNumber class="inpNum" suffix="" [showButtons]="false"
+      <!-- <div class="stockForm"> -->
+      <!-- <input pInputText [id]="item['k']" [formControlName]="item['k']"
+          type="number"> -->
+      <p-inputNumber mode="decimal" [showButtons]="true" [min]="0"
+        [formControlName]="item['k']" [id]="item['k']" />
+      <!-- <p-inputNumber class="inpNum" suffix="" [showButtons]="false"
           buttonLayout="horizontal" spinnerMode="horizontal"
           decrementButtonClass="p-button-danger"
           incrementButtonClass="p-button-success"
           incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
           inputId="item['k']" [formControlName]="item['k']" /> -->
-      </div>
+      <!-- </div> -->
     </app-card>
-    <div class="submit ">
+
+    <div class="submit col-12">
       <button pButton pRipple label="Mentés" icon="pi pi-check"
         class="p-button-text" (click)="buildStock()"></button>
     </div>

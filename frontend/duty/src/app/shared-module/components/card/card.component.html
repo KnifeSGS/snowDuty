@@ -1,4 +1,4 @@
-<p-card [style]="{ width: '200px' }">
+<!-- <p-card [style]="{ width: '200px' }">
   <ng-template pTemplate="header">
     <img alt="{{material.k}}" [src]="material.src" />
   </ng-template>
@@ -11,17 +11,41 @@
   </div>
   <div class="content">
     <ng-content></ng-content>
-  </div>
-  <!-- <p>
+  </div> -->
+<!-- <p>
     {{item}} : {{value}}
   </p> -->
-  <!-- <ng-template pTemplate="footer"> -->
-  <!-- <div class="flex justify-content-between flex-wrap"> -->
-  <!-- <p-button label="Save" icon="pi pi-check" styleClass="p-button-success"> -->
-  <!-- </p-button> -->
-  <!-- <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-warning" -->
-  <!-- [style]="{ 'margin-left': '.5em' }"> -->
-  <!-- </p-button> -->
-  <!-- </div> -->
-  <!-- </ng-template> -->
-</p-card>
+<!-- <ng-template pTemplate="footer"> -->
+<!-- <div class="flex justify-content-between flex-wrap"> -->
+<!-- <p-button label="Save" icon="pi pi-check" styleClass="p-button-success"> -->
+<!-- </p-button> -->
+<!-- <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-warning" -->
+<!-- [style]="{ 'margin-left': '.5em' }"> -->
+<!-- </p-button> -->
+<!-- </div> -->
+<!-- </ng-template> -->
+<!-- </p-card> -->
+
+<!-- <div class="grid">
+  <div class="col-12 lg:col-6 xl:col-3"> -->
+<div class="card mb-0">
+  <div class="flex justify-content-between mb-3">
+    <div>
+      <span class="block text-500 font-medium mb-3">{{material.name}}
+        mennyisége:</span>
+      <div class="text-900 font-medium text-xl">{{material.v}}
+        {{ (material.k === 'kalcinol') ? 'l' : 't'}}
+      </div>
+    </div>
+    <div
+      class="flex align-items-center justify-content-center bg-blue-100 border-round"
+      [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+      <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
+    </div>
+  </div>
+  <ng-content></ng-content>
+  <!-- <span class="text-green-500 font-medium">{{sumsYear.salt}} kg </span>
+  <span class="text-500">ebben az évben</span> -->
+</div>
+<!-- </div>
+</div> -->
