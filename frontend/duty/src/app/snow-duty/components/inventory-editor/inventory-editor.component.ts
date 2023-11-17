@@ -58,12 +58,12 @@ export class InventoryEditorComponent implements OnInit {
     private fb: FormBuilder,
   ) {
     this.stockForm = this.fb.group({
-      salt: ['0'],
-      basalt: ['0'],
-      cacl2: ['0'],
-      kalcinol: ['0'],
-      mixture: ['0'],
-      zeokal: ['0']
+      salt: 0,
+      basalt: 0,
+      cacl2: 0,
+      kalcinol: 0,
+      mixture: 0,
+      zeokal: 0
     })
     // this.sums$.subscribe(item => console.log(item));
     this.getStockPile()
@@ -96,37 +96,57 @@ export class InventoryEditorComponent implements OnInit {
 
   stockBuilder() {
     const { salt, basalt, cacl2, kalcinol, mixture, zeokal } = this.stockForm.value
-    const stock: Inventory = {
-      salt: salt === '' ? '0' : salt,
-      basalt: basalt === '' ? '0' : basalt,
-      cacl2: cacl2 === '' ? '0' : cacl2,
-      kalcinol: kalcinol === '' ? '0' : kalcinol,
-      mixture: mixture === '' ? '0' : mixture,
-      zeokal: zeokal === '' ? '0' : zeokal
+    const stock: Inventory = {}
+    const stockMix: Inventory = {}
+    const setStock = () => {
+      stock.salt = salt === '' ? 0 : salt,
+        stock.basalt = basalt === '' ? 0 : basalt,
+        stock.cacl2 = cacl2 === '' ? 0 : cacl2,
+        stock.kalcinol = kalcinol === '' ? 0 : kalcinol,
+        stock.mixture = 0,
+        stockMix.mixture = mixture === '' ? 0 : mixture,
+        stock.zeokal = zeokal === '' ? 0 : zeokal
     }
-    console.log(stock);
-    return stock
+    setStock()
+    const newStock = [stock, stockMix]
+    console.log(newStock);
+    return newStock
   }
 
   buildStock() {
     // this.inventoryService.updateStock(this.stockBuilder(), { add: true })
     const stock = this.stockBuilder()
-    this.inventoryService.updateStock(stock, { add: true }).subscribe(
-      stock => {
-        console.log(stock);
-        this.getStockPile()
-      }
-    )
+    if (this.stockForm.value.mixture !== 0) {
+      this.inventoryService.updateStock(stock[0], { add: true }).subscribe(
+        newStock => {
+          console.log(newStock);
+          // this.getStockPile()
+          this.inventoryService.updateMix(stock[1]).subscribe(
+            newStock => {
+              console.log(newStock);
+              this.getStockPile()
+            }
+          )
+        }
+      )
+    } else {
+      this.inventoryService.updateStock(stock[0], { add: true }).subscribe(
+        stock => {
+          console.log(stock);
+          this.getStockPile()
+        }
+      )
+    }
     // console.log(stock);
     // this.stockForm.reset()
     this.stockForm.setValue(
       {
-        salt: ['0'],
-        basalt: ['0'],
-        cacl2: ['0'],
-        kalcinol: ['0'],
-        mixture: ['0'],
-        zeokal: ['0']
+        salt: 0,
+        basalt: 0,
+        cacl2: 0,
+        kalcinol: 0,
+        mixture: 0,
+        zeokal: 0
       }
     )
   }

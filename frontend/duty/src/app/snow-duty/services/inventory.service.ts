@@ -62,6 +62,12 @@ export class InventoryService extends BaseService<Inventory>   {
     return this.http.post<Inventory>(target, stock, { params });
   }
 
+  updateMix(stock: Inventory): Observable<Inventory> {
+    const target = `${this.config.apiUrl}${this.entity}/mix`
+
+    return this.http.post<Inventory>(target, stock);
+  }
+
   async fetchApiForSignal(): Promise<[]> {
     const response = await fetch(`${this.config.apiUrl}${this.entity}/sum`);
     const stockPile = await response.json()
