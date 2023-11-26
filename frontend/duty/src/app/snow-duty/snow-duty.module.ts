@@ -45,6 +45,8 @@ import { SharedModule } from '../shared-module/shared-module.module';
 import { UserCreatorComponent } from './components/user-creator/user-creator.component';
 import { InventoryViewerComponent } from './components/inventory-viewer/inventory-viewer.component';
 import { InventoryEditorComponent } from './components/inventory-editor/inventory-editor.component';
+import { SubcontractorComponent } from './components/subcontractor/subcontractor.component';
+import { ScheduleComponent } from './components/schedule/schedule.component';
 
 
 @NgModule({
@@ -59,6 +61,8 @@ import { InventoryEditorComponent } from './components/inventory-editor/inventor
     UserCreatorComponent,
     InventoryViewerComponent,
     InventoryEditorComponent,
+    SubcontractorComponent,
+    ScheduleComponent,
     // ChartComponent
   ],
   imports: [

@@ -18,6 +18,8 @@ import { InventoryService } from '../../services/inventory.service';
 })
 export class InventoryEditorComponent implements OnInit {
 
+  mobile: boolean = false
+
   itemProps = {
     salt: {
       name: "Só",
@@ -77,6 +79,10 @@ export class InventoryEditorComponent implements OnInit {
     //     this.iItems = items
     //   }
     // )
+
+    if (window.screen.width < 420) { // 768px portrait
+      this.mobile = true;
+    };
   }
 
   getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
@@ -149,6 +155,7 @@ export class InventoryEditorComponent implements OnInit {
         zeokal: 0
       }
     )
+    this.stockForm.markAsPristine()
   }
 
 }

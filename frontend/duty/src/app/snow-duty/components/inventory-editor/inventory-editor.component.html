@@ -16,15 +16,20 @@
 <!-- </div> -->
 <!-- </div> -->
 
-<div *ngIf="stock()">
-  <div class="flex flex-wrap justify-content-evenly" [formGroup]="stockForm">
-    <app-card *ngFor="let item of stock()" class="m-3 flex" [material]="item">
+<div *ngIf="stock()" class="col-10 flex justify-content-center">
+  <div class=" flex flex-wrap justify-content-evenly" [formGroup]="stockForm">
+    <app-card *ngFor="let item of stock()" class="m-3" [material]="item">
       <!-- <pre>{{item['name'] | json}}</pre> -->
       <!-- <div class="stockForm"> -->
       <!-- <input pInputText [id]="item['k']" [formControlName]="item['k']"
           type="number"> -->
       <p-inputNumber mode="decimal" [showButtons]="true" [min]="0"
-        [formControlName]="item['k']" [id]="item['k']" />
+        buttonLayout="horizontal" [formControlName]="item['k']" [id]="item['k']"
+        class="flex justify-content-center"
+        decrementButtonClass="p-button-danger"
+        incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus" [step]="0.01" [minFractionDigits]="0"
+        [maxFractionDigits]="2" />
       <!-- <p-inputNumber class="inpNum" suffix="" [showButtons]="false"
           buttonLayout="horizontal" spinnerMode="horizontal"
           decrementButtonClass="p-button-danger"
@@ -34,9 +39,20 @@
       <!-- </div> -->
     </app-card>
 
-    <div class="submit col-12">
-      <button pButton pRipple label="Mentés" icon="pi pi-check"
-        class="p-button-text" (click)="buildStock()"></button>
+    <div *ngIf="!stockForm.pristine; then valid else invalid">
     </div>
+    <ng-template #valid>
+      <div class="submit col-12 m-5">
+        <button pButton pRipple label="Mentés" icon="pi pi-check"
+          class="p-button-success p-button-raised"
+          (click)="buildStock()"></button>
+      </div>
+    </ng-template>
+    <ng-template #invalid>
+      <div class="submit col-12 m-5">
+        <button pButton pRipple label="Mentés" icon="pi pi-check"
+          class="p-button-success p-button-raised" disabled="true"></button>
+      </div>
+    </ng-template>
   </div>
 </div>

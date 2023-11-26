@@ -46,6 +46,16 @@ export class MenuComponent implements OnInit {
             icon: 'pi pi-fw pi-inbox',
             routerLink: ['/inventory']
           },
+          {
+            label: 'Alvállalkozók',
+            icon: 'pi pi-fw pi-users',
+            routerLink: ['/subcontractor']
+          },
+          {
+            label: 'Beosztás',
+            icon: 'pi pi-fw pi-calendar',
+            routerLink: ['/schedule']
+          },
         ]
       },
     ]

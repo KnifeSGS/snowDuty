@@ -28,12 +28,12 @@
 
 <!-- <div class="grid">
   <div class="col-12 lg:col-6 xl:col-3"> -->
-<div class="card mb-0">
-  <div class="flex justify-content-between mb-3">
+<div class="min-w-screen md:min-w-0 card mb-0">
+  <div class="flex justify-content-evenly md:justify-content-between mb-3">
     <div>
       <span class="block text-500 font-medium mb-3">{{material.name}}
         mennyisége:</span>
-      <div class="text-900 font-medium text-xl">{{material.v}}
+      <div class="text-900 font-bold text-2xl">{{material.v}}
         {{ (material.k === 'kalcinol') ? 'l' : 't'}}
       </div>
     </div>
@@ -43,7 +43,7 @@
       <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
     </div>
   </div>
-  <ng-content></ng-content>
+  <ng-content class=" flex flex-grow-1 md:flex-grow-0"></ng-content>
   <!-- <span class="text-green-500 font-medium">{{sumsYear.salt}} kg </span>
   <span class="text-500">ebben az évben</span> -->
 </div>

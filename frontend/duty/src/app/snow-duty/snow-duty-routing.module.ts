@@ -5,6 +5,8 @@ import { ShiftViewerComponent } from './components/shift-viewer/shift-viewer.com
 import { JournalViewerComponent } from './components/journal-viewer/journal-viewer.component';
 import { SnowDutyComponent } from './snow-duty.component';
 import { InventoryViewerComponent } from './components/inventory-viewer/inventory-viewer.component';
+import { SubcontractorComponent } from './components/subcontractor/subcontractor.component';
+import { ScheduleComponent } from './components/schedule/schedule.component';
 
 const routes: Routes = [
   {
@@ -26,6 +28,14 @@ const routes: Routes = [
   {
     path: 'inventory',
     component: InventoryViewerComponent
+  },
+  {
+    path: 'subcontractor',
+    component: SubcontractorComponent
+  },
+  {
+    path: 'schedule',
+    component: ScheduleComponent
   },
 ];
 
