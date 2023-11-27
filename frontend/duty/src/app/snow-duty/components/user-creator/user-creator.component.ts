@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { User } from 'src/app/models/user';
 import { UserService } from '../../services/user.service';
+
+interface Role {
+  name: string;
+  code: number
+}
 
 @Component({
   selector: 'app-user-creator',
@@ -13,6 +18,7 @@ export class UserCreatorComponent implements OnInit {
   user: User = new User()
   mobile: boolean = false
   userForm: FormGroup
+  roles: Role[] | undefined
 
   constructor(
     private userService: UserService,
@@ -24,7 +30,7 @@ export class UserCreatorComponent implements OnInit {
       full_name: [''],
       email: [''],
       role: [''],
-      active: ['']
+      active: true
     })
   }
 
@@ -32,6 +38,21 @@ export class UserCreatorComponent implements OnInit {
     if (window.screen.width < 420) { // 768px portrait
       this.mobile = true;
     };
+
+    this.roles = [
+      {
+        name: "Admin",
+        code: 0
+      },
+      {
+        name: "Vezető",
+        code: 1
+      },
+      {
+        name: "Alkalmazott",
+        code: 2
+      }
+    ]
   }
 
   userDataBuilder() {

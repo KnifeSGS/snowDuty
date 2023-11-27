@@ -47,6 +47,7 @@ import { InventoryViewerComponent } from './components/inventory-viewer/inventor
 import { InventoryEditorComponent } from './components/inventory-editor/inventory-editor.component';
 import { SubcontractorComponent } from './components/subcontractor/subcontractor.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 
 @NgModule({

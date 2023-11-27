@@ -5,6 +5,9 @@ import { ChartModule } from 'primeng/chart';
 import { CardComponent } from './components/card/card.component';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 
@@ -17,14 +20,20 @@ import { ButtonModule } from 'primeng/button';
     CommonModule,
     ChartModule,
     CardModule,
-    ButtonModule
+    ButtonModule,
+    ToggleButtonModule,
+    InputSwitchModule,
+    DropdownModule,
   ],
   exports: [
     ChartModule,
     ChartComponent,
     CardComponent,
     CardModule,
-    ButtonModule
+    ButtonModule,
+    ToggleButtonModule,
+    InputSwitchModule,
+    DropdownModule,
   ]
 })
 export class SharedModule { }

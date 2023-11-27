@@ -137,7 +137,7 @@ export class ShiftViewerComponent implements OnInit {
       // field = field
       this.shiftService.getSumOfShiftsField({ field, journalId }).subscribe(sum => {
         this.sums[field] = sum[0].total
-        console.log(this.sums);
+        // console.log(this.sums);
       });
 
     });
