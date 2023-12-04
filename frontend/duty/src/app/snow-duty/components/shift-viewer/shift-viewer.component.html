@@ -34,7 +34,7 @@
         </th>
         <th style="min-width:3rem">km
         </th>
-        <th style="min-width:3rem">munkaóra
+        <th style="min-width:3rem">üzemóra
         </th>
         <th style="min-width:5rem">Elrendelt szórási mennyiség
         </th>
@@ -47,10 +47,10 @@
         <td>{{shift.onDuty.full_name}}</td>
         <td>
           <span *ngIf="shift.daytime">
-            Nappali
+            06:00-18:00
           </span>
           <span *ngIf="!shift.daytime">
-            Esti
+            18:00-06:00
           </span>
         </td>
         <td>{{shift.machine}}</td>

@@ -276,7 +276,7 @@ export class PdfCreatorComponent {
               ],
               ...shifts.map((shifts: any) => [
                 shifts.onDuty.full_name,
-                shifts.daytime ? 'nappali' : 'esti',
+                shifts.daytime ? '06:00-18:00' : '18:00-06:00',
                 shifts.machine,
                 shifts.salt,
                 shifts.basalt,

@@ -23,11 +23,11 @@ export class ShiftCreatorComponent implements OnInit {
 
   daytimeOptions: { label: string, value: boolean }[] = [
     {
-      label: 'Nappali',
+      label: '06:00-18:00',
       value: true
     },
     {
-      label: 'Éjszakai',
+      label: '18:00-06:00',
       value: false
     }
   ];
