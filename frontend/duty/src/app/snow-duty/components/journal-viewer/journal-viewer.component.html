@@ -52,7 +52,7 @@
             <span>
               <i class="pi pi-search m-3"></i>
               <input pInputText type="text"
-                (input)="dt.filterGlobal($event.target, 'contains')"
+                (input)="dt.filterGlobal($any($event.target).value, 'contains')"
                 [placeholder]="Search" />
 
             </span>

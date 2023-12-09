@@ -48,6 +48,8 @@ import { InventoryEditorComponent } from './components/inventory-editor/inventor
 import { SubcontractorComponent } from './components/subcontractor/subcontractor.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { UserViewerComponent } from './components/user-viewer/user-viewer.component';
+import { SubcontractsComponent } from './components/subcontracts/subcontracts.component';
 
 
 @NgModule({
@@ -64,6 +66,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     InventoryEditorComponent,
     SubcontractorComponent,
     ScheduleComponent,
+    UserViewerComponent,
+    SubcontractsComponent,
     // ChartComponent
   ],
   imports: [

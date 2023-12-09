@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 
@@ -24,6 +25,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ToggleButtonModule,
     InputSwitchModule,
     DropdownModule,
+    InputTextModule
   ],
   exports: [
     ChartModule,
@@ -34,6 +36,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ToggleButtonModule,
     InputSwitchModule,
     DropdownModule,
+    InputTextModule
   ]
 })
 export class SharedModule { }

@@ -7,6 +7,8 @@ import { SnowDutyComponent } from './snow-duty.component';
 import { InventoryViewerComponent } from './components/inventory-viewer/inventory-viewer.component';
 import { SubcontractorComponent } from './components/subcontractor/subcontractor.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
+import { UserViewerComponent } from './components/user-viewer/user-viewer.component';
+import { SubcontractsComponent } from './components/subcontracts/subcontracts.component';
 
 const routes: Routes = [
   {
@@ -36,6 +38,14 @@ const routes: Routes = [
   {
     path: 'schedule',
     component: ScheduleComponent
+  },
+  {
+    path: 'users',
+    component: UserViewerComponent
+  },
+  {
+    path: 'subs',
+    component: SubcontractsComponent
   },
 ];
 

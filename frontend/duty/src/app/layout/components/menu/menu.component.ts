@@ -42,9 +42,25 @@ export class MenuComponent implements OnInit {
             routerLink: ['/shift']
           },
           {
-            label: 'Raktárkészlet',
-            icon: 'pi pi-fw pi-inbox',
-            routerLink: ['/inventory']
+            label: 'Alvállalkozói munkák',
+            icon: 'pi pi-fw pi-users',
+            routerLink: ['/subs']
+          },
+          {
+            label: 'Beosztás',
+            icon: 'pi pi-fw pi-calendar',
+            routerLink: ['/schedule']
+          },
+        ]
+      },
+      {
+        label: 'Karbantartás',
+        items: [
+
+          {
+            label: 'Felhasználók',
+            icon: 'pi pi-fw pi-user',
+            routerLink: ['/users']
           },
           {
             label: 'Alvállalkozók',
@@ -52,9 +68,14 @@ export class MenuComponent implements OnInit {
             routerLink: ['/subcontractor']
           },
           {
-            label: 'Beosztás',
-            icon: 'pi pi-fw pi-calendar',
-            routerLink: ['/schedule']
+            label: 'Raktárkészlet',
+            icon: 'pi pi-fw pi-inbox',
+            routerLink: ['/inventory']
+          },
+          {
+            label: 'Eszközök',
+            icon: 'pi pi-fw pi-car',
+            routerLink: ['/inventory']
           },
         ]
       },
