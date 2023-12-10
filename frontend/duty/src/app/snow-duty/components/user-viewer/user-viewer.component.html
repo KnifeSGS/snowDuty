@@ -18,7 +18,7 @@
 
   <div class="asyncDiv" *ngIf="users$ | async as usersArr">
     <p-table #dt1 [value]="usersArr" [rows]="10" [paginator]="true"
-      [globalFilterFields]="['full_name', 'role']"
+      [globalFilterFields]="['full_name', 'email', 'role']"
       [tableStyle]="{'min-width': '70rem'}" [(selection)]="selectedUsers"
       [rowHover]="true" dataKey="_id"
       currentPageReportTemplate="{last} felhasználó látszik a {totalRecords} közül"
@@ -63,10 +63,13 @@
               </ng-template>
             </p-columnFilter>
           </th>
+          <th pSortableColumn="email" style="min-width:10rem">E-mail
+            <p-sortIcon field="email"></p-sortIcon>
+          </th>
           <th pSortableColumn="role" style="min-width:10rem">Szerepkör
             <p-sortIcon field="role"></p-sortIcon>
           </th>
-          <th style="width: 9rem"></th>
+          <!-- <th style="width: 9rem"></th> -->
           <th style="width: 9rem"></th>
         </tr>
       </ng-template>
@@ -76,6 +79,8 @@
             <p-tableCheckbox [value]="user"></p-tableCheckbox>
           </td>
           <td>{{user.full_name}}</td>
+          <td>
+            {{user.email}}</td>
           <td>
             {{user.role}}</td>
           <td>

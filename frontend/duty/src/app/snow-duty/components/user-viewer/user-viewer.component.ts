@@ -61,9 +61,7 @@ export class UserViewerComponent {
     };
     this.ref.detectChanges();
 
-    this.users$.subscribe(
-      users => console.log(users)
-    )
+    console.log(this.mobile);
   }
 
   openDialog(event: any) {

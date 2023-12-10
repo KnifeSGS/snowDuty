@@ -119,12 +119,18 @@
         </tr>
         <tr *ngIf="canAddCheck" formGroupName="checks">
           <td> <span class="">
-              <input pInputText id="checking" type="text"
-                formControlName="checking" />
+              <!-- <input pInputText id="checking" type="text"
+                formControlName="checking" /> -->
+              <p-calendar id="checking" formControlName="checking"
+                appendTo="body" [timeOnly]="true" [showTime]="true"
+                [showButtonBar]="true">
+              </p-calendar>
             </span></td>
           <td><span class="">
-              <input pInputText id="temperature"
-                formControlName="temperature" />
+              <!-- <input pInputText id="temperature"
+                formControlName="temperature" /> -->
+              <p-inputNumber id="temperature" formControlName="temperature"
+                [minFractionDigits]="2" suffix="℃"></p-inputNumber>
             </span></td>
           <td><span class="">
               <input pInputText id="percipitation"
