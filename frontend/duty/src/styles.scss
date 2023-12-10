@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+.p-datatable .p-sortable-column.p-highlight,
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background-color: #0f766d10 !important;
+}
 
 $gutter: 1rem; //for primeflex grid system
 @import "assets/layout/styles/layout/layout.scss";
