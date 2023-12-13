@@ -1,12 +1,18 @@
 <div class="col-12" *ngIf="shifts$ | async as shifts">
-  <p-table #dt [value]="shifts" [rows]="10" [paginator]="true"
+  <p-table #dt2 [value]="shifts" [rows]="10" [paginator]="true"
     [tableStyle]="{'min-width': '60rem'}" [rowHover]="true" dataKey="_id"
-    sortField="date" [sortOrder]="defaultSortOrder">
+    sortField="date" [sortOrder]="defaultSortOrder"
+    [globalFilterFields]="['onDuty.full_name']">
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
         <h5 class="m-0">Ügyelet:</h5>
-        <button (click)="addShift()" pButton pRipple icon="pi pi-plus"
-          class="p-button-rounded p-button-success"></button>
+        <span>
+          <input pInputText class="mr-3" type="text"
+            (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
+            [placeholder]="Search" />
+          <button (click)="addShift()" pButton pRipple icon="pi pi-plus"
+            class="p-button-rounded p-button-success"></button>
+        </span>
       </div>
     </ng-template>
     <ng-template pTemplate="header">

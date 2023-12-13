@@ -17,6 +17,14 @@ import { ShiftCreatorComponent } from '../shift-creator/shift-creator.component'
 })
 export class ShiftViewerComponent implements OnInit {
 
+  // feliratok
+  Delete: string = "Törlés";
+  NewJournal: string = "Új napló";
+  NewWorker: string = "Új dolgozó";
+  Import: string = "Feltöltés";
+  Export: string = "Letöltés";
+  Search: string = "Keresés . . .";
+
   @ViewChild(ShiftCreatorComponent)
   child!: ShiftCreatorComponent;
 
