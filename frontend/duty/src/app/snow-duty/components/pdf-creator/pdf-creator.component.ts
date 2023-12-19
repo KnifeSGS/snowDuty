@@ -108,7 +108,7 @@ export class PdfCreatorComponent {
 
   async generatePDF(journal: any, shifts: any) {
     const journalDate = new Date(journal.date).toLocaleDateString();
-    let docDefinition = {
+    const docDefinition = {
       header:
         [
           {
@@ -121,6 +121,45 @@ export class PdfCreatorComponent {
 
           },
         ],
+
+      footer: function (currentPage: number, pageCount: number) {
+        // return { text: "Page " + currentPage.toString() + ' of ' + pageCount }
+        return {
+          layout: 'noBorders',
+          style: 'footer',
+          table: {
+            headerRows: 1,
+            widths: ['*', 'auto'],
+            alignment: 'center',
+            height: 50,
+            body: [
+              [
+                {
+                  text: 'Mikortól hatályos: 2021. November 23.',
+                  alignment: 'left',
+                  bold: true,
+                  italic: true
+                }, {
+                  text: 'Oldalszám: ' + currentPage.toString() + '/' + pageCount,
+                  alignment: 'right',
+                  bold: true,
+                  italic: true
+                },],
+              [{
+                text: '',
+                alignment: 'left',
+                bold: true,
+                italic: true
+              }, {
+                text: '',
+                alignment: 'left',
+                bold: true,
+                italic: true
+              }]
+            ]
+          }
+        }
+      },
 
       content: [
         {
@@ -333,28 +372,29 @@ export class PdfCreatorComponent {
                 },]
             ]
           }
-        }, {
-          marginTop: 20,
-          layout: 'noBorders',
-          table: {
-            headerRows: 1,
-            widths: ['*', 'auto'],
-            body: [
-              [
-                {
-                  text: 'Mikortól hatályos: 2021. November 23.',
-                  alignment: 'left',
-                  bold: true,
-                  italic: true
-                }, {
-                  text: 'Oldalszám: 1/1',
-                  alignment: 'right',
-                  bold: true,
-                  italic: true
-                },]
-            ]
-          }
         },
+        // {
+        //   marginTop: 20,
+        //   layout: 'noBorders',
+        //   table: {
+        //     headerRows: 1,
+        //     widths: ['*', 'auto'],
+        //     body: [
+        //       [
+        //         {
+        //           text: 'Mikortól hatályos: 2021. November 23.',
+        //           alignment: 'left',
+        //           bold: true,
+        //           italic: true
+        //         }, {
+        //           text: 'Oldalszám: 1/1',
+        //           alignment: 'right',
+        //           bold: true,
+        //           italic: true
+        //         },]
+        //     ]
+        //   }
+        // },
 
       ],
 
@@ -374,6 +414,11 @@ export class PdfCreatorComponent {
           bold: true,
           fontSize: 6
         },
+        footer: {
+          marginLeft: 40,
+          marginRight: 40,
+          marginBottom: 20,
+        }
       }
     };
 
