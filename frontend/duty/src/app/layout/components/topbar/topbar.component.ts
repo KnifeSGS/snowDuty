@@ -1,5 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { BehaviorSubject } from 'rxjs';
+import { AuthService } from 'src/app/login/services/auth.service';
+import { User } from 'src/app/models/user';
 import { LayoutService } from '../../services/layout.service';
 
 @Component({
@@ -9,6 +12,8 @@ import { LayoutService } from '../../services/layout.service';
 })
 export class TopbarComponent {
 
+  user$: BehaviorSubject<User | null> = this.auth.currentUserSubject$;
+
   items!: MenuItem[];
 
   @ViewChild('menubutton') menuButton!: ElementRef;
@@ -17,5 +22,16 @@ export class TopbarComponent {
 
   @ViewChild('topbarmenu') menu!: ElementRef;
 
-  constructor(public layoutService: LayoutService) { }
+  constructor(
+    public layoutService: LayoutService,
+    private auth: AuthService
+  ) {
+    this.user$.subscribe(
+      resp => console.log(resp)
+    );
+  }
+
+  onLogout(): void {
+    this.auth.logout()
+  }
 }

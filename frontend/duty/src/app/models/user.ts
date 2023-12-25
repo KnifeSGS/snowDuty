@@ -12,5 +12,6 @@ export class User {
   token?: string = "";
   password?: string = "";
   journals?: Journal[] = [];
-  shifts?: Shift[] = []
+  shifts?: Shift[] = [];
+  id_username?: string = '';
 }
