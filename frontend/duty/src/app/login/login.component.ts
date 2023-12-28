@@ -31,7 +31,7 @@ export class LoginComponent {
     private loginUserService: LoginUserService
   ) {
     this.loginForm = this.fb.group({
-      id_username: ['', Validators.required],
+      username: ['', Validators.required],
       password: ['', Validators.required]
     });
 
@@ -62,7 +62,10 @@ export class LoginComponent {
     // )
     this.auth.login(this.loginForm.value).subscribe(
       userResponse => {
-        if (this.auth.currentUserValue) {
+        // if (this.auth.currentUserValue) {
+        //   this.router.navigate(['/']);
+        // }
+        if (userResponse) {
           this.router.navigate(['/']);
         }
       }

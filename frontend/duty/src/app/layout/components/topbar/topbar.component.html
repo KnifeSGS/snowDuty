@@ -23,6 +23,9 @@
       <i class="pi pi-calendar"></i>
       <span>Calendar</span>
     </button> -->
+    <div class="userName" *ngIf="user$ | async as user">Heló
+      {{user.user}}
+    </div>
     <button class="p-link layout-topbar-button">
       <i class="pi pi-user"></i>
       <span>Profile</span>

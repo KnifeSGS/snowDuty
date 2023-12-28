@@ -19,7 +19,7 @@ const routes: Routes = [
       },
 
     ],
-    // canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService]
     // loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule)
   }
 ];

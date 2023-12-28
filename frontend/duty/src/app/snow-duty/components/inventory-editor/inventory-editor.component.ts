@@ -1,4 +1,5 @@
-import { Component, Input, NgIterable, OnInit, signal, Signal } from '@angular/core';
+import { signal } from '@angular/core';
+import { Component, Input, NgIterable, OnInit, } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Inventory } from '../../models/inventory';
 // import { BehaviorSubject, of, ReplaySubject } from 'xjs';

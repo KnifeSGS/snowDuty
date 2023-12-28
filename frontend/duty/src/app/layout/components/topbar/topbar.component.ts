@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'src/app/login/services/auth.service';
@@ -14,6 +14,8 @@ export class TopbarComponent {
 
   user$: BehaviorSubject<User | null> = this.auth.currentUserSubject$;
 
+  user = signal(null)
+
   items!: MenuItem[];
 
   @ViewChild('menubutton') menuButton!: ElementRef;
@@ -27,7 +29,12 @@ export class TopbarComponent {
     private auth: AuthService
   ) {
     this.user$.subscribe(
-      resp => console.log(resp)
+      resp => {
+        // if (this.user$ !== null) {
+        //   this.user.set(resp)
+        // }
+        console.log(resp);
+      }
     );
   }
 

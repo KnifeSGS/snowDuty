@@ -10,8 +10,10 @@ export class User {
   role: number = 0;
   active: boolean = true;
   token?: string = "";
+  access?: string = "";
+  refresh?: string = "";
   password?: string = "";
   journals?: Journal[] = [];
   shifts?: Shift[] = [];
-  id_username?: string = '';
+  user?: string = '';
 }

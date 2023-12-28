@@ -8,11 +8,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
+import { RouterModule } from '@angular/router';
+import { ErrorComponent } from './components/error/error.component';
+import { DeniedComponent } from './components/denied/denied.component';
 
 
 @NgModule({
   declarations: [
-    LoginComponent
+    LoginComponent,
+    ErrorComponent,
+    DeniedComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +27,8 @@ import { InputTextModule } from 'primeng/inputtext';
     InputTextModule,
     FormsModule,
     PasswordModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule,
   ]
 })
 export class LoginModule { }

@@ -18,8 +18,8 @@ import { JwtInterceptorService } from './login/services/jwt-interceptor.service'
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    LayoutModule,
     LoginModule,
+    LayoutModule,
     HttpClientModule
   ],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy },
