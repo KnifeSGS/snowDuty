@@ -9,6 +9,7 @@ import { SubcontractorComponent } from './components/subcontractor/subcontractor
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { UserViewerComponent } from './components/user-viewer/user-viewer.component';
 import { SubcontractsComponent } from './components/subcontracts/subcontracts.component';
+import { UserEditorComponent } from './components/user-editor/user-editor.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
   {
     path: 'users',
     component: UserViewerComponent
+  },
+  {
+    path: 'users/:id',
+    component: UserEditorComponent
   },
   {
     path: 'subs',

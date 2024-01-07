@@ -86,7 +86,7 @@ export class AuthService {
           this.currentUserSubject$.next(this.fakeUser)
           console.log(this.currentUserSubject$);
           // localStorage['currentUser'] = JSON.stringify(response.user);
-          localStorage['currentUser'] = JSON.stringify(response);
+          localStorage['currentUser'] = JSON.stringify(this.fakeUser);
           // return this.loginUserService.query(`email=${loginData.id_username}`)
           return response;
         }

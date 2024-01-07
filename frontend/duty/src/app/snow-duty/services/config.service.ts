@@ -17,7 +17,8 @@ export interface ITableColumn {
 })
 export class ConfigService {
 
-  public readonly apiUrl: string = 'http://127.0.0.1:3000/';
+  // public readonly apiUrl: string = 'http://127.0.0.1:3000/';
+  public readonly apiUrl: string = 'http://temeto.vkszrt.local:8101/core/';
 
   userColumns: ITableColumn[] = [
     { key: "_id", title: "#" },

@@ -3,12 +3,15 @@ import { Shift } from "../snow-duty/models/shift";
 
 export class User {
   _id?: string = '';
+  id?: string = '';
   first_name: string = "";
   last_name: string = "";
-  full_name: string = "";
+  full_name?: string = "";
   email: string = "";
-  role: number = 0;
-  active: boolean = true;
+  role?: number = 0;
+  active?: boolean = true;
+  is_active?: boolean = true;
+  is_staff?: boolean = true;
   token?: string = "";
   access?: string = "";
   refresh?: string = "";
@@ -16,4 +19,17 @@ export class User {
   journals?: Journal[] = [];
   shifts?: Shift[] = [];
   user?: string = '';
+  username?: string = '';
+  groups?: UserGroups[];
+  user_permissions?: UserPermissions[];
+}
+
+export class UserGroups {
+  id?: number;
+  name?: string;
+}
+
+export class UserPermissions {
+  id?: number;
+  name?: string;
 }

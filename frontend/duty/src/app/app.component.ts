@@ -92,5 +92,11 @@ export class AppComponent {
       theme: 'lara-light-teal',         //default component theme for PrimeNG
       scale: 14                           //size of the body font size to scale the whole application
     };
+    this.primengConfig.zIndex = {
+      modal: 1100,    // dialog, sidebar
+      overlay: 1000,  // dropdown, overlaypanel
+      menu: 1000,     // overlay menus
+      tooltip: 1100   // tooltip
+    };
   }
 }

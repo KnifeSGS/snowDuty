@@ -1,5 +1,17 @@
 <p-toast></p-toast>
 
+<!-- <pre>{{journals$ | async | json}}</pre>
+<pre>{{users$ | async | json}}</pre> -->
+
+<div class="signalized" *ngIf="journalsSignal()">
+  {{thisMonthFirstDay | date:'YYYY.MM.dd. hh:mm:ss'}}
+  <div *ngFor="let journal of journalsSignal()">
+    <div class="div">{{journal.person_on_duty}}</div>
+  </div>
+  {{journalCount()}}
+</div>
+<!-- <div class="jr" *ngIf="journalRes()">{{journalRes().count}}</div> -->
+
 <div class="card">
   <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
@@ -24,11 +36,11 @@
     </ng-template>
   </p-toolbar>
 
-  <div class="asyncDiv" *ngIf="journals$ | async as journalsArr">
-    <p-table #dt [value]="journalsArr" [rows]="10" [paginator]="true"
-      [globalFilterFields]="['date', 'worker.full_name', 'comment']"
+  <div class="asyncDiv" *ngIf="journalsSignal()">
+    <p-table #dt [value]="journalsSignal()" [rows]="10" [paginator]="true"
+      [globalFilterFields]="['date_start', 'person_on_duty', 'comment']"
       [tableStyle]="{'min-width': '70rem'}" [(selection)]="selectedJournals"
-      [rowHover]="true" dataKey="_id"
+      [rowHover]="true" dataKey="id"
       currentPageReportTemplate="{last} bejegyzés látszik a {totalRecords} közül"
       [showCurrentPageReport]="true" sortField="date"
       [sortOrder]="defaultSortOrder">
@@ -97,26 +109,27 @@
           <td>
             <p-tableCheckbox [value]="journal"></p-tableCheckbox>
           </td>
-          <td>{{journal.date}}</td>
-          <td>{{journal.worker.full_name}}</td>
-          <td *ngIf="journal.comment.length > 1">
+          <td>{{journal.date_start | date:'YYYY.MM.dd. hh:mm:ss'}}</td>
+          <td>{{journal.person_on_duty}}</td>
+          <!-- <td *ngIf="journal.comment.length > 1">
             {{journal.comment[journal.comment.length - 1][0]}}:
             {{journal.comment[journal.comment.length - 1][1]}}</td>
-          <td>
-          <td *ngIf="journal.comment.length <= 1"></td>
+          <td> -->
+          <!-- <td *ngIf="journal.comment.length <= 1"></td> -->
           <td>
             <button pButton pRipple icon="pi pi-pencil"
               class="p-button-rounded p-button-success mr-2"
-              [routerLink]="['/viewer', journal._id]"></button>
+              [routerLink]="['/viewer', journal.id]"></button>
             <button pButton pRipple icon="pi pi-trash"
               class="p-button-rounded p-button-warning"
-              (click)="deleteJournal(journal._id, journal.date)"></button>
+              (click)="deleteJournal(journal.id, journal.date)"></button>
           </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="summary">
         <div class="flex align-items-center justify-content-between">
-          Összesen {{journalsArr ? journalsArr.length : 0 }}db napló lett
+          Összesen {{journalCount()}}db
+          napló lett
           rögzítve.
         </div>
       </ng-template>

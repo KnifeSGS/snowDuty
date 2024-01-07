@@ -80,7 +80,11 @@ export class ShiftViewerComponent implements OnInit {
     this.shiftService.getAll$();
     this.userService.getAll$();
     this.users$.subscribe(users => users.forEach(user => {
-      this.userNames.push(user.full_name)
+      if (user.full_name) {
+        this.userNames.push(user.full_name)
+      } else {
+        this.userNames.push(user.email)
+      }
     }))
 
     if (window.screen.width < 420) { // 768px portrait

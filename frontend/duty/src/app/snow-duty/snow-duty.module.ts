@@ -30,6 +30,7 @@ import { RatingModule } from 'primeng/rating';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ChartModule } from 'primeng/chart';
+import { ChipModule } from 'primeng/chip';
 
 import { SnowDutyRoutingModule } from './snow-duty-routing.module';
 import { SnowDutyComponent } from './snow-duty.component';
@@ -50,6 +51,7 @@ import { ScheduleComponent } from './components/schedule/schedule.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { UserViewerComponent } from './components/user-viewer/user-viewer.component';
 import { SubcontractsComponent } from './components/subcontracts/subcontracts.component';
+import { UserEditorComponent } from './components/user-editor/user-editor.component';
 
 
 @NgModule({
@@ -68,6 +70,7 @@ import { SubcontractsComponent } from './components/subcontracts/subcontracts.co
     ScheduleComponent,
     UserViewerComponent,
     SubcontractsComponent,
+    UserEditorComponent
     // ChartComponent
   ],
   imports: [
@@ -100,6 +103,7 @@ import { SubcontractsComponent } from './components/subcontracts/subcontracts.co
     RadioButtonModule,
     SelectButtonModule,
     SharedModule,
+    ChipModule,
   ],
   providers: [MessageService, ConfirmationService]
 })

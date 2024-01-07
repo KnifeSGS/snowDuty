@@ -6,12 +6,12 @@
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
         <h5 class="m-0">Ügyelet:</h5>
-        <span>
+        <span class="flex flex-row">
           <input pInputText class="mr-3" type="text"
             (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
             [placeholder]="Search" />
           <button (click)="addShift()" pButton pRipple icon="pi pi-plus"
-            class="p-button-rounded p-button-success"></button>
+            class="p-button-rounded p-button-success flex-shrink-0"></button>
         </span>
       </div>
     </ng-template>

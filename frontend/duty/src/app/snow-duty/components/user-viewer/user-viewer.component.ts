@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, signal, Signal, ViewChild, WritableSignal } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { BehaviorSubject } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { UserService } from '../../services/user.service';
 import { UserCreatorComponent } from '../user-creator/user-creator.component';
+import { UserEditorComponent } from '../user-editor/user-editor.component';
 
 @Component({
   selector: 'app-user-viewer',
@@ -17,6 +18,9 @@ export class UserViewerComponent {
 
   @ViewChild(UserCreatorComponent)
   childUser!: UserCreatorComponent;
+
+  @ViewChild(UserEditorComponent)
+  editChildUser!: UserEditorComponent;
 
   // feliratok
   Delete: string = "Törlés";
@@ -43,31 +47,66 @@ export class UserViewerComponent {
   mobile: boolean = false
   selectedUsers!: User[];
 
+  userSignal: WritableSignal<User[]> = signal([]);
+  // user: WritableSignal<User | null> = signal(null);
+  user!: User;
+
   constructor(
     private userService: UserService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private ref: ChangeDetectorRef,
-  ) { }
+  ) {
+    this.getUsers()
+  }
 
   ngOnInit() {
-    this.userService.getAll$();
-    this.users$.subscribe(users => users.forEach(user => {
-      this.userNames.push(user.full_name)
-    }))
+    // this.userService.getAll$();
+    // this.users$.subscribe(users => users.forEach(user => {
+    //   if (user.full_name) {
+    //     this.userNames.push(user.full_name)
+    //   } else {
+    //     this.userNames.push(user.email)
+    //   }
+    // }))
 
     if (window.screen.width < 420) { // 768px portrait
       this.mobile = true;
     };
     this.ref.detectChanges();
+  }
 
-    console.log(this.mobile);
+  async getUsers() {
+    const users: User[] = await this.userService.fetchForSignal(`?page_size=1000`);
+    console.log(users);
+    // journals.forEach((journal: any) => {
+    //   const journalKey =
+    // })
+    users.forEach(user => {
+      const full_name = `${user.last_name} ${user.first_name} ${user.email}`
+      this.userNames.push(full_name)
+    })
+    this.userSignal.set(users)
+  }
+
+  async getOneUser(id: number) {
+    const user: User = await this.userService.fetchForSignal(`${id}`);
+    // this.user.set(user)
   }
 
   openDialog(event: any) {
     this.openedDialogName = event.target.parentElement.id
     this.submitted = false;
     this.dialogs[event.target.parentElement.id] = true;
+  }
+  openEditDialog(event: any, user: User) {
+    console.log(event);
+    console.log(user);
+    this.user = user
+    this.openedDialogName = event.target.parentElement.id
+    this.submitted = false;
+    this.dialogs[event.target.parentElement.id] = true;
+    this.editChildUser.userFormBuilder(user)
   }
 
   hideDialog() {
@@ -81,9 +120,16 @@ export class UserViewerComponent {
     this.dialogs[this.openedDialogName] = false;
   }
 
-  deleteUser(userId: string, userName: string) {
+  editUser() {
+    this.editChildUser.buildForm();
+    // this.userService.getAll$();
+    this.getUsers()
+    this.dialogs[this.openedDialogName] = false;
+  }
+
+  deleteUser(userId: string, userLastName: string, userFirstName: string) {
     this.confirmationService.confirm({
-      message: 'Biztosan törlöd a ' + userName + 'nevű felhasználót?',
+      message: 'Biztosan törlöd a ' + userLastName + ' ' + userFirstName + 'nevű felhasználót?',
       header: 'Megerősítés',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
@@ -94,7 +140,7 @@ export class UserViewerComponent {
             }
           )
         }
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Napló törölve', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Felhasználó törölve', life: 3000 });
       }
     });
   }

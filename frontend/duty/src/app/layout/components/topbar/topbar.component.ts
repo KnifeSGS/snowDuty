@@ -33,7 +33,7 @@ export class TopbarComponent {
         // if (this.user$ !== null) {
         //   this.user.set(resp)
         // }
-        console.log(resp);
+        // console.log(resp);
       }
     );
   }

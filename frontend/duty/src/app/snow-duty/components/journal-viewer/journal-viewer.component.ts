@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, OnInit, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { User } from 'src/app/models/user';
-import { Journal } from '../../models/journal';
+import { Journal, JournalResponse } from '../../models/journal';
 import { JournalService } from '../../services/journal.service';
 import { UserService } from '../../services/user.service';
 import { JournalCreatorComponent } from '../journal-creator/journal-creator.component';
@@ -33,7 +33,7 @@ export class JournalViewerComponent implements OnInit {
   Search: string = "Keresés . . .";
 
   paginatorTemplate = "";
-
+  pageSize = 40;
   defaultSortOrder: number = -1
 
 
@@ -43,9 +43,13 @@ export class JournalViewerComponent implements OnInit {
     userDialog: false
   }
 
-  journals$: BehaviorSubject<Journal[]> = this.journalService.journals$;
+  // journals$: BehaviorSubject<Journal[]> = this.journalService.journals$;
+  journals$: ReplaySubject<JournalResponse> = this.journalService.journals$;
   users$: BehaviorSubject<User[]> = this.userService.list$;
   userNames: string[] = [];
+
+  journalsSignal: WritableSignal<Journal[]> = signal([]);
+  journalCount: WritableSignal<number | null> = signal(null)
 
   interval: Date[] = [];
   thisMonthFirstDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString()
@@ -75,19 +79,32 @@ export class JournalViewerComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private ref: ChangeDetectorRef,
-  ) { }
+  ) {
+    this.getJournals()
+  }
 
   ngOnInit() {
-    this.journalService.getSelectedInterval(this.params);
+    // this.journalService.getSelectedInterval(this.params);
+    this.journalService.getAllJournal({ page_size: this.pageSize });
     this.userService.getAll$();
-    this.users$.subscribe(users => users.forEach(user => {
-      this.userNames.push(user.full_name)
-    }))
+    // this.users$.subscribe(users => users.forEach(user => {
+    //   this.userNames.push(user.full_name)
+    // }))
 
     if (window.screen.width < 420) { // 768px portrait
       this.mobile = true;
     };
     this.ref.detectChanges();
+  }
+
+  async getJournals() {
+    const journals: JournalResponse = await this.journalService.fetchForSignal(`?page_size=${this.pageSize}`);
+    console.log(journals);
+    // journals.forEach((journal: any) => {
+    //   const journalKey =
+    // })
+    this.journalCount.set(journals.count)
+    this.journalsSignal.set(journals.results)
   }
 
   openDialog(event: any) {

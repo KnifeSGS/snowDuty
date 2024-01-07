@@ -20,16 +20,12 @@
     </span>
   </div>
   <div class="p-field field col-12">
-    <!-- <span class="p-float-label">
-      <input pInputText id="role" type="text" formControlName="role" />
-      <label for="role">Beosztás</label>
-    </span> -->
-    <p-dropdown formControlName="role" id="role" optionLabel="name"
-      placeholder="Beosztás" [options]="roles"></p-dropdown>
+    <p-multiSelect formControlName="groups" id="groups" optionLabel="name"
+      placeholder="Beosztás" [options]="groups" display="chip"></p-multiSelect>
   </div>
   <div class="p-field field col-12">
     <span class="p-float-label flex justify-content-center">
-      <p-inputSwitch id="active" formControlName="active">
+      <p-inputSwitch id="is_active" formControlName="is_active">
       </p-inputSwitch>
       <label for="active">Aktív</label>
     </span>

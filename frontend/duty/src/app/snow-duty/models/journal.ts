@@ -12,9 +12,22 @@ export class Monitoring {
 
 export class Journal {
   _id?: string = '';
-  worker: User = new User();
+  id?: number;
+  worker?: User = new User();
+  person_on_duty?: number;
   date: Date = new Date();
   checks?: Monitoring[] | [] = [];
   shifts?: Shift[] = [new Shift()];
-  comment?: [string[]] = [['']]
+  comment?: [string[]] = [['']];
+  version?: number;
+  results?: [];
+}
+
+export class JournalResponse {
+  next: string | null = null;
+  previous: string | null = null;
+  count: number = 0;
+  total_pages: number = 1;
+  actual_page: number = 1;
+  results: Journal[] = []
 }
