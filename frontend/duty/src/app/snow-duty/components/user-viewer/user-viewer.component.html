@@ -18,7 +18,7 @@
 
   <div class="asyncDiv" *ngIf="userSignal()">
     <p-table #dt1 [value]="userSignal()" [rows]="10" [paginator]="true"
-      [globalFilterFields]="['first_name', 'last_name', 'email', 'role']"
+      [globalFilterFields]="['first_name', 'last_name', 'email', 'groups', 'user_permissions']"
       [tableStyle]="{'min-width': '70rem'}" [(selection)]="selectedUsers"
       [rowHover]="true" dataKey="id"
       currentPageReportTemplate="{last} felhasználó látszik a {totalRecords} közül"

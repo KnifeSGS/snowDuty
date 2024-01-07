@@ -24,12 +24,32 @@
       placeholder="Beosztás" [options]="groups" display="chip"></p-multiSelect>
   </div>
   <div class="p-field field col-12">
+    <p-multiSelect formControlName="user_permissions" id="user_permissions"
+      optionLabel="name" placeholder="Hozzáférés" [options]="permissions"
+      display="chip"></p-multiSelect>
+  </div>
+  <div class="p-field field col-12">
     <span class="p-float-label flex justify-content-center">
       <p-inputSwitch id="is_active" formControlName="is_active">
       </p-inputSwitch>
-      <label for="active">Aktív</label>
+      <label for="is_active">Aktív</label>
     </span>
 
+  </div>
+  <div class="p-field field col-12">
+    <span class="p-float-label flex justify-content-center">
+      <p-inputSwitch id="is_staff" formControlName="is_staff">
+      </p-inputSwitch>
+      <label for="is_staff">Beléphet</label>
+    </span>
+
+  </div>
+
+  <div class="p-field field col-12" *ngIf="userForm.value.is_staff">
+    <span class="p-float-label">
+      <input pInputText id="username" type="text" formControlName="username" />
+      <label for="username">felhasználónév</label>
+    </span>
   </div>
   <div class="field col-12">
 
