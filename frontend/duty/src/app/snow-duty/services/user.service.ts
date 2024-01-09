@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { BaseService } from './base.service';
 import { ConfigService } from './config.service';
@@ -15,5 +16,12 @@ export class UserService extends BaseService<User> {
   ) {
     super(config, http);
     this.entity = 'profile';
+  }
+
+  override create(entity: User): Observable<User> {
+    return this.http.post<User>(
+      `${this.config.apiUrl}register/`,
+      entity
+    );
   }
 }

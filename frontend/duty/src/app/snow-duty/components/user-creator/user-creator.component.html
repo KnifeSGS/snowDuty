@@ -1,16 +1,16 @@
 <div class="" [formGroup]="userForm" [style]="{width: '400px', height: 'auto'}">
   <div class="p-field field col-12">
     <span class="p-float-label mt-3">
-      <input pInputText id="first_name" type="text"
-        formControlName="first_name" />
-      <label for="first_name">Keresztnév</label>
+      <input pInputText id="last_name" type="text"
+        formControlName="last_name" />
+      <label for="last_name">Vezetéknév</label>
     </span>
   </div>
   <div class="p-field field col-12">
     <span class="p-float-label">
-      <input pInputText id="last_name" type="text"
-        formControlName="last_name" />
-      <label for="last_name">Vezetéknév</label>
+      <input pInputText id="first_name" type="text"
+        formControlName="first_name" />
+      <label for="first_name">Keresztnév</label>
     </span>
   </div>
   <div class="p-field field col-12">
@@ -19,21 +19,50 @@
       <label for="email">e-mail cím</label>
     </span>
   </div>
-  <div class="p-field field col-12">
-    <!-- <span class="p-float-label">
-      <input pInputText id="role" type="text" formControlName="role" />
-      <label for="role">Beosztás</label>
-    </span> -->
+  <!-- <div class="p-field field col-12">
     <p-dropdown formControlName="role" id="role" optionLabel="name"
       placeholder="Beosztás" [options]="roles"></p-dropdown>
-  </div>
+  </div> -->
   <div class="p-field field col-12">
     <span class="p-float-label flex justify-content-center">
-      <p-inputSwitch id="active" formControlName="active">
+      <p-inputSwitch id="is_active" formControlName="is_active">
       </p-inputSwitch>
-      <label for="active">Aktív</label>
+      <label for="is_active">Belépés a programba</label>
     </span>
-
+  </div>
+  <div *ngIf="userForm.value.is_active">
+    <div class="p-field field col-12">
+      <span class="p-float-label">
+        <input pInputText id="username" type="text"
+          formControlName="username" />
+        <label for="username">felhasználónév</label>
+      </span>
+    </div>
+    <div class="field col-12">
+      <p-password id="password" formControlName="password" placeholder="Jelszó"
+        [toggleMask]="true" styleClass=""
+        inputStyleClass="w-full p-3 md:w-30rem" required
+        promptLabel="Válassz jelszót" weakLabel="Túl egyszerű jelszó"
+        mediumLabel="Közepes jelszó" strongLabel="Erős jelszó">
+      </p-password>
+    </div>
+    <div class="field col-12">
+      <p-password id="password2" formControlName="password2"
+        placeholder="Jelszó mégegyszer" [feedback]="false" [toggleMask]="true"
+        styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem" required>
+      </p-password>
+      <p-message *ngIf="
+      userForm.errors?.['uniqPassword']" severity="error"
+        text="A beírt jelszavak nem egyeznek">
+      </p-message>
+    </div>
+    <div class="p-field field col-12">
+      <span class="p-float-label flex justify-content-center">
+        <p-inputSwitch id="is_staff" formControlName="is_staff">
+        </p-inputSwitch>
+        <label for="is_staff">Adminisztrátor</label>
+      </span>
+    </div>
   </div>
   <div class="field col-12">
 

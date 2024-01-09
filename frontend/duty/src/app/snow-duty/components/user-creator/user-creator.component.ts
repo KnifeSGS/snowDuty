@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user';
 import { UserService } from '../../services/user.service';
 
@@ -7,6 +7,17 @@ interface Role {
   name: string;
   code: number
 }
+
+export const passwordValidator: ValidatorFn = (
+  control: AbstractControl,
+): ValidationErrors | null => {
+  const password = control.get('password');
+  const password2 = control.get('password2');
+
+  return password && password2 && password.value === password2.value
+    ? null
+    : { uniqPassword: true };
+};
 
 @Component({
   selector: 'app-user-creator',
@@ -27,11 +38,14 @@ export class UserCreatorComponent implements OnInit {
     this.userForm = this.fb.group({
       first_name: [''],
       last_name: [''],
-      full_name: [''],
-      email: [''],
+      username: [''],
+      email: ['', Validators.required],
       role: [''],
-      active: true
-    })
+      is_active: false,
+      is_staff: false,
+      password: ['', Validators.minLength(6)],
+      password2: ['', Validators.minLength(6)],
+    }, { validators: passwordValidator })
   }
 
   ngOnInit() {
@@ -56,14 +70,16 @@ export class UserCreatorComponent implements OnInit {
   }
 
   userDataBuilder() {
-    const { first_name, last_name, full_name, email, role, active } = this.userForm.value;
+    const { first_name, last_name, username, email, is_active, is_staff, password } = this.userForm.value;
     this.user = {
       first_name,
       last_name,
-      full_name: last_name + first_name,
+      username,
       email,
-      role,
-      active
+      is_active,
+      is_staff,
+      password
+
     }
   }
 
