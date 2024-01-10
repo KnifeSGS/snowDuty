@@ -116,7 +116,8 @@ export class UserViewerComponent {
 
   saveUser() {
     this.childUser.buildForm();
-    this.userService.getAll$();
+    this.getUsers();
+    // this.userService.getAll$();
     this.dialogs[this.openedDialogName] = false;
   }
 

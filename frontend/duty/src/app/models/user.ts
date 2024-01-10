@@ -10,12 +10,15 @@ export class User {
   email: string = "";
   role?: number = 0;
   active?: boolean = true;
-  is_active?: boolean = true;
-  is_staff?: boolean = true;
+  // is_active?: boolean = true;
+  is_active?: string = "";
+  // is_staff?: boolean = true;
+  is_staff?: string = "";
   token?: string = "";
   access?: string = "";
   refresh?: string = "";
   password?: string = "";
+  password2?: string = "";
   journals?: Journal[] = [];
   shifts?: Shift[] = [];
   user?: string = '';

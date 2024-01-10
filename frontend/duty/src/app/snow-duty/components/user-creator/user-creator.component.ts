@@ -70,21 +70,22 @@ export class UserCreatorComponent implements OnInit {
   }
 
   userDataBuilder() {
-    const { first_name, last_name, username, email, is_active, is_staff, password } = this.userForm.value;
+    const { first_name, last_name, username, email, is_active, is_staff, password, password2 } = this.userForm.value;
     this.user = {
       first_name,
       last_name,
       username,
       email,
-      is_active,
-      is_staff,
-      password
-
+      is_active: is_active ? "true" : "false",
+      is_staff: is_staff ? "true" : "false",
+      password,
+      password2
     }
   }
 
   buildForm() {
     this.userDataBuilder();
+    console.log(this.user);
     this.userService.create(this.user)
       .subscribe(
         () => this.userService.getAll$()

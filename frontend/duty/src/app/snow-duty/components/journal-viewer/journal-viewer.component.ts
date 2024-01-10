@@ -85,7 +85,7 @@ export class JournalViewerComponent implements OnInit {
 
   ngOnInit() {
     // this.journalService.getSelectedInterval(this.params);
-    this.journalService.getAllJournal({ page_size: this.pageSize });
+    // this.journalService.getAllJournal({ page_size: this.pageSize });
     this.userService.getAll$();
     // this.users$.subscribe(users => users.forEach(user => {
     //   this.userNames.push(user.full_name)
@@ -98,7 +98,7 @@ export class JournalViewerComponent implements OnInit {
   }
 
   async getJournals() {
-    const journals: JournalResponse = await this.journalService.fetchForSignal(`?page_size=${this.pageSize}`);
+    const journals: JournalResponse = await this.journalService.fetchAllForSignal(`?page_size=${this.pageSize}`);
     console.log(journals);
     // journals.forEach((journal: any) => {
     //   const journalKey =

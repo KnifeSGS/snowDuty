@@ -19,9 +19,11 @@ export class UserService extends BaseService<User> {
   }
 
   override create(entity: User): Observable<User> {
+    const sentity = JSON.stringify(entity)
+    console.log(sentity);
     return this.http.post<User>(
       `${this.config.apiUrl}register/`,
-      entity
+      sentity
     );
   }
 }
