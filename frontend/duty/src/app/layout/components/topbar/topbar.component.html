@@ -23,20 +23,21 @@
       <i class="pi pi-calendar"></i>
       <span>Calendar</span>
     </button> -->
-    <div class="userName" *ngIf="user$ | async as user">Heló
-      {{user.user}}
-    </div>
     <button class="p-link layout-topbar-button">
       <i class="pi pi-user"></i>
-      <span>Profile</span>
+      <span *ngIf="user$ | async as user">{{user.user | uppercase}}</span>
+    </button>
+    <button class="p-link layout-topbar-button" (click)="refreshToken()">
+      <i class="pi pi-refresh"></i>
+      <span>Refresh Token</span>
     </button>
     <button class="p-link layout-topbar-button" (click)="onLogout()">
       <i class="pi pi-sign-out"></i>
       <span>Kijelentkezés</span>
     </button>
-    <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">
+    <!-- <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">
       <i class="pi pi-cog"></i>
       <span>Settings</span>
-    </button>
+    </button> -->
   </div>
 </div>

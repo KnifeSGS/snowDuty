@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user';
 import { UserService } from '../../services/user.service';
@@ -25,6 +25,8 @@ export const passwordValidator: ValidatorFn = (
   styleUrls: ['./user-creator.component.scss']
 })
 export class UserCreatorComponent implements OnInit {
+
+  @Output("getUsers") getUsers: EventEmitter<any> = new EventEmitter();
 
   user: User = new User()
   mobile: boolean = false
@@ -88,8 +90,9 @@ export class UserCreatorComponent implements OnInit {
     console.log(this.user);
     this.userService.create(this.user)
       .subscribe(
-        () => this.userService.getAll$()
+        () => this.getUsers.emit()
       )
   }
+
 
 }

@@ -77,16 +77,28 @@ export class UserViewerComponent {
   }
 
   async getUsers() {
-    const users: User[] = await this.userService.fetchForSignal(`?page_size=1000`);
-    console.log(users);
+    // const users: User[] = await this.userService.fetchForSignal(`?page_size=1000`);
+    await this.userService.fetchForSignal(`?page_size=1000`)
+      .then(
+        users => {
+          console.log(users);
+          users.forEach((user: User) => {
+            const full_name = `${user.last_name} ${user.first_name} ${user.email}`
+            this.userNames.push(full_name)
+          })
+          return this.userSignal.set(users)
+        }
+      );
+    // console.log(users);
     // journals.forEach((journal: any) => {
     //   const journalKey =
     // })
-    users.forEach(user => {
-      const full_name = `${user.last_name} ${user.first_name} ${user.email}`
-      this.userNames.push(full_name)
-    })
-    this.userSignal.set(users)
+    // users.forEach(user => {
+    //   const full_name = `${user.last_name} ${user.first_name} ${user.email}`
+    //   this.userNames.push(full_name)
+    // })
+    // this.userSignal.set(users)
+    // this.userSignal.update((value) => value)
   }
 
   async getOneUser(id: number) {

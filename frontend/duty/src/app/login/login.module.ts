@@ -11,6 +11,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RouterModule } from '@angular/router';
 import { ErrorComponent } from './components/error/error.component';
 import { DeniedComponent } from './components/denied/denied.component';
+import { MessageModule } from 'primeng/message';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -29,6 +32,9 @@ import { DeniedComponent } from './components/denied/denied.component';
     PasswordModule,
     ReactiveFormsModule,
     RouterModule,
-  ]
+    MessageModule,
+    ToastModule
+  ],
+  providers: [MessageService]
 })
 export class LoginModule { }

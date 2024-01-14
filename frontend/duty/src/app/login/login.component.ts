@@ -21,7 +21,7 @@ export class LoginComponent {
   // password!: string;
 
   loginForm: FormGroup;
-  registerForm: FormGroup;
+  // registerForm: FormGroup;
 
   constructor(
     public layoutService: LayoutService,
@@ -35,12 +35,12 @@ export class LoginComponent {
       password: ['', Validators.required]
     });
 
-    this.registerForm = this.fb.group({
-      surnam: '',
-      lastname: '',
-      id_username: ['', Validators.required],
-      password: ['', Validators.required]
-    })
+    // this.registerForm = this.fb.group({
+    //   surnam: '',
+    //   lastname: '',
+    //   id_username: ['', Validators.required],
+    //   password: ['', Validators.required]
+    // })
   }
 
 
@@ -73,8 +73,8 @@ export class LoginComponent {
   }
 
 
-  setPassword(): void {
-    this.loginUserService.update(this.registerForm.value)
-      .subscribe(resp => console.log(resp))
-  }
+  // setPassword(): void {
+  //   this.loginUserService.update(this.registerForm.value)
+  //     .subscribe(resp => console.log(resp))
+  // }
 }

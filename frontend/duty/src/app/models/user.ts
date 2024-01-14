@@ -3,7 +3,7 @@ import { Shift } from "../snow-duty/models/shift";
 
 export class User {
   _id?: string = '';
-  id?: string = '';
+  id?: string | number = '';
   first_name: string = "";
   last_name: string = "";
   full_name?: string = "";
@@ -25,6 +25,7 @@ export class User {
   username?: string = '';
   groups?: UserGroups[];
   user_permissions?: UserPermissions[];
+  loginTime?: Date;
 }
 
 export class UserGroups {

@@ -127,7 +127,7 @@
     <button pButton pRipple label="Mentés" icon="pi pi-check"
       class="p-button-text" (click)="saveUser()"></button>
   </ng-template>
-  <app-user-creator></app-user-creator>
+  <app-user-creator (getUsers)="getUsers()"></app-user-creator>
 </p-dialog>
 
 <p-dialog [(visible)]="dialogs['editUserDialog']"
