@@ -9,6 +9,7 @@ import { TokenService } from './token.service';
 export class JwtInterceptorService implements HttpInterceptor {
 
   private refresh = false;
+  private refreshCount = 0;
 
   constructor(
     private auth: AuthService,
@@ -28,19 +29,22 @@ export class JwtInterceptorService implements HttpInterceptor {
         }
       })
 
-
       return next.handle(req)
         .pipe(
           catchError((error: HttpErrorResponse) => {
-            if (error.status === 401 && !this.refresh) {
+            if (error.status === 401 && !this.refresh && this.refreshCount < 2) {
               this.refresh = true;
+              this.refreshCount++
+              console.log(this.refreshCount);
               this.messageService.add({ key: 'notification', severity: 'info', summary: 'Info', detail: 'Munkamenet lejárt', life: 2000 });
               const refreshToken = this.tokenService.getRefreshToken();
               return this.auth.refreshingToken(refreshToken!).pipe(
                 switchMap((res: any) => {
-                  console.log('Refreshing token...');
+                  console.log('Must refresh token...');
+                  this.refreshCount = 0;
+                  this.refresh = false;
                   this.messageService.add({ key: 'notification', severity: 'success', summary: 'Successful', detail: 'Munkamenet frissítve', life: 2000 });
-                  const newAccessToken = this.tokenService.getAccessToken()
+                  const newAccessToken = this.tokenService.getAccessToken();
                   return next.handle(req.clone({
                     setHeaders: {
                       Authorization: `Bearer ${newAccessToken}`
@@ -49,18 +53,32 @@ export class JwtInterceptorService implements HttpInterceptor {
                 })
               )
             }
+            else if (error.status === 401 && error.statusText === 'Unauthorized' && !this.refresh) {
+              this.auth.logout()
+              this.messageService.add({ key: 'notification', severity: 'error', summary: 'Hiba', detail: 'Kérlek jelentkezz be újra!', life: 5000 });
+            }
 
             if (error.status === 400) {
               const errorMessage = Object.entries(error.error).map(a => a.join(': '))
               this.messageService.add({ key: 'notification', severity: 'error', summary: 'Hiba', detail: `${errorMessage}`, life: 5000 });
             }
+
+            // this.refreshCount = 0;
             this.refresh = false;
             return throwError(() => error)
           })
         )
     }
 
-    return next.handle(req)
+    return next.handle(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 && error.statusText === 'Unauthorized') {
+          this.auth.logout()
+          this.messageService.add({ key: 'notification', severity: 'error', summary: 'Hiba', detail: 'Kérlek jelentkezz be újra!', life: 5000 });
+        }
+        return throwError(() => error)
+      })
+    )
   }
 
   // private handle401Error(request: HttpRequest<any>, next: HttpHandler) {

@@ -73,15 +73,16 @@ export class UserCreatorComponent implements OnInit {
 
   userDataBuilder() {
     const { first_name, last_name, username, email, is_active, is_staff, password, password2 } = this.userForm.value;
+    const dummyPass = email.charAt(0).toUpperCase() + email.slice(1)
     this.user = {
       first_name,
       last_name,
-      username,
       email,
+      username: username ? username : email,
       is_active: is_active ? "true" : "false",
       is_staff: is_staff ? "true" : "false",
-      password,
-      password2
+      password: password ? password : dummyPass,
+      password2: password ? password : dummyPass
     }
   }
 

@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -28,10 +28,13 @@ export class ShiftViewerComponent implements OnInit {
   @ViewChild(ShiftCreatorComponent)
   child!: ShiftCreatorComponent;
 
+  @Input() dispersions!: number;
+  shiftSignal: WritableSignal<Shift[] | undefined> = signal([]);
+
   defaultSortOrder: number = -1;
   users$: BehaviorSubject<User[]> = this.userService.list$;
   userNames: string[] = [];
-  shifts$: BehaviorSubject<Shift[]> = this.shiftService.shifts$;
+  // shifts$: BehaviorSubject<Shift[]> = this.shiftService.shifts$;
   shift: Shift = new Shift();
   shiftDialog = false;
   journalId: string = "";
@@ -74,10 +77,12 @@ export class ShiftViewerComponent implements OnInit {
     private journalService: JournalService
   ) {
 
+    this.getShifts();
+
   }
 
   ngOnInit() {
-    this.shiftService.getAll$();
+    // this.shiftService.getAll$();
     this.userService.getAll$();
     this.users$.subscribe(users => users.forEach(user => {
       if (user.full_name) {
@@ -97,38 +102,31 @@ export class ShiftViewerComponent implements OnInit {
       'max-height': '80vh'
     }
 
-    this.getShifts();
   }
 
-  getShifts() {
-    this.activatedRoute.params.subscribe(
-      params => {
-        if (params['id']) {
-          this.journalService.get(params['id']).subscribe(
-            journal => {
-              if (journal._id) {
-                this.shiftService.getAllForOneJournal$(journal._id);
-                this.journalId = journal._id;
-                if (journal.shifts!.length > 0) {
-                  this.getAllSums(journal._id)
-
-                }
-                // this.getSums('salt', journal._id)
-                // this.getSums('cacl2', journal._id)
-                // this.getSums('kalcinol', journal._id)
-                // this.getSums('mixture', journal._id)
-                // this.getSums('zeokal', journal._id)
-                // this.getSums('km', journal._id)
-                // this.getSums('workHour', journal._id)
-                // this.getSums('orderedQuantity', journal._id)
-              }
-            })
-        } else {
-          this.shiftService.getAll$();
-          this.shifts$ = this.shiftService.list$;
-        }
-      }
-    );
+  async getShifts() {
+    // this.activatedRoute.params.subscribe(
+    //   params => {
+    //     if (params['id']) {
+    //       this.journalService.get(params['id']).subscribe(
+    //         journal => {
+    //           if (journal._id) {
+    //             this.shiftService.getAllForOneJournal$(journal._id);
+    //             this.journalId = journal._id;
+    //             if (journal.shifts!.length > 0) {
+    //               this.getAllSums(journal._id)
+    //             }
+    //           }
+    //         })
+    //     } else {
+    //       this.shiftService.getAll$();
+    //     }
+    //   }
+    // );
+    const journalID = this.activatedRoute.snapshot.params['id'];
+    const shifts = await this.shiftService.getAllForOneJournalSignal(journalID);
+    console.log(shifts.results);
+    this.shiftSignal.set(shifts.results)
   }
 
   getSums(field: "salt" | "basalt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity", journalId: string) {

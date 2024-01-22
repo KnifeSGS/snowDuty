@@ -3,13 +3,13 @@
 <!-- <pre>{{journals$ | async | json}}</pre>
 <pre>{{users$ | async | json}}</pre> -->
 
-<div class="signalized" *ngIf="journalsSignal()">
+<!-- <div class="signalized" *ngIf="journalsSignal()">
   {{thisMonthFirstDay | date:'YYYY.MM.dd. hh:mm:ss'}}
   <div *ngFor="let journal of journalsSignal()">
-    <div class="div">{{journal.person_on_duty}}</div>
+    <div class="div">{{journal.person_on_duty_name}}</div>
   </div>
   {{journalCount()}}
-</div>
+</div> -->
 <!-- <div class="jr" *ngIf="journalRes()">{{journalRes().count}}</div> -->
 
 <div class="card">
@@ -31,18 +31,18 @@
       <!-- <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000"
         label="Import" [chooseLabel]="Import" class="mr-2 inline-block">
       </p-fileUpload> -->
-      <button pButton pRipple [label]="Export" icon="pi pi-upload"
-        class="p-button-help"></button>
+      <!-- <button pButton pRipple [label]="Export" icon="pi pi-upload"
+        class="p-button-help"></button> -->
     </ng-template>
   </p-toolbar>
 
   <div class="asyncDiv" *ngIf="journalsSignal()">
     <p-table #dt [value]="journalsSignal()" [rows]="10" [paginator]="true"
-      [globalFilterFields]="['date_start', 'person_on_duty', 'comment']"
+      [globalFilterFields]="['date_start', 'person_on_duty_name', 'comments']"
       [tableStyle]="{'min-width': '70rem'}" [(selection)]="selectedJournals"
       [rowHover]="true" dataKey="id"
       currentPageReportTemplate="{last} bejegyzés látszik a {totalRecords} közül"
-      [showCurrentPageReport]="true" sortField="date"
+      [showCurrentPageReport]="true" sortField="date_start"
       [sortOrder]="defaultSortOrder">
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
@@ -76,10 +76,10 @@
           <th style="width: 3rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
-          <th pSortableColumn="date" style="width:15rem">Dátum <p-sortIcon
-              field="date"></p-sortIcon>
+          <th pSortableColumn="date_start" style="width:15rem">Dátum <p-sortIcon
+              field="date_start"></p-sortIcon>
           </th>
-          <th pSortableColumn="worker.full_name" style="min-width:10rem">
+          <th pSortableColumn="worker.full_name" style="min-width:5rem">
             Ügyeletvezető
             <p-sortIcon field="worker.full_name"></p-sortIcon>
             <p-columnFilter field="worker.full_name" matchMode="equals"
@@ -97,10 +97,10 @@
               </ng-template>
             </p-columnFilter>
           </th>
-          <th pSortableColumn="comment" style="min-width:10rem">Megjegyzések
-            <p-sortIcon field="comment"></p-sortIcon>
+          <th pSortableColumn="comments" style="min-width:10rem">Megjegyzések
+            <p-sortIcon field="comments"></p-sortIcon>
           </th>
-          <th style="width: 9rem"></th>
+          <!-- <th style="width: 9rem"></th> -->
           <th style="width: 9rem"></th>
         </tr>
       </ng-template>
@@ -110,19 +110,22 @@
             <p-tableCheckbox [value]="journal"></p-tableCheckbox>
           </td>
           <td>{{journal.date_start | date:'YYYY.MM.dd. hh:mm:ss'}}</td>
-          <td>{{journal.person_on_duty}}</td>
-          <!-- <td *ngIf="journal.comment.length > 1">
-            {{journal.comment[journal.comment.length - 1][0]}}:
-            {{journal.comment[journal.comment.length - 1][1]}}</td>
+          <td>{{journal.person_on_duty_name}}</td>
+          <!-- <td *ngIf="journal.comments.length > 1">
+            {{journal.comments[journal.comments.length - 1][0]}}:
+            {{journal.comments[journal.comments.length - 1][1]}}</td>
           <td> -->
-          <!-- <td *ngIf="journal.comment.length <= 1"></td> -->
+          <!-- <td *ngIf="journal.comments.length <= 1"></td> -->
+          <td *ngIf="journal.comments.length >= 1">
+            {{journal.comments[journal.comments.length -1].comment}}</td>
+          <td *ngIf="journal.comments.length == 0">-</td>
           <td>
             <button pButton pRipple icon="pi pi-pencil"
               class="p-button-rounded p-button-success mr-2"
               [routerLink]="['/viewer', journal.id]"></button>
             <button pButton pRipple icon="pi pi-trash"
               class="p-button-rounded p-button-warning"
-              (click)="deleteJournal(journal.id, journal.date)"></button>
+              (click)="deleteJournal(journal.id, journal.date_start)"></button>
           </td>
         </tr>
       </ng-template>
@@ -146,7 +149,7 @@
     <button pButton pRipple label="Mentés" icon="pi pi-check"
       class="p-button-text" (click)="saveJournal()"></button>
   </ng-template>
-  <app-journal-creator></app-journal-creator>
+  <app-journal-creator (getJournals)="getJournals()"></app-journal-creator>
 </p-dialog>
 
 <p-dialog [(visible)]="dialogs['userDialog']"

@@ -2,7 +2,7 @@ import { User } from "src/app/models/user";
 
 export class Shift {
   _id?: string = '';
-  journalId: string = '';
+  journalId?: string = '';
   date?: Date = new Date();
   onDuty: User = new User();
   daytime?: number = 0;
@@ -15,5 +15,11 @@ export class Shift {
   zeokal?: number = 0;
   km?: number = 0;
   workHour?: number = 0;
-  orderedQuantity?: number = 0
+  orderedQuantity?: number = 0;
+  id?: number;
+  journal?: number;
+  dispersion_start?: Date;
+  dispersion_end?: Date;
+  man?: number;
+  car?: number;
 }

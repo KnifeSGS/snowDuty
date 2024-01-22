@@ -10,6 +10,7 @@ import { ScheduleComponent } from './components/schedule/schedule.component';
 import { UserViewerComponent } from './components/user-viewer/user-viewer.component';
 import { SubcontractsComponent } from './components/subcontracts/subcontracts.component';
 import { UserEditorComponent } from './components/user-editor/user-editor.component';
+import { CarsViewerComponent } from './components/cars-viewer/cars-viewer.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,10 @@ const routes: Routes = [
   {
     path: 'subs',
     component: SubcontractsComponent
+  },
+  {
+    path: 'cars',
+    component: CarsViewerComponent
   },
 ];
 

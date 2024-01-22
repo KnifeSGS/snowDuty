@@ -8,7 +8,7 @@ import { ConfigService } from './config.service';
 @Injectable({
   providedIn: 'root'
 })
-export class BaseService<T extends { _id?: string, worker?: User, date?: Date }> {
+export class BaseService<T extends { _id?: string, id?: string | number, worker?: User, date?: Date }> {
 
   entity: string = '';
 
@@ -65,8 +65,12 @@ export class BaseService<T extends { _id?: string, worker?: User, date?: Date }>
     return this.http.delete<T>(`${this.config.apiUrl}${this.entity}/${_id}/`);
   }
 
-  async fetchForSignal(options?: string): Promise<any> {
+  async fetchForSignal(options: string = '?page_size=1000'): Promise<any> {
     const response = await fetch(`${this.config.apiUrl}${this.entity}/${options}`);
+    return await response.json()
+  }
+  async getOneSignal(id: number, options?: string): Promise<any> {
+    const response = await fetch(`${this.config.apiUrl}${this.entity}/${id}${options}`);
     return await response.json()
   }
 

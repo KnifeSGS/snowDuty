@@ -175,11 +175,12 @@ export class JournalViewerComponent implements OnInit {
   saveJournal() {
     this.childJournal.buildForm();
     this.dialogs[this.openedDialogName] = false;
-    this.journalService.getAll().subscribe(
-      () => {
-        this.journalService.getSelectedInterval(this.params);
-      }
-    )
+    // this.journalService.getAll().subscribe(
+    //   () => {
+    //     this.journalService.getSelectedInterval(this.params);
+    //   }
+    // )
+    // this.getJournals()
   }
   saveUser() {
     this.childUser.buildForm();

@@ -24,7 +24,7 @@ export class ShiftService extends BaseService<Shift>  {
     public override http: HttpClient
   ) {
     super(config, http);
-    this.entity = 'shift';
+    this.entity = 'dispersionscreate';
   }
 
   getAllForOneJournal$(_id: string) {
@@ -32,6 +32,11 @@ export class ShiftService extends BaseService<Shift>  {
     this.http.get<Shift[]>(`${this.config.apiUrl}${this.entity}/${_id}/shifts`).subscribe(
       entity => this.shifts$.next(entity)
     )
+  }
+
+  async getAllForOneJournalSignal(id: number, options: string = '&page_size=100') {
+    const shifts = await fetch(`${this.config.apiUrl}${this.entity}/?journal=${id}${options}`);
+    return await shifts.json()
   }
 
   getSumOfShiftsField(params: {}): Observable<Summa[]> {

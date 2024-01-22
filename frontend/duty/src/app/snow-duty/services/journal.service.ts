@@ -45,8 +45,17 @@ export class JournalService extends BaseService<Journal> {
   //   return this.http.get<Journal[]>(`${this.config.apiUrl}${this.entity}?_expand=user`)
   // }
 
-  async fetchAllForSignal(options?: string): Promise<any> {
+  async fetchAllForSignal(options: string = '?page_size=1000'): Promise<any> {
     const response = await fetch(`${this.config.apiUrl}${this.entity}withall/${options}`);
+    return await response.json()
+  }
+
+  getOne(_id: string): Observable<Journal> {
+    return this.http.get<Journal>(`${this.config.apiUrl}${this.entity}withall/${_id}/`);
+  }
+
+  override async getOneSignal(id: number): Promise<any> {
+    const response = await fetch(`${this.config.apiUrl}${this.entity}withall/${id}`);
     return await response.json()
   }
 }

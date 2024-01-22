@@ -32,6 +32,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ChartModule } from 'primeng/chart';
 import { ChipModule } from 'primeng/chip';
 import { MessageModule } from 'primeng/message';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { SnowDutyRoutingModule } from './snow-duty-routing.module';
 import { SnowDutyComponent } from './snow-duty.component';
@@ -54,6 +55,7 @@ import { UserViewerComponent } from './components/user-viewer/user-viewer.compon
 import { SubcontractsComponent } from './components/subcontracts/subcontracts.component';
 import { UserEditorComponent } from './components/user-editor/user-editor.component';
 import { PasswordModule } from 'primeng/password';
+import { CarsViewerComponent } from './components/cars-viewer/cars-viewer.component';
 
 
 @NgModule({
@@ -72,7 +74,8 @@ import { PasswordModule } from 'primeng/password';
     ScheduleComponent,
     UserViewerComponent,
     SubcontractsComponent,
-    UserEditorComponent
+    UserEditorComponent,
+    CarsViewerComponent
     // ChartComponent
   ],
   imports: [
@@ -108,6 +111,7 @@ import { PasswordModule } from 'primeng/password';
     ChipModule,
     MessageModule,
     PasswordModule,
+    ProgressSpinnerModule
   ],
   providers: [MessageService, ConfirmationService]
 })

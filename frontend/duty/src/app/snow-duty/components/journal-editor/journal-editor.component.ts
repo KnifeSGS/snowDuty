@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { concatMap, map, switchMap } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { Journal } from '../../models/journal';
 import { Shift } from '../../models/shift';
@@ -27,18 +28,22 @@ export class JournalEditorComponent implements OnInit {
   submitted!: boolean;
 
   journal: Journal = new Journal();
-  journalId: string | undefined = '';
+  journalId: number = 0;
 
   shifts: Shift[] = []
   journalUpdateData: Journal = new Journal();
   journalForm!: FormGroup;
   users!: User[];
-  worker: User = new User();
+  // worker: User = new User();
   mobile: boolean = false;
 
   editableWorker: boolean = false;
   canAddCheck: boolean = false;
   defaultSortOrder: number = 1
+
+  selectedJournal: WritableSignal<Journal> = signal(new Journal());
+  worker: WritableSignal<User> = signal(new User());
+  journalDate: WritableSignal<Date> = signal(new Date());
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -46,11 +51,10 @@ export class JournalEditorComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private messageService: MessageService,
-    private shiftService: ShiftService
   ) {
-    this.getJournal();
     this.createForm();
-
+    this.getJournal();
+    this.getUsers();
   }
 
   ngOnInit(): void {
@@ -58,7 +62,6 @@ export class JournalEditorComponent implements OnInit {
       this.mobile = true;
     };
 
-    this.getUsers();
   }
 
   hideDialog() {
@@ -68,10 +71,10 @@ export class JournalEditorComponent implements OnInit {
 
   createForm() {
     this.journalForm = this.fb.group({
-      worker: [''],
-      date: [''],
-      checks: this.fb.group({
-        checking: ['', Validators.required],
+      person_on_duty: [''],
+      date_start: [''],
+      monitor: this.fb.group({
+        start_time: [''],
         temperature: [''],
         percipitation: [''],
         sky: [''],
@@ -85,22 +88,34 @@ export class JournalEditorComponent implements OnInit {
   getUsers() {
     this.userService.getAll().subscribe(
       // users => this.users$ = of(users)
-      users => this.users = users
+      users => {
+        console.log(users);
+        this.users = users
+      }
     );
   };
 
-  getJournal() {
-    this.activatedRoute.params.subscribe(
-      params => this.journalService.get(params['id']).subscribe(
-        journal => {
-          this.journal = journal;
-          this.shiftService.getAllForOneJournal$(journal._id!);
-          this.shiftService.shifts$.subscribe((shifts) => {
-            this.shifts = shifts
-          });
-          // console.log(this.journal.checks);
-        })
-    );
+  async getJournal() {
+    // this.activatedRoute.params
+    //   .pipe(
+    //     map(p => p['id']),
+    //     concatMap(
+    //       async (value: number) => {
+    //         const journalSignal = await this.journalService.getOneSignal(value);
+    //         return journalSignal
+    //       }
+    //     )
+    //   )
+    //   .subscribe(
+    //     (journal) => {
+    //       console.log(journal);
+    //       this.selectedJournal.set(journal)
+    //     }
+    //   )
+    const journalID = this.activatedRoute.snapshot.params['id'];
+    const data = await this.journalService.getOneSignal(journalID);
+    console.log(data);
+    this.selectedJournal.set(data)
   }
 
   editWorkerDate() {
@@ -111,8 +126,10 @@ export class JournalEditorComponent implements OnInit {
     this.canAddCheck = !this.canAddCheck;
   }
 
-  workerSelected() {
-    this.worker = this.journalForm.value.worker
+  workerSelected(event: any) {
+    // console.log(event);
+    // const selectedUser = await this.userService.getOneSignal(event.value.id)
+    this.worker.set(event.value)
   }
 
   journalBuilder() {

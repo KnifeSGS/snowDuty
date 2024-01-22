@@ -73,9 +73,14 @@ export class MenuComponent implements OnInit {
             routerLink: ['/inventory']
           },
           {
-            label: 'Eszközök',
+            label: 'Gépjárművek',
             icon: 'pi pi-fw pi-car',
-            routerLink: ['/inventory']
+            routerLink: ['/cars']
+          },
+          {
+            label: 'Helyszínek',
+            icon: 'pi pi-fw pi-map-marker',
+            routerLink: ['/']
           },
         ]
       },

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output, signal, WritableSignal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { User } from 'src/app/models/user';
@@ -22,9 +22,15 @@ export function minNameLengthValidator(min: number): ValidatorFn {
 })
 export class JournalCreatorComponent {
 
+  @Output("getJournals") getJournals: EventEmitter<any> = new EventEmitter();
+
   worker: User = new User();
   users$: Observable<User[]> = new Observable<User[]>()
   users!: User[];
+
+  userSignal: WritableSignal<User[]> = signal([]);
+  userNames: string[] = [];
+  onDutyId: string = '';
 
   disabled: boolean = true;
 
@@ -40,8 +46,8 @@ export class JournalCreatorComponent {
     private ref: ChangeDetectorRef
   ) {
     this.journalForm = this.fb.group({
-      worker: [''],
-      date: [''],
+      person_on_duty: [0],
+      date_start: [''],
       // checking: [''],
       // temperature: [''],
       // percipitation: [''],
@@ -62,6 +68,9 @@ export class JournalCreatorComponent {
       // }),
       // comment: ['']
     })
+
+
+    this.getUsers();
   }
 
   mobile: boolean = false
@@ -71,19 +80,30 @@ export class JournalCreatorComponent {
       this.mobile = true;
     };
 
-    this.getUsers();
 
   }
 
-  getUsers() {
-    this.userService.getAll().subscribe(
-      // users => this.users$ = of(users)
-      users => this.users = users
-    )
+  async getUsers() {
+    // this.userService.getAll().subscribe(
+    // users => this.users = users
+    // )
+    await this.userService.fetchForSignal(`?page_size=1000`)
+      .then(
+        users => {
+          console.log(users);
+          users.forEach((user: User) => {
+            const full_name = user.last_name || user.first_name ? `${user.last_name} ${user.first_name}` : `${user.email}`
+            this.userNames.push(full_name)
+          })
+          console.log(this.userNames);
+          return this.userSignal.set(users)
+        }
+      )
   };
 
   workerSelected() {
-    this.worker = this.journalForm.value.worker
+    this.onDutyId = this.journalForm.value.person_on_duty.id;
+    console.log(this.onDutyId);
   }
 
   journalBuilder() {
@@ -92,10 +112,10 @@ export class JournalCreatorComponent {
     if (date) {
       utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
     }
-    const { checking, temperature, percipitation, sky, visibility, roads } = this.journalForm.value;
+    // const { checking, temperature, percipitation, sky, visibility, roads } = this.journalForm.value;
     this.journal = {
-      worker: this.journalForm.value.worker._id,
-      date: utcDate,
+      person_on_duty: this.onDutyId,
+      date_start: utcDate,
       // comment: this.journalForm.value.comment
     }
   }
@@ -106,10 +126,11 @@ export class JournalCreatorComponent {
     // console.log(this.journal);
     this.journalService.create(this.journal)
       .subscribe(
-        () => this.journalService.getAll$()
+        // () => this.journalService.getAll$()
+        () => this.getJournals.emit()
         // p => console.log(p)
       )
 
-    this.ref.markForCheck()
+    // this.ref.markForCheck()
   }
 }

@@ -83,7 +83,7 @@ export class UserViewerComponent {
         users => {
           console.log(users);
           users.forEach((user: User) => {
-            const full_name = `${user.last_name} ${user.first_name} ${user.email}`
+            const full_name = user.last_name || user.first_name ? `${user.last_name} ${user.first_name}` : `${user.email}`
             this.userNames.push(full_name)
           })
           return this.userSignal.set(users)
