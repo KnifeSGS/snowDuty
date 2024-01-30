@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { User } from 'src/app/models/user';
@@ -20,6 +20,10 @@ export class ShiftCreatorComponent implements OnInit {
   shift: Shift = new Shift();
 
   @Input() journalId: string = '';
+
+
+  userNames: string[] = [];
+  userSignal: WritableSignal<User[]> = signal([]);
 
   daytimeOptions: { label: string, value: boolean }[] = [
     {
@@ -45,17 +49,21 @@ export class ShiftCreatorComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.shiftForm = this.fb.group({
-      date: [''],
-      onDuty: ['', Validators.required],
-      daytime: ['', Validators.required],
-      machine: [''],
-      salt: [''],
-      basalt: [''],
-      cacl2: [''],
-      kalcinol: [''],
-      mixture: [''],
-      zeokal: [''],
+      dispersion_start: [''],
+      dispersion_end: [''],
+      man: ['', Validators.required],
+      car: [''],
       km: [''],
+      daytime: [''],
+      journal: [0, Validators.required],
+      szortak: this.fb.group({
+        salt: [''],
+        basalt: [''],
+        cacl2: [''],
+        kalcinol: [''],
+        mixture: [''],
+        zeokal: [''],
+      }),
       workHour: ['', Validators.required],
       orderedQuantity: [''],
     })
@@ -70,37 +78,50 @@ export class ShiftCreatorComponent implements OnInit {
   }
 
 
-  getUsers() {
-    this.userService.getAll().subscribe(
-      users => this.users = users
-    )
-  };
+  async getUsers() {
+    await this.userService.fetchForSignal(`?page_size=1000`)
+      .then(
+        users => {
+          console.log(users);
+          users.forEach((user: User) => {
+            const full_name = user.last_name || user.first_name
+              ? `${user.last_name} ${user.first_name}`
+              : `${user.email}`
+            this.userNames.push(full_name)
+          })
+          return this.userSignal.set(users)
+        }
+      );
+  }
 
   workerSelected() {
-    this.worker = this.shiftForm.value.onDuty
+    this.worker = this.shiftForm.value.man
   }
 
   shiftCreator() {
-    const date = this.shiftForm.value.date
+    const date = this.shiftForm.value.dispersion_start
     let utcDate = new Date;
     if (date) {
       utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
     }
-    const { daytime, machine, salt, basalt, cacl2, kalcinol, mixture, zeokal, km, workHour, orderedQuantity } = this.shiftForm.value;
+    const { dispersion_start, dispersion_end, journal, daytime, car, salt, basalt, cacl2, kalcinol, mixture, zeokal, km, workHour, orderedQuantity } = this.shiftForm.value;
 
     this.shift = {
-      journalId: this.journalId,
-      date: utcDate,
-      onDuty: this.shiftForm.value.onDuty._id,
-      daytime,
-      machine,
-      salt,
-      basalt,
-      cacl2,
-      kalcinol,
-      mixture,
-      zeokal,
+      dispersion_start: utcDate,
+      dispersion_end,
+      man: this.shiftForm.value.man,
+      car,
       km,
+      daytime,
+      journal: this.journalId,
+      szortak: [
+        salt,
+        basalt,
+        cacl2,
+        kalcinol,
+        mixture,
+        zeokal,
+      ],
       workHour,
       orderedQuantity
     }

@@ -1,31 +1,32 @@
 <div class="col-12" [formGroup]="shiftForm">
   <div class="p-fluid p-formgrid grid">
     <div class="field col-12 md:col-6">
-      <p-dropdown [options]="users" optionLabel="full_name" [filter]="true"
-        filterBy="full_name" [showClear]="true" placeholder="Válassz ügyeletest"
-        formControlName="onDuty" (onChange)="workerSelected()">
+      <p-dropdown [options]="userSignal()" optionLabel="last_name"
+        [filter]="true" filterBy="last_name" [showClear]="true"
+        placeholder="Válassz ügyeletest" formControlName="man"
+        (onChange)="workerSelected()">
         <ng-template pTemplate="selectedItem">
           <div class="worker-item worker-item-value" *ngIf="worker">
-            <div>{{worker.full_name}}</div>
+            <div>{{worker.last_name}} {{worker.first_name}}</div>
           </div>
         </ng-template>
         <ng-template let-worker pTemplate="item">
           <div class="worker-item">
-            <div>{{worker.full_name}}</div>
+            <div>{{worker.last_name}} {{worker.first_name}}</div>
           </div>
         </ng-template>
       </p-dropdown>
-      <small class="p-error block"
-        *ngIf="shiftForm.get('onDuty')?.invalid">Dolgozó felvitele
+      <small class="p-error block" *ngIf="shiftForm.get('man')?.invalid">Dolgozó
+        felvitele
         kötelező</small>
     </div>
     <div class="field col-12 md:col-6">
       <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" [showIcon]="true"
-        inputId="icon" formControlName="date"
+        inputId="icon" formControlName="dispersion_start"
         placeholder="Mai dátum, vagy válassz másikat">
       </p-calendar>
       <p-calendar *ngIf="mobile" dateFormat="yy.MM.dd" [showIcon]="true"
-        inputId="icon" formControlName="date" [touchUI]="true"
+        inputId="icon" formControlName="dispersion_start" [touchUI]="true"
         [readonlyInput]="true" placeholder="Mai dátum, vagy válassz másikat">
       </p-calendar>
     </div>
@@ -41,56 +42,8 @@
     </div>
     <div class="field col-6">
       <label for="machine"><b>Gép:</b></label>
-      <p-dropdown formControlName="machine" id="machine" [options]="machines"
+      <p-dropdown formControlName="car" id="car" [options]="machines"
         optionLabel="name" optionValue="name" placeholder="Munkagép" />
-    </div>
-    <div class="field col-6 md:col-3">
-      <label for="salt"><b>Só:</b></label>
-      <p-inputNumber suffix=" t" [showButtons]="true" buttonLayout="horizontal"
-        spinnerMode="horizontal" decrementButtonClass="p-button-danger"
-        incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
-        decrementButtonIcon="pi pi-minus" inputId="salt" formControlName="salt"
-        [step]="0.01" [minFractionDigits]="2" [maxFractionDigits]="2" />
-    </div>
-    <div class="field col-6 md:col-3">
-      <label for="basalt"><b>Bazalt:</b></label>
-      <p-inputNumber suffix=" t" [showButtons]="true" buttonLayout="horizontal"
-        spinnerMode="horizontal" decrementButtonClass="p-button-danger"
-        incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
-        decrementButtonIcon="pi pi-minus" inputId="basalt"
-        formControlName="basalt" />
-    </div>
-    <div class="field col-6 md:col-3">
-      <label for="cacl2"><b>CaCl2:</b></label>
-      <p-inputNumber suffix=" t" [showButtons]="true" buttonLayout="horizontal"
-        spinnerMode="horizontal" decrementButtonClass="p-button-danger"
-        incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
-        decrementButtonIcon="pi pi-minus" inputId="cacl2"
-        formControlName="cacl2" />
-    </div>
-    <div class="field col-6 md:col-3">
-      <label for="cacl2"><b>Kalcinol:</b></label>
-      <p-inputNumber suffix=" l" [showButtons]="true" buttonLayout="horizontal"
-        spinnerMode="horizontal" decrementButtonClass="p-button-danger"
-        incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
-        decrementButtonIcon="pi pi-minus" inputId="kalcinol"
-        formControlName="kalcinol" />
-    </div>
-    <div class="field col-6 md:col-3">
-      <label for="cacl2"><b>Keverék:</b></label>
-      <p-inputNumber suffix=" t" [showButtons]="true" buttonLayout="horizontal"
-        spinnerMode="horizontal" decrementButtonClass="p-button-danger"
-        incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
-        decrementButtonIcon="pi pi-minus" inputId="mixture"
-        formControlName="mixture" />
-    </div>
-    <div class="field col-6 md:col-3">
-      <label for="cacl2"><b>Zeokal:</b></label>
-      <p-inputNumber suffix=" t" [showButtons]="true" buttonLayout="horizontal"
-        spinnerMode="horizontal" decrementButtonClass="p-button-danger"
-        incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
-        decrementButtonIcon="pi pi-minus" inputId="zeokal"
-        formControlName="zeokal" />
     </div>
     <div class="field col-6 md:col-3">
       <label for="cacl2"><b>km:</b></label>
@@ -118,6 +71,65 @@
         incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
         decrementButtonIcon="pi pi-minus" inputId="orderedQuantity"
         formControlName="orderedQuantity" />
+    </div>
+
+    <div class="dispersions p-fluid p-formgrid grid" formGroupName="szortak">
+
+      <div class="field col-6 md:col-3">
+        <label for="salt"><b>Só:</b></label>
+        <p-inputNumber suffix=" t" [showButtons]="true"
+          buttonLayout="horizontal" spinnerMode="horizontal"
+          decrementButtonClass="p-button-danger"
+          incrementButtonClass="p-button-success"
+          incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
+          inputId="salt" formControlName="salt" [step]="0.01"
+          [minFractionDigits]="2" [maxFractionDigits]="2" />
+      </div>
+      <div class="field col-6 md:col-3">
+        <label for="basalt"><b>Bazalt:</b></label>
+        <p-inputNumber suffix=" t" [showButtons]="true"
+          buttonLayout="horizontal" spinnerMode="horizontal"
+          decrementButtonClass="p-button-danger"
+          incrementButtonClass="p-button-success"
+          incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
+          inputId="basalt" formControlName="basalt" />
+      </div>
+      <div class="field col-6 md:col-3">
+        <label for="cacl2"><b>CaCl2:</b></label>
+        <p-inputNumber suffix=" t" [showButtons]="true"
+          buttonLayout="horizontal" spinnerMode="horizontal"
+          decrementButtonClass="p-button-danger"
+          incrementButtonClass="p-button-success"
+          incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
+          inputId="cacl2" formControlName="cacl2" />
+      </div>
+      <div class="field col-6 md:col-3">
+        <label for="cacl2"><b>Kalcinol:</b></label>
+        <p-inputNumber suffix=" l" [showButtons]="true"
+          buttonLayout="horizontal" spinnerMode="horizontal"
+          decrementButtonClass="p-button-danger"
+          incrementButtonClass="p-button-success"
+          incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
+          inputId="kalcinol" formControlName="kalcinol" />
+      </div>
+      <div class="field col-6 md:col-3">
+        <label for="cacl2"><b>Keverék:</b></label>
+        <p-inputNumber suffix=" t" [showButtons]="true"
+          buttonLayout="horizontal" spinnerMode="horizontal"
+          decrementButtonClass="p-button-danger"
+          incrementButtonClass="p-button-success"
+          incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
+          inputId="mixture" formControlName="mixture" />
+      </div>
+      <div class="field col-6 md:col-3">
+        <label for="cacl2"><b>Zeokal:</b></label>
+        <p-inputNumber suffix=" t" [showButtons]="true"
+          buttonLayout="horizontal" spinnerMode="horizontal"
+          decrementButtonClass="p-button-danger"
+          incrementButtonClass="p-button-success"
+          incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
+          inputId="zeokal" formControlName="zeokal" />
+      </div>
     </div>
   </div>
 </div>

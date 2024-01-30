@@ -92,7 +92,7 @@
 
 <p-dialog [(visible)]="shiftDialog" [style]="shiftViewerStyle"
   header="Új bejegyzés" [modal]="true" styleClass="p-fluid">
-  <!-- <app-shift-creator [journalId]="journalId"></app-shift-creator> -->
+  <app-shift-creator [journalId]="journalId"></app-shift-creator>
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Mégse" icon="pi pi-times"
       class="p-button-text" (click)="hideDialog()"></button>

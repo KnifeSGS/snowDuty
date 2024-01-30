@@ -28,8 +28,9 @@ export class ShiftViewerComponent implements OnInit {
   @ViewChild(ShiftCreatorComponent)
   child!: ShiftCreatorComponent;
 
-  @Input() dispersions!: number;
+  @Input() dispersions: number | null = null;
   shiftSignal: WritableSignal<Shift[] | undefined> = signal([]);
+  userSignal: WritableSignal<User[]> = signal([]);
 
   defaultSortOrder: number = -1;
   users$: BehaviorSubject<User[]> = this.userService.list$;
@@ -78,19 +79,20 @@ export class ShiftViewerComponent implements OnInit {
   ) {
 
     this.getShifts();
+    // this.getUsers()
 
   }
 
   ngOnInit() {
     // this.shiftService.getAll$();
-    this.userService.getAll$();
-    this.users$.subscribe(users => users.forEach(user => {
-      if (user.full_name) {
-        this.userNames.push(user.full_name)
-      } else {
-        this.userNames.push(user.email)
-      }
-    }))
+    // this.userService.getAll$();
+    // this.users$.subscribe(users => users.forEach(user => {
+    //   if (user.full_name) {
+    //     this.userNames.push(user.full_name)
+    //   } else {
+    //     this.userNames.push(user.email)
+    //   }
+    // }))
 
     if (window.screen.width < 420) { // 768px portrait
       this.mobile = true;
@@ -102,6 +104,22 @@ export class ShiftViewerComponent implements OnInit {
       'max-height': '80vh'
     }
 
+  }
+
+  async getUsers() {
+    await this.userService.fetchForSignal(`?page_size=1000`)
+      .then(
+        users => {
+          console.log(users);
+          users.forEach((user: User) => {
+            const full_name = user.last_name || user.first_name
+              ? `${user.last_name} ${user.first_name}`
+              : `${user.email}`
+            this.userNames.push(full_name)
+          })
+          return this.userSignal.set(users)
+        }
+      );
   }
 
   async getShifts() {
@@ -124,7 +142,12 @@ export class ShiftViewerComponent implements OnInit {
     //   }
     // );
     const journalID = this.activatedRoute.snapshot.params['id'];
-    const shifts = await this.shiftService.getAllForOneJournalSignal(journalID);
+    let shifts;
+    if (journalID) {
+      shifts = await this.shiftService.getAllForOneJournalSignal(journalID);
+    } else {
+      shifts = await this.shiftService.fetchForSignal()
+    }
     console.log(shifts.results);
     this.shiftSignal.set(shifts.results)
   }
