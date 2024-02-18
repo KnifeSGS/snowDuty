@@ -12,6 +12,19 @@
 </div> -->
 <!-- <div class="jr" *ngIf="journalRes()">{{journalRes().count}}</div> -->
 
+<!-- <pre>
+  <div class="store" *ngFor="let data of storeData()">
+    disp:
+    <div class="shift" *ngFor="let shift of data.dispersion">
+      {{shift.man.username}}
+    </div>
+    act:
+    {{storeInfos()}}
+    tot:
+    {{storeInfos2()}}
+  </div>
+</pre> -->
+
 <div class="card">
   <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
@@ -36,9 +49,17 @@
     </ng-template>
   </p-toolbar>
 
-  <div class="asyncDiv" *ngIf="journalsSignal()">
-    <p-table #dt [value]="journalsSignal()" [rows]="10" [paginator]="true"
-      [globalFilterFields]="['date_start', 'person_on_duty_name', 'comments']"
+  <div class="spinner" *ngIf="storeActualPage() === 0">
+    <div class="card flex justify-content-center">
+      <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8"
+        fill="var(--surface-ground)"
+        animationDuration=".5s"></p-progressSpinner>
+    </div>
+  </div>
+
+  <div class="asyncDiv" *ngIf="storeActualPage() !== 0">
+    <p-table #dt [value]="storeData()" [rows]="10" [paginator]="true"
+      [globalFilterFields]="['date_start', 'person_on_duty.last_name', 'comments']"
       [tableStyle]="{'min-width': '70rem'}" [(selection)]="selectedJournals"
       [rowHover]="true" dataKey="id"
       currentPageReportTemplate="{last} bejegyzés látszik a {totalRecords} közül"
@@ -79,10 +100,10 @@
           <th pSortableColumn="date_start" style="width:15rem">Dátum <p-sortIcon
               field="date_start"></p-sortIcon>
           </th>
-          <th pSortableColumn="worker.full_name" style="min-width:5rem">
+          <th pSortableColumn="person_on_duty.last_name" style="min-width:5rem">
             Ügyeletvezető
-            <p-sortIcon field="worker.full_name"></p-sortIcon>
-            <p-columnFilter field="worker.full_name" matchMode="equals"
+            <p-sortIcon field="person_on_duty.last_name"></p-sortIcon>
+            <p-columnFilter field="person_on_duty.last_name" matchMode="equals"
               [showMatchModes]="false" [showAddButton]="false"
               [showApplyButton]="false" [showClearButton]="true" display="menu"
               class="ml-auto">
@@ -110,7 +131,8 @@
             <p-tableCheckbox [value]="journal"></p-tableCheckbox>
           </td>
           <td>{{journal.date_start | date:'YYYY.MM.dd. hh:mm:ss'}}</td>
-          <td>{{journal.person_on_duty_name}}</td>
+          <td>{{journal.person_on_duty.last_name}}
+            {{journal.person_on_duty.first_name}}</td>
           <!-- <td *ngIf="journal.comments.length > 1">
             {{journal.comments[journal.comments.length - 1][0]}}:
             {{journal.comments[journal.comments.length - 1][1]}}</td>
@@ -131,7 +153,7 @@
       </ng-template>
       <ng-template pTemplate="summary">
         <div class="flex align-items-center justify-content-between">
-          Összesen {{journalCount()}}db
+          Összesen {{storeJournalCount()}}db
           napló lett
           rögzítve.
         </div>
@@ -149,7 +171,7 @@
     <button pButton pRipple label="Mentés" icon="pi pi-check"
       class="p-button-text" (click)="saveJournal()"></button>
   </ng-template>
-  <app-journal-creator (getJournals)="getJournals()"></app-journal-creator>
+  <app-journal-creator></app-journal-creator>
 </p-dialog>
 
 <p-dialog [(visible)]="dialogs['userDialog']"

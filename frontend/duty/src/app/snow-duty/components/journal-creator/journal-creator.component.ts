@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, EventEmitter, Output, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Output, signal, WritableSignal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { Journal } from '../../models/journal';
 import { JournalService } from '../../services/journal.service';
 import { UserService } from '../../services/user.service';
+import { JournalStore } from '../../store/journal.strore';
 
 export function minNameLengthValidator(min: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -22,7 +23,9 @@ export function minNameLengthValidator(min: number): ValidatorFn {
 })
 export class JournalCreatorComponent {
 
-  @Output("getJournals") getJournals: EventEmitter<any> = new EventEmitter();
+  // @Output("getJournals") getJournals: EventEmitter<any> = new EventEmitter();
+
+  journalStore = inject(JournalStore)
 
   worker: User = new User();
   users$: Observable<User[]> = new Observable<User[]>()
@@ -127,8 +130,9 @@ export class JournalCreatorComponent {
     this.journalService.create(this.journal)
       .subscribe(
         // () => this.journalService.getAll$()
-        () => this.getJournals.emit()
+        // () => this.getJournals.emit()
         // p => console.log(p)
+        () => this.journalStore.load(`?page_size=1000`)
       )
 
     // this.ref.markForCheck()

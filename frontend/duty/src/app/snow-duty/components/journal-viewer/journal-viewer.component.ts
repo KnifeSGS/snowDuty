@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, OnInit, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, inject, OnInit, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
@@ -8,6 +8,8 @@ import { JournalService } from '../../services/journal.service';
 import { UserService } from '../../services/user.service';
 import { JournalCreatorComponent } from '../journal-creator/journal-creator.component';
 import { UserCreatorComponent } from '../user-creator/user-creator.component';
+import { JournalStore } from '../../store/journal.strore';
+import { InitialJournalData, JournalDataStore } from '../../models/initial-journal-data';
 
 @Component({
   selector: 'app-journal-viewer',
@@ -17,6 +19,20 @@ import { UserCreatorComponent } from '../user-creator/user-creator.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JournalViewerComponent implements OnInit {
+
+  journalStore = inject(JournalStore)
+  storeData: Signal<any> = computed(() => {
+    return this.journalStore.results()
+  })
+  storeActualPage = computed(() => {
+    return this.journalStore.actual_page()
+  })
+  storeTotalPages = computed(() => {
+    return this.journalStore.total_pages()
+  })
+  storeJournalCount = computed(() => {
+    return this.journalStore.count()
+  })
 
   @ViewChild(JournalCreatorComponent)
   childJournal!: JournalCreatorComponent;
@@ -43,13 +59,8 @@ export class JournalViewerComponent implements OnInit {
     userDialog: false
   }
 
-  // journals$: BehaviorSubject<Journal[]> = this.journalService.journals$;
-  journals$: ReplaySubject<JournalResponse> = this.journalService.journals$;
-  users$: BehaviorSubject<User[]> = this.userService.list$;
   userNames: string[] = [];
 
-  journalsSignal: WritableSignal<Journal[]> = signal([]);
-  journalCount: WritableSignal<number | null> = signal(null)
 
   interval: Date[] = [];
   thisMonthFirstDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString()
@@ -80,7 +91,7 @@ export class JournalViewerComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private ref: ChangeDetectorRef,
   ) {
-    this.getJournals()
+    // this.getJournals()
   }
 
   ngOnInit() {
@@ -95,17 +106,12 @@ export class JournalViewerComponent implements OnInit {
       this.mobile = true;
     };
     this.ref.detectChanges();
+
+
+    this.journalStore.load(`?page_size=${this.pageSize}`)
   }
 
-  async getJournals() {
-    const journals: JournalResponse = await this.journalService.fetchAllForSignal(`?page_size=${this.pageSize}`);
-    console.log(journals);
-    // journals.forEach((journal: any) => {
-    //   const journalKey =
-    // })
-    this.journalCount.set(journals.count)
-    this.journalsSignal.set(journals.results)
-  }
+
 
   openDialog(event: any) {
     this.openedDialogName = event.target.parentElement.id
@@ -214,13 +220,5 @@ export class JournalViewerComponent implements OnInit {
     }
   }
 
-  // createId(): string {
-  //   let id = '';
-  //   var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  //   for (var i = 0; i < 5; i++) {
-  //     id += chars.charAt(Math.floor(Math.random() * chars.length));
-  //   }
-  //   return id;
-  // }
 
 }

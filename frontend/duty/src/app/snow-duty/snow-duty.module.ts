@@ -33,6 +33,7 @@ import { ChartModule } from 'primeng/chart';
 import { ChipModule } from 'primeng/chip';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SkeletonModule } from 'primeng/skeleton';
 
 import { SnowDutyRoutingModule } from './snow-duty-routing.module';
 import { SnowDutyComponent } from './snow-duty.component';
@@ -111,7 +112,8 @@ import { CarsViewerComponent } from './components/cars-viewer/cars-viewer.compon
     ChipModule,
     MessageModule,
     PasswordModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    SkeletonModule,
   ],
   providers: [MessageService, ConfirmationService]
 })
