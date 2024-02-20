@@ -47,22 +47,16 @@ export const JournalStore = signalStore(
               })
             },
             error: console.error
-          })
+          }),
+          // tap(() => {
+          //   console.log(state);
+          // })
         ),
       ),
 
-      deleteJournal: rxMethod<number>(
-        pipe(
-          switchMap()
-          tapResponse({
-            next: () => {
+      deleteJournal() {
 
-            },
-            error: console.error
-          })
-        )
-      )
-      )
+      }
     }
   }
   )

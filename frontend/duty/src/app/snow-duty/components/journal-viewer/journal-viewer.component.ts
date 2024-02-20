@@ -21,18 +21,22 @@ import { InitialJournalData, JournalDataStore } from '../../models/initial-journ
 export class JournalViewerComponent implements OnInit {
 
   journalStore = inject(JournalStore)
-  storeData: Signal<any> = computed(() => {
-    return this.journalStore.results()
-  })
-  storeActualPage = computed(() => {
-    return this.journalStore.actual_page()
-  })
-  storeTotalPages = computed(() => {
-    return this.journalStore.total_pages()
-  })
-  storeJournalCount = computed(() => {
-    return this.journalStore.count()
-  })
+  // storeData: Signal<any> = computed(() => {
+  //   return this.journalStore.results()
+  // })
+  storeData = this.journalStore.results
+  // storeActualPage = computed(() => {
+  //   return this.journalStore.actual_page()
+  // })
+  storeActualPage = this.journalStore.actual_page
+  // storeTotalPages = computed(() => {
+  //   return this.journalStore.total_pages()
+  // })
+  storeTotalPage = this.journalStore.total_pages
+  // storeJournalCount = computed(() => {
+  //   return this.journalStore.count()
+  // })
+  storeJournalCount = this.journalStore.count
 
   @ViewChild(JournalCreatorComponent)
   childJournal!: JournalCreatorComponent;
