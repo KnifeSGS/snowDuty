@@ -43,8 +43,8 @@ export class BaseService<T extends { _id?: string, id?: string | number, worker?
     )
   }
 
-  get(_id: string): Observable<T> {
-    return this.http.get<T>(`${this.config.apiUrl}${this.entity}/${_id}/`);
+  get(id: string): Observable<T> {
+    return this.http.get<T>(`${this.config.apiUrl}${this.entity}/${id}/`);
   }
 
   create(entity: T): Observable<T> {
@@ -56,13 +56,13 @@ export class BaseService<T extends { _id?: string, id?: string | number, worker?
 
   update(entity: T): Observable<T> {
     return this.http.patch<T>(
-      `${this.config.apiUrl}${this.entity}/${entity._id}/`,
+      `${this.config.apiUrl}${this.entity}/${entity.id}/`,
       entity
     );
   }
 
-  remove(_id: string): Observable<T> {
-    return this.http.delete<T>(`${this.config.apiUrl}${this.entity}/${_id}/`);
+  remove(id: string): Observable<T> {
+    return this.http.delete<T>(`${this.config.apiUrl}${this.entity}/${id}/`);
   }
 
   async fetchForSignal(options: string = '?page_size=1000'): Promise<any> {

@@ -139,10 +139,11 @@ export class JournalViewerComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         journals.forEach(journal => {
-          if (journal._id) {
-            this.journalService.remove(journal._id).subscribe(
+          if (journal.id) {
+            this.journalService.remove(`${journal.id}`).subscribe(
               () => {
-                this.journalService.getSelectedInterval(this.params)
+                // this.journalService.getSelectedInterval(this.params)
+                this.journalStore.load(`?page_size=${this.pageSize}`)
               }
             )
           }
