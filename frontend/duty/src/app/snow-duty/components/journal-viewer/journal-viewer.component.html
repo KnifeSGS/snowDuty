@@ -16,13 +16,13 @@
   <div class="store" *ngFor="let data of storeData()">
     disp:
     <div class="shift" *ngFor="let shift of data.dispersion">
-      {{shift.man.username}}
+      {{shift.man.name}}
     </div>
-    act:
-    {{storeInfos()}}
-    tot:
-    {{storeInfos2()}}
   </div>
+  act:
+  {{storeActualPage()}}
+  tot:
+  {{storeJournalCount()}}
 </pre> -->
 
 <div class="card">
@@ -130,9 +130,8 @@
           <td>
             <p-tableCheckbox [value]="journal"></p-tableCheckbox>
           </td>
-          <td>{{journal.date_start | date:'YYYY.MM.dd. hh:mm:ss'}}</td>
-          <td>{{journal.person_on_duty.last_name}}
-            {{journal.person_on_duty.first_name}}</td>
+          <td>{{journal.date_start}}</td>
+          <td>{{journal.person_on_duty.name}}</td>
           <!-- <td *ngIf="journal.comments.length > 1">
             {{journal.comments[journal.comments.length - 1][0]}}:
             {{journal.comments[journal.comments.length - 1][1]}}</td>

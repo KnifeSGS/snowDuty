@@ -19,8 +19,8 @@ export class BaseService<T extends { _id?: string, id?: string | number, worker?
     public http: HttpClient
   ) { }
 
-  getAll(): Observable<T[]> {
-    return this.http.get<T[]>(`${this.config.apiUrl}${this.entity}/`);
+  getAll(options: string = '?page_size=1000'): Observable<T[]> {
+    return this.http.get<T[]>(`${this.config.apiUrl}${this.entity}/${options}`);
     // return new Observable<T[]>( observer => {
     //   let currentData: T[] = [];
     //   this.http.get<T[]>(`${this.config.apiUrl}${this.entity}`).subscribe(

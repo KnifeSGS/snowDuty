@@ -98,13 +98,12 @@ export class JournalViewerComponent implements OnInit {
     // this.getJournals()
   }
 
+  options = {
+    page_size: 1000
+  }
+
   ngOnInit() {
-    // this.journalService.getSelectedInterval(this.params);
-    // this.journalService.getAllJournal({ page_size: this.pageSize });
     this.userService.getAll$();
-    // this.users$.subscribe(users => users.forEach(user => {
-    //   this.userNames.push(user.full_name)
-    // }))
 
     if (window.screen.width < 420) { // 768px portrait
       this.mobile = true;
@@ -112,7 +111,7 @@ export class JournalViewerComponent implements OnInit {
     this.ref.detectChanges();
 
 
-    this.journalStore.load(`?page_size=${this.pageSize}`)
+    this.journalStore.load(this.options)
   }
 
 
@@ -152,13 +151,6 @@ export class JournalViewerComponent implements OnInit {
       }
     });
   };
-
-
-  editJournal(journal: Journal) {
-    // this.journalService.update(journal)
-    // this.journal = { ...journal };
-    // this.journalDialog = true;
-  }
 
   deleteJournal(journalId: string, journalDate?: Date) {
     this.confirmationService.confirm({

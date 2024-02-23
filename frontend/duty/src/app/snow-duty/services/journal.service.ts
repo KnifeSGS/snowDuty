@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Journal, JournalResponse } from '../models/journal';
 import { BaseService } from './base.service';
 import { ConfigService } from './config.service';
+import { JournalDataStore } from '../models/initial-journal-data';
 
 @Injectable({
   providedIn: 'root'
@@ -34,11 +35,8 @@ export class JournalService extends BaseService<Journal> {
     // )
   }
 
-  getAllJournal(params?: {}) {
-    // this.journals$.next([]);
-    this.http.get<JournalResponse>(`${this.config.apiUrl}${this.entity}/`, { params }).subscribe(
-      entity => this.journals$.next(entity)
-    )
+  getAllJournal(params?: {}): Observable<JournalDataStore> {
+    return this.http.get<JournalDataStore>(`${this.config.apiUrl}${this.entity}withall/`, { params })
   }
 
   // override getAll(): Observable<Journal[]> {

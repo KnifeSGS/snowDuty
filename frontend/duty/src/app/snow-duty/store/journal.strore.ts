@@ -1,9 +1,7 @@
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { InitialJournalData, InitialJournalDataValues, JournalDataStore } from "../models/initial-journal-data";
 import { computed, inject } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { ConfigService } from "../services/config.service";
-import { Observable, debounceTime, distinctUntilChanged, pipe, switchMap, tap } from "rxjs";
+import { Observable, debounceTime, distinctUntilChanged, pipe, switchMap } from "rxjs";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators'
 import { JournalService } from "../services/journal.service";
@@ -21,29 +19,27 @@ export const JournalStore = signalStore(
     };
   }),
   withMethods(store => {
-    const http = inject(HttpClient);
-    const config = inject(ConfigService);
-    // const journalService = inject(JournalService);
+    const journalService = inject(JournalService);
 
-    const getAllJournalInfo = (options: string = '?page_size=1000'): Observable<JournalDataStore> => {
-      return http.get<JournalDataStore>(`${config.apiUrl}journalwithall/${options}`)
-    }
 
     return {
-      load: rxMethod<string>(
+      load: rxMethod<{}>(
         pipe(
-          debounceTime(1000),
+          // debounceTime(1000),
           distinctUntilChanged(),
           switchMap((options) => {
-            return getAllJournalInfo(options)
+            return journalService.getAllJournal(options)
           }),
           tapResponse({
             next: (response) => {
-              // console.log(response);
+              console.log(store);
               patchState(store, {
                 'results': response.results,
                 'actual_page': response.actual_page,
-                'total_pages': response.total_pages
+                'total_pages': response.total_pages,
+                'count': response.count,
+                'next': response.next,
+                'previous': response.previous
               })
             },
             error: console.error
@@ -51,18 +47,19 @@ export const JournalStore = signalStore(
         ),
       ),
 
-      deleteJournal: rxMethod<number>(
-        pipe(
-          switchMap()
-          tapResponse({
-            next: () => {
+      // deleteJournal: rxMethod<number>(
+      //   pipe(
+      //     switchMap()
+      //     tapResponse({
+      //       next: () => {
 
-            },
-            error: console.error
-          })
-        )
-      )
-      )
+      //       },
+      //       error: console.error
+      //     })
+      //   )
+      // ),
+
+
     }
   }
   )

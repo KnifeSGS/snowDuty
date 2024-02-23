@@ -1,15 +1,7 @@
 export interface InitialJournalData {
   "id": number;
   "person_on_duty": {
-    "is_staff": boolean,
-    "username": string,
-    "email": string,
-    "is_active": boolean,
-    "groups": string[],
-    "user_permissions": string[],
-    "id": number,
-    "last_name": string,
-    "first_name": string
+    "name": string,
   },
   "date_start": Date | null;
   "date_end": Date | null;
@@ -18,15 +10,7 @@ export interface InitialJournalData {
       "id": number;
       "journal": number;
       "man": {
-        "is_staff": boolean;
-        "username": string;
-        "email": string;
-        "is_active": boolean;
-        "groups": string[];
-        "user_permissions": string[];
-        "id": number;
-        "last_name": string;
-        "first_name": string
+        "name": string
       };
       "car": {
         "id": number;
@@ -85,15 +69,7 @@ export const InitialJournalDataValues: JournalDataStore = {
   'results': [{
     "id": 0,
     "person_on_duty": {
-      "is_staff": true,
-      "username": "",
-      "email": "",
-      "is_active": true,
-      "groups": [],
-      "user_permissions": [],
-      "id": 0,
-      "last_name": "",
-      "first_name": ""
+      "name": ""
     },
     "date_start": null,
     "date_end": null,
@@ -102,15 +78,7 @@ export const InitialJournalDataValues: JournalDataStore = {
         "id": 0,
         "journal": 0,
         "man": {
-          "is_staff": false,
-          "username": "",
-          "email": "",
-          "is_active": false,
-          "groups": [],
-          "user_permissions": [],
-          "id": 0,
-          "last_name": "",
-          "first_name": ""
+          "name": ""
         },
         "car": {
           "id": 0,
