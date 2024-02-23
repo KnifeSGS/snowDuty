@@ -6,6 +6,7 @@ import { Journal, JournalResponse } from '../models/journal';
 import { BaseService } from './base.service';
 import { ConfigService } from './config.service';
 import { JournalDataStore } from '../models/initial-journal-data';
+import { JournalDataBase } from '../models/data-base';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +36,8 @@ export class JournalService extends BaseService<Journal> {
     // )
   }
 
-  getAllJournal(params?: {}): Observable<JournalDataStore> {
-    return this.http.get<JournalDataStore>(`${this.config.apiUrl}${this.entity}withall/`, { params })
+  getAllJournal(params?: {}): Observable<JournalDataBase> {
+    return this.http.get<JournalDataBase>(`${this.config.apiUrl}${this.entity}withall/`, { params })
   }
 
   // override getAll(): Observable<Journal[]> {
