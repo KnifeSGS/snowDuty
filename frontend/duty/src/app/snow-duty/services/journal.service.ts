@@ -1,20 +1,20 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { Journal, JournalResponse } from '../models/journal';
 import { BaseService } from './base.service';
 import { ConfigService } from './config.service';
-import { JournalDataStore } from '../models/initial-journal-data';
 import { JournalDataBase } from '../models/data-base';
+import { ApiOptions } from '../models/api-options';
+import { JournalData } from '../models/journal-data';
 
 @Injectable({
   providedIn: 'root'
 })
-export class JournalService extends BaseService<Journal> {
+export class JournalService extends BaseService<JournalData> {
 
   // journals$: BehaviorSubject<Journal[]> = new BehaviorSubject<Journal[]>([])
-  journals$: ReplaySubject<JournalResponse> = new ReplaySubject<JournalResponse>()
+  journals$: ReplaySubject<JournalDataBase> = new ReplaySubject<JournalDataBase>()
 
   constructor(
     public override config: ConfigService,
@@ -24,16 +24,8 @@ export class JournalService extends BaseService<Journal> {
     this.entity = 'journal';
   }
 
-  getSelectedInterval(params: {}) {
-    // this.journals$.next([]);
-    // if (params) {
-    this.http.get<JournalResponse>(`${this.config.apiUrl}${this.entity}/selectedinterval`, { params }).subscribe(
-      entity => this.journals$.next(entity)
-    )
-    // }
-    // this.http.get<Journal[]>(`${this.config.apiUrl}${this.entity}`).subscribe(
-    //   entity => this.journals$.next(entity)
-    // )
+  getSelectedInterval(params: {}): Observable<JournalDataBase> {
+    return this.http.get<JournalDataBase>(`${this.config.apiUrl}${this.entity}/selectedinterval`, { params })
   }
 
   getAllJournal(params?: {}): Observable<JournalDataBase> {
@@ -49,8 +41,8 @@ export class JournalService extends BaseService<Journal> {
     return await response.json()
   }
 
-  getOne(_id: string): Observable<Journal> {
-    return this.http.get<Journal>(`${this.config.apiUrl}${this.entity}withall/${_id}/`);
+  getOne(_id: string): Observable<JournalData> {
+    return this.http.get<JournalData>(`${this.config.apiUrl}${this.entity}withall/${_id}/`);
   }
 
   override async getOneSignal(id: number): Promise<any> {

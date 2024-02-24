@@ -97,7 +97,7 @@ export class UserEditorComponent implements OnInit {
   buildForm() {
     this.userDataBuilder();
     if (this.user) {
-      this.userService.update(this.user)
+      this.userService.update(this.user, this.user.id!)
         .subscribe(
           () => {
             console.log('user updated');

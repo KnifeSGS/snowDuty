@@ -57,6 +57,7 @@ import { SubcontractsComponent } from './components/subcontracts/subcontracts.co
 import { UserEditorComponent } from './components/user-editor/user-editor.component';
 import { PasswordModule } from 'primeng/password';
 import { CarsViewerComponent } from './components/cars-viewer/cars-viewer.component';
+import { WorkerViewerComponent } from './components/worker-viewer/worker-viewer.component';
 
 
 @NgModule({
@@ -76,7 +77,8 @@ import { CarsViewerComponent } from './components/cars-viewer/cars-viewer.compon
     UserViewerComponent,
     SubcontractsComponent,
     UserEditorComponent,
-    CarsViewerComponent
+    CarsViewerComponent,
+    WorkerViewerComponent
     // ChartComponent
   ],
   imports: [

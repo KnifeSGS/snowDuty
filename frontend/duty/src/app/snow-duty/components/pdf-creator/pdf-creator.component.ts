@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Journal } from '../../models/journal';
 
 import * as pdfMake from "pdfmake/build/pdfmake.js";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
+import { JournalData } from '../../models/journal-data';
 
 @Component({
   selector: 'app-pdf-creator',
@@ -16,7 +16,7 @@ export class PdfCreatorComponent {
     (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
   }
 
-  test(journal: Journal) {
+  test(journal: JournalData) {
     console.log(journal);
   }
 
@@ -96,7 +96,7 @@ export class PdfCreatorComponent {
   //   pdfMake.createPdf(docDefinition).open();
   // }
 
-  getChecksForJournal(journal: Journal) {
+  getChecksForJournal(journal: JournalData) {
     // return new Promise((resolve, reject) => {
     //   let checks = [];
     //   for (let i = 0; i < journal.checks!.length; i++) {

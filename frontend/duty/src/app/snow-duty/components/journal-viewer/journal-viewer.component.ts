@@ -1,15 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, inject, OnInit, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { BehaviorSubject, ReplaySubject } from 'rxjs';
-import { User } from 'src/app/models/user';
-import { Journal, JournalResponse } from '../../models/journal';
 import { JournalService } from '../../services/journal.service';
 import { UserService } from '../../services/user.service';
 import { JournalCreatorComponent } from '../journal-creator/journal-creator.component';
 import { UserCreatorComponent } from '../user-creator/user-creator.component';
 import { JournalStore } from '../../store/journal.strore';
-import { InitialJournalData, JournalDataStore } from '../../models/initial-journal-data';
+import { ApiOptions } from '../../models/api-options';
+import { JournalData } from '../../models/journal-data';
+import { HttpParams, HttpParamsOptions } from '@angular/common/http';
 
 @Component({
   selector: 'app-journal-viewer',
@@ -73,14 +72,14 @@ export class JournalViewerComponent implements OnInit {
   thisMonth = this.today.getMonth();
   thisDay = this.today.getDate();
   thisHour = this.today.getHours();
-  params: { start?: string, end?: string } = {
+  paramsold: { start?: string, end?: string } = {
     start: this.thisMonthFirstDay,
     end: new Date(this.thisYear, this.thisMonth, this.thisDay, this.thisHour + 1).toISOString()
   }
 
-  journal!: Journal;
+  journal!: JournalData;
 
-  selectedJournals!: Journal[];
+  selectedJournals!: JournalData[];
 
   submitted!: boolean;
 
@@ -98,8 +97,8 @@ export class JournalViewerComponent implements OnInit {
     // this.getJournals()
   }
 
-  options = {
-    page_size: 1000
+  queryParams: ApiOptions = {
+    page_size: 50
   }
 
   ngOnInit() {
@@ -110,8 +109,7 @@ export class JournalViewerComponent implements OnInit {
     };
     this.ref.detectChanges();
 
-
-    this.journalStore.load(this.options)
+    this.journalStore.load(this.queryParams)
   }
 
 
@@ -119,7 +117,7 @@ export class JournalViewerComponent implements OnInit {
   openDialog(event: any) {
     this.openedDialogName = event.target.parentElement.id
     if (this.openedDialogName === "journalDialog") {
-      this.journal = new Journal();
+      this.journal = new JournalData();
     }
     this.submitted = false;
     this.dialogs[event.target.parentElement.id] = true;
@@ -131,7 +129,7 @@ export class JournalViewerComponent implements OnInit {
   //   this.dialogs['userDialog'] = true;
   // }
 
-  deleteSelectedJournals(journals: Journal[]) {
+  deleteSelectedJournals(journals: JournalData[]) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected journals?',
       header: 'Confirm',
@@ -142,7 +140,7 @@ export class JournalViewerComponent implements OnInit {
             this.journalService.remove(`${journal.id}`).subscribe(
               () => {
                 // this.journalService.getSelectedInterval(this.params)
-                this.journalStore.load(`?page_size=${this.pageSize}`)
+                // this.journalStore.load(`?page_size=${this.pageSize}`)
               }
             )
           }
@@ -161,7 +159,7 @@ export class JournalViewerComponent implements OnInit {
         if (journalId) {
           this.journalService.remove(journalId).subscribe(
             () => {
-              this.journalService.getSelectedInterval(this.params)
+              // this.journalService.getSelectedInterval(this.params)
             }
           )
         }
@@ -207,14 +205,14 @@ export class JournalViewerComponent implements OnInit {
   selectInterval() {
     const start = this.interval[0];
     const end = this.interval[1];
-    if (this.interval[0] && this.interval[1]) {
-      this.params.start = new Date(Date.UTC(start.getFullYear(), start.getMonth(), start.getDate())).toISOString();
-      this.params.end = new Date(Date.UTC(end.getFullYear(), end.getMonth(), end.getDate() + 1)).toISOString();
-    }
-    if (this.params.end) {
-      console.log(this.params);
-      this.journalService.getSelectedInterval(this.params)
-    }
+    // if (this.interval[0] && this.interval[1]) {
+    //   this.params.start = new Date(Date.UTC(start.getFullYear(), start.getMonth(), start.getDate())).toISOString();
+    //   this.params.end = new Date(Date.UTC(end.getFullYear(), end.getMonth(), end.getDate() + 1)).toISOString();
+    // }
+    // if (this.params.end) {
+    //   console.log(this.params);
+    //   this.journalService.getSelectedInterval(this.params)
+    // }
   }
 
 

@@ -1,7 +1,7 @@
 import { Component, signal, WritableSignal } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Car } from '../../models/car';
+import { CarData } from '../../models/car-data';
 import { CarsService } from '../../services/cars.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class CarsViewerComponent {
   mobile: boolean = false;
   submitted!: boolean;
   paginatorTemplate = "";
-  selectedCars!: Car[];
+  selectedCars!: CarData[];
   carNames: string[] = [];
 
   defaultSortOrder: number = 1
@@ -33,7 +33,7 @@ export class CarsViewerComponent {
     carDialog: false
   }
 
-  carsSignal: WritableSignal<Car[]> = signal([]);
+  carsSignal: WritableSignal<CarData[]> = signal([]);
 
   constructor(
     private carsService: CarsService,
@@ -54,7 +54,7 @@ export class CarsViewerComponent {
       .then(
         cars => {
           // console.log(cars.results);
-          cars.results.forEach((car: Car) => {
+          cars.results.forEach((car: CarData) => {
             this.carNames.push(car.name)
           })
           return this.carsSignal.set(cars.results)
@@ -71,7 +71,7 @@ export class CarsViewerComponent {
     this.dialogs[event.target.parentElement.id] = true;
   }
 
-  openEditDialog(event: any, car: Car) {
+  openEditDialog(event: any, car: CarData) {
     console.log(event);
     console.log(car);
     // this.user = user
@@ -94,7 +94,7 @@ export class CarsViewerComponent {
 
   }
 
-  deleteCar(car: Car) {
+  deleteCar(car: CarData) {
 
   }
 

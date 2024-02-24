@@ -54,7 +54,7 @@
     <ng-template #readWorker>
       <div class="field col-12 md:col-5">
         <input pInputText id="worker" type="text"
-          placeholder="{{selectedJournal().person_on_duty_name}}" disabled />
+          placeholder="{{selectedJournal().person_on_duty?.name}}" disabled />
       </div>
       <div class="field col-12 md:col-5">
         <input pInputText id="date" type="text"
@@ -82,7 +82,7 @@
           <!-- <div *ngIf="comment === selectedJournal().comments![0]"></div> -->
           <!-- <div *ngIf="comment !== selectedJournal().comments![0]"> -->
           <!-- <p>{{comment.id}}: {{comment.comment}}</p> -->
-          <p>- {{comment.comment}}</p>
+          <p>- {{comment}}</p>
           <!-- </div> -->
         </div>
         <div *ngIf="selectedJournal().comments!.length < 1">

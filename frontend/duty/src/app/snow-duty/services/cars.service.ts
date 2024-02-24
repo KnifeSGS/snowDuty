@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Car } from '../models/car';
+import { CarData } from '../models/car-data';
 import { BaseService } from './base.service';
 import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CarsService extends BaseService<Car>  {
+export class CarsService extends BaseService<CarData>  {
 
   constructor(
     public override config: ConfigService,

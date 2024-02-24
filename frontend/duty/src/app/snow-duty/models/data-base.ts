@@ -1,6 +1,8 @@
-import { InitialDispersionsData } from "./initial-dispersions-data"
-import { InitialJournalData } from "./initial-journal-data"
-import { InitialUserData } from "./initial-user-data"
+import { User } from "src/app/models/user"
+import { CarData } from "./car-data"
+import { DispersionsData } from "./dispersions-data"
+import { JournalData } from "./journal-data"
+import { WorkerData } from "./worker-data"
 
 export interface DataBase {
   'next': string | null,
@@ -11,11 +13,17 @@ export interface DataBase {
 }
 
 export interface JournalDataBase extends DataBase {
-  'results': InitialJournalData[]
+  'results': JournalData[]
 }
 export interface UserDataBase extends DataBase {
-  'results': InitialUserData[]
+  'results': User[]
 }
 export interface DispersionsDataBase extends DataBase {
-  'results': InitialDispersionsData[]
+  'results': DispersionsData[]
+}
+export interface CarsDataBase extends DataBase {
+  'results': CarData[]
+}
+export interface WorkerDataBase extends DataBase {
+  'results': WorkerData[]
 }

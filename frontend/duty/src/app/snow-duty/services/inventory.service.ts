@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of, ReplaySubject, tap } from 'rxjs';
 import { Inventory } from '../models/inventory';
 import { Itemdata, sumsData } from '../models/itemdata';
-import { Stockpile } from '../models/stockpile';
 import { BaseService } from './base.service';
 import { ConfigService } from './config.service';
 
@@ -14,7 +13,7 @@ export class InventoryService extends BaseService<Inventory>   {
 
   items$: BehaviorSubject<Inventory> = new BehaviorSubject<Inventory>(new Inventory())
 
-  stock$: ReplaySubject<Record<keyof Stockpile, string | number | undefined>> = new ReplaySubject<Record<keyof Stockpile, string | number | undefined>>()
+  // stock$: ReplaySubject<Record<keyof Stockpile, string | number | undefined>> = new ReplaySubject<Record<keyof Stockpile, string | number | undefined>>()
 
   sums$: BehaviorSubject<Itemdata[]> = new BehaviorSubject<Itemdata[]>([])
 
@@ -44,7 +43,7 @@ export class InventoryService extends BaseService<Inventory>   {
         const newStock = {
           salt, basalt, cacl2, mixture, kalcinol, zeokal
         }
-        this.stock$.next(newStock)
+        // this.stock$.next(newStock)
       }
     )
   }

@@ -198,8 +198,8 @@ export class ShiftViewerComponent implements OnInit {
         params => {
           this.journalService.get(params['id']).subscribe(
             journal => {
-              if (journal._id) {
-                this.shiftService.getAllForOneJournal$(journal._id)
+              if (journal.id) {
+                // this.shiftService.getAllForOneJournal$(journal.id)
               }
             })
         })

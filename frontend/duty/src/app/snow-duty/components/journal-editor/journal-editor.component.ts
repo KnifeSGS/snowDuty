@@ -1,16 +1,14 @@
 import { Component, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { concatMap, map, switchMap } from 'rxjs';
 import { User } from 'src/app/models/user';
-import { Journal } from '../../models/journal';
 import { Shift } from '../../models/shift';
 import { JournalService } from '../../services/journal.service';
-import { ShiftService } from '../../services/shift.service';
 import { UserService } from '../../services/user.service';
 import { PdfCreatorComponent } from '../pdf-creator/pdf-creator.component';
 import { ShiftCreatorComponent } from '../shift-creator/shift-creator.component';
+import { JournalData } from '../../models/journal-data';
 
 @Component({
   selector: 'app-journal-editor',
@@ -27,11 +25,11 @@ export class JournalEditorComponent implements OnInit {
   shiftDialog!: boolean;
   submitted!: boolean;
 
-  journal: Journal = new Journal();
+  journal: JournalData = new JournalData();
   journalId: number = 0;
 
   shifts: Shift[] = []
-  journalUpdateData: Journal = new Journal();
+  journalUpdateData: JournalData = new JournalData();
   journalForm!: FormGroup;
   users!: User[];
   // worker: User = new User();
@@ -41,7 +39,7 @@ export class JournalEditorComponent implements OnInit {
   canAddCheck: boolean = false;
   defaultSortOrder: number = 1
 
-  selectedJournal: WritableSignal<Journal> = signal(new Journal());
+  selectedJournal: WritableSignal<JournalData> = signal(new JournalData());
   worker: WritableSignal<User> = signal(new User());
   journalDate: WritableSignal<Date> = signal(new Date());
 
@@ -86,13 +84,12 @@ export class JournalEditorComponent implements OnInit {
   }
 
   getUsers() {
-    this.userService.getAll().subscribe(
-      // users => this.users$ = of(users)
-      users => {
-        console.log(users);
-        this.users = users
-      }
-    );
+    // this.userService.getAll().subscribe(
+    //   ({results}) => {
+    //     console.log(users);
+    //     this.users = results
+    //   }
+    // );
   };
 
   async getJournal() {
@@ -134,35 +131,35 @@ export class JournalEditorComponent implements OnInit {
 
   journalBuilder() {
     const date = this.journalForm.value.date
-    let utcDate = this.journal.date;
+    let utcDate = this.journal.date_start;
     if (date) {
       utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
     }
 
     if (this.canAddCheck) {
       this.journalUpdateData = {
-        _id: this.journal._id,
-        worker: this.journalForm.value.worker._id,
-        date: utcDate,
-        checks: this.journalForm.value.checks,
-        comment: this.journalForm.value.comment
+        id: this.journal.id,
+        person_on_duty: this.journalForm.value.worker.id,
+        date_start: utcDate,
+        monitor: this.journalForm.value.checks,
+        comments: this.journalForm.value.comment
       }
     } else {
       this.journalUpdateData = {
-        _id: this.journal._id,
-        worker: this.journalForm.value.worker._id,
-        date: utcDate,
-        comment: this.journalForm.value.comment
+        id: this.journal.id,
+        person_on_duty: this.journalForm.value.worker._id,
+        date_start: utcDate,
+        comments: this.journalForm.value.comment
       }
     }
 
   }
 
   buildForm() {
-    const id = this.journal._id
+    const id = this.journal.id
     this.journalBuilder();
     if (id) {
-      this.journalService.update(this.journalUpdateData)
+      this.journalService.update(this.journalUpdateData, id)
         .subscribe(
           () => {
             this.journalForm.reset();

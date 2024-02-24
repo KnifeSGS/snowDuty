@@ -1,27 +1,22 @@
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
-import { InitialJournalDataValues } from "../models/journal-data";
-import { computed, inject } from "@angular/core";
-import { Observable, debounceTime, distinctUntilChanged, pipe, switchMap } from "rxjs";
+import { inject } from "@angular/core";
+import { debounceTime, distinctUntilChanged, pipe, switchMap } from "rxjs";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators'
-import { JournalService } from "../services/journal.service";
+import { WorkerService } from "../services/worker.service";
+import { InitialWorkerDataValues } from "../models/worker-data";
 import { ApiOptions } from "../models/api-options";
 
-export const JournalStore = signalStore(
+export const WorkerStore = signalStore(
   { providedIn: 'root' },
-  withState(InitialJournalDataValues),
+  withState(InitialWorkerDataValues),
   withComputed(store => {
     return {
-      dispersions: computed(() => {
-        store.results().map((journal) => {
-          return journal.dispersion
-        })
-      })
+
     };
   }),
   withMethods(store => {
-    const journalService = inject(JournalService);
-
+    const workerService = inject(WorkerService)
 
     return {
       load: rxMethod<ApiOptions>(
@@ -29,7 +24,7 @@ export const JournalStore = signalStore(
           // debounceTime(1000),
           distinctUntilChanged(),
           switchMap((params) => {
-            return journalService.getAllJournal(params)
+            return workerService.getAll(params)
           }),
           tapResponse({
             next: (response) => {
@@ -43,23 +38,16 @@ export const JournalStore = signalStore(
               })
             },
             error: console.error
-          })
+          }),
+          // tap(() => {
+          //   console.log(state);
+          // })
         ),
       ),
 
-      // deleteJournal: rxMethod<number>(
-      //   pipe(
-      //     switchMap()
-      //     tapResponse({
-      //       next: () => {
+      deleteJournal() {
 
-      //       },
-      //       error: console.error
-      //     })
-      //   )
-      // ),
-
-
+      }
     }
   }
   )

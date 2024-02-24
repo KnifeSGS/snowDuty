@@ -11,6 +11,7 @@ import { UserViewerComponent } from './components/user-viewer/user-viewer.compon
 import { SubcontractsComponent } from './components/subcontracts/subcontracts.component';
 import { UserEditorComponent } from './components/user-editor/user-editor.component';
 import { CarsViewerComponent } from './components/cars-viewer/cars-viewer.component';
+import { WorkerViewerComponent } from './components/worker-viewer/worker-viewer.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,10 @@ const routes: Routes = [
   {
     path: 'users/:id',
     component: UserEditorComponent
+  },
+  {
+    path: 'workers',
+    component: WorkerViewerComponent
   },
   {
     path: 'subs',

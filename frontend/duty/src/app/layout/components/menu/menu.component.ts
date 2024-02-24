@@ -63,6 +63,11 @@ export class MenuComponent implements OnInit {
             routerLink: ['/users']
           },
           {
+            label: 'Dolgozók',
+            icon: 'pi pi-fw pi-user',
+            routerLink: ['/workers']
+          },
+          {
             label: 'Alvállalkozók',
             icon: 'pi pi-fw pi-users',
             routerLink: ['/subcontractor']

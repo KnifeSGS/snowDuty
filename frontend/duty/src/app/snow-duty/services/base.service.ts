@@ -1,14 +1,14 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpParamsOptions } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, interval, Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
-import { JournalResponse } from '../models/journal';
 import { ConfigService } from './config.service';
+import { ApiOptions } from '../models/api-options';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BaseService<T extends { _id?: string, id?: string | number, worker?: User, date?: Date }> {
+export class BaseService<T> {
 
   entity: string = '';
 
@@ -19,8 +19,8 @@ export class BaseService<T extends { _id?: string, id?: string | number, worker?
     public http: HttpClient
   ) { }
 
-  getAll(options: string = '?page_size=1000'): Observable<T[]> {
-    return this.http.get<T[]>(`${this.config.apiUrl}${this.entity}/${options}`);
+  getAll(params?: {}): Observable<T> {
+    return this.http.get<T>(`${this.config.apiUrl}${this.entity}/`, { params });
     // return new Observable<T[]>( observer => {
     //   let currentData: T[] = [];
     //   this.http.get<T[]>(`${this.config.apiUrl}${this.entity}`).subscribe(
@@ -54,9 +54,9 @@ export class BaseService<T extends { _id?: string, id?: string | number, worker?
     );
   }
 
-  update(entity: T): Observable<T> {
+  update(entity: T, id: number | string): Observable<T> {
     return this.http.patch<T>(
-      `${this.config.apiUrl}${this.entity}/${entity.id}/`,
+      `${this.config.apiUrl}${this.entity}/${entity}${id}/`,
       entity
     );
   }

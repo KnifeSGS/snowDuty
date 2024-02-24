@@ -2,10 +2,10 @@ import { ChangeDetectorRef, Component, EventEmitter, inject, Output, signal, Wri
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { User } from 'src/app/models/user';
-import { Journal } from '../../models/journal';
 import { JournalService } from '../../services/journal.service';
 import { UserService } from '../../services/user.service';
 import { JournalStore } from '../../store/journal.strore';
+import { JournalData } from '../../models/journal-data';
 
 export function minNameLengthValidator(min: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -37,7 +37,7 @@ export class JournalCreatorComponent {
 
   disabled: boolean = true;
 
-  journal: Journal = new Journal();
+  journal: JournalData = new JournalData();
 
   journalForm: FormGroup;
   date: Date = new Date(Date.now())
@@ -117,7 +117,7 @@ export class JournalCreatorComponent {
     }
     // const { checking, temperature, percipitation, sky, visibility, roads } = this.journalForm.value;
     this.journal = {
-      person_on_duty: this.onDutyId,
+      person_on_duty: { id: this.onDutyId },
       date_start: utcDate,
       // comment: this.journalForm.value.comment
     }
@@ -129,11 +129,11 @@ export class JournalCreatorComponent {
     // console.log(this.journal);
     this.journalService.create(this.journal)
       .subscribe(
-        // () => this.journalService.getAll$()
-        // () => this.getJournals.emit()
-        // p => console.log(p)
-        () => this.journalStore.load(`?page_size=1000`)
-      )
+      // () => this.journalService.getAll$()
+      // () => this.getJournals.emit()
+      // p => console.log(p)
+      // () => this.journalStore.load(`?page_size=1000`)
+    )
 
     // this.ref.markForCheck()
   }

@@ -1,4 +1,4 @@
-import { Journal } from "../snow-duty/models/journal";
+import { JournalData } from "../snow-duty/models/journal-data";
 import { Shift } from "../snow-duty/models/shift";
 
 export class User {
@@ -19,7 +19,7 @@ export class User {
   refresh?: string = "";
   password?: string = "";
   password2?: string = "";
-  journals?: Journal[] = [];
+  journals?: JournalData[] = [];
   shifts?: Shift[] = [];
   user?: string = '';
   username?: string = '';
