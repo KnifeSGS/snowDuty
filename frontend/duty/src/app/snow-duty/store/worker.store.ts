@@ -1,18 +1,25 @@
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
-import { inject } from "@angular/core";
-import { debounceTime, distinctUntilChanged, pipe, switchMap } from "rxjs";
+import { computed, inject } from "@angular/core";
+import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from "rxjs";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators'
 import { WorkerService } from "../services/worker.service";
-import { InitialWorkerDataValues } from "../models/worker-data";
+import { InitialWorkerDataValues, WorkerData } from "../models/worker-data";
 import { ApiOptions } from "../models/api-options";
 
 export const WorkerStore = signalStore(
   { providedIn: 'root' },
   withState(InitialWorkerDataValues),
+  withState({ 'workerNames2': [] }),
   withComputed(store => {
     return {
-
+      workerNames: computed(() => {
+        const names: any[] = []
+        store.results().map((worker) => {
+          return names.push(worker.name)
+        })
+        return names
+      })
     };
   }),
   withMethods(store => {
@@ -38,16 +45,26 @@ export const WorkerStore = signalStore(
               })
             },
             error: console.error
-          }),
-          // tap(() => {
-          //   console.log(state);
-          // })
+          })
         ),
       ),
 
-      deleteJournal() {
+      create: rxMethod<any>(
+        pipe(
+          switchMap((worker) => {
+            return workerService.create(worker)
+          }),
+          tapResponse({
+            next: (response) => {
+              console.log(response);
+              patchState(store, {
 
-      }
+              })
+            },
+            error: console.error
+          })
+        )
+      )
     }
   }
   )

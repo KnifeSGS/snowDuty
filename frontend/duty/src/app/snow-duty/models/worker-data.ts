@@ -1,7 +1,7 @@
 import { WorkerDataBase } from "./data-base";
 
 export class WorkerData {
-  "id": number | string;
+  "id"?: number | string;
   "first_name"?: string;
   "last_name"?: string;
   "name"?: string;

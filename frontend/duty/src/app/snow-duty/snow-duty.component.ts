@@ -66,7 +66,7 @@ export class SnowDutyComponent implements OnInit {
     private shiftService: ShiftService,
     private dataService: DatacontainerService
   ) {
-    this.dataService.getAll$()
+    this.dataService.getAll()
     this.sumOfDataFields$.subscribe(data => this.chartDataSums = data);
   }
 

@@ -21,33 +21,21 @@ export class BaseService<T> {
 
   getAll(params?: {}): Observable<T> {
     return this.http.get<T>(`${this.config.apiUrl}${this.entity}/`, { params });
-    // return new Observable<T[]>( observer => {
-    //   let currentData: T[] = [];
-    //   this.http.get<T[]>(`${this.config.apiUrl}${this.entity}`).subscribe(
-    //     data => {
-    //       currentData = data;
-    //       observer.next(data);
-    //     }
-    //   );
-
-    //   interval(5000).subscribe(
-    //     num => currentData[0].price = Math.round(Math.random() * 10000)
-    //   );
-    // });
   }
 
-  getAll$() {
-    this.list$.next([]);
-    this.http.get<T[]>(`${this.config.apiUrl}${this.entity}/`).subscribe(
-      entity => this.list$.next(entity)
-    )
-  }
+  // getAll$() {
+  //   this.list$.next([]);
+  //   this.http.get<T[]>(`${this.config.apiUrl}${this.entity}/`).subscribe(
+  //     entity => this.list$.next(entity)
+  //   )
+  // }
 
   get(id: string): Observable<T> {
     return this.http.get<T>(`${this.config.apiUrl}${this.entity}/${id}/`);
   }
 
   create(entity: T): Observable<T> {
+    console.log("ezt hoznám létre: ", entity);
     return this.http.post<T>(
       `${this.config.apiUrl}${this.entity}/`,
       entity

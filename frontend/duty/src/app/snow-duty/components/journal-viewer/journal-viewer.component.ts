@@ -102,7 +102,7 @@ export class JournalViewerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getAll$();
+    // this.userService.getAll$();
 
     if (window.screen.width < 420) { // 768px portrait
       this.mobile = true;
@@ -185,7 +185,7 @@ export class JournalViewerComponent implements OnInit {
   }
   saveUser() {
     this.childUser.buildForm();
-    this.userService.getAll$();
+    // this.userService.getAll$();
     this.childJournal.getUsers();
     this.dialogs[this.openedDialogName] = false;
   }

@@ -3,7 +3,7 @@
 <div class="card">
   <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
-      <button pButton pRipple [label]="NewWorker" id="newUserDialog"
+      <button pButton pRipple [label]="NewWorker" id="newWorkerDialog"
         icon="pi pi-plus" class="p-button-warning mr-2"
         (click)="openDialog($event)"></button>
     </ng-template>
@@ -16,17 +16,17 @@
     </ng-template>
   </p-toolbar>
 
-  <div class="asyncDiv" *ngIf="userSignal()">
-    <p-table #dt1 [value]="userSignal()" [rows]="10" [paginator]="true"
-      [globalFilterFields]="['first_name', 'last_name', 'email', 'groups', 'user_permissions']"
-      [tableStyle]="{'min-width': '70rem'}" [(selection)]="selectedUsers"
+  <div class="asyncDiv" *ngIf="workerData()">
+    <p-table #dt1 [value]="workerData()" [rows]="10" [paginator]="true"
+      [globalFilterFields]="['first_name', 'last_name', 'name', 'user_permissions']"
+      [tableStyle]="{'min-width': '70rem'}" [(selection)]="selectedWorkers"
       [rowHover]="true" dataKey="id"
       currentPageReportTemplate="{last} felhasználó látszik a {totalRecords} közül"
-      [showCurrentPageReport]="true" sortField="last_name"
+      [showCurrentPageReport]="true" sortField="name"
       [sortOrder]="defaultSortOrder">
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-          <h5 class="m-0">Felhasználók kezelése</h5>
+          <h5 class="m-0">Dolgozók kezelése</h5>
           <span class="p-input-icon-left">
             <button pButton [label]="Clear" class="p-button-outlined"
               icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
@@ -45,16 +45,16 @@
           <th style="width: 3rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
-          <th pSortableColumn="last_name" style="min-width:10rem">
+          <th pSortableColumn="name" style="min-width:10rem">
             Név
-            <p-sortIcon field="last_name"></p-sortIcon>
-            <p-columnFilter field="last_name" matchMode="equals"
+            <p-sortIcon field="name"></p-sortIcon>
+            <p-columnFilter field="name" matchMode="equals"
               [showMatchModes]="false" [showAddButton]="false"
               [showApplyButton]="false" [showClearButton]="true" display="menu"
               class="ml-auto">
               <ng-template pTemplate="filter" let-value
                 let-filter="filterCallback">
-                <p-dropdown [ngModel]="value" [options]="userNames"
+                <p-dropdown [ngModel]="value" [options]="workerNames()"
                   (onChange)="filter($event.value)" placeholder="Dolgozó neve">
                   <ng-template let-option pTemplate="item">
                     <span>{{option}}</span>
@@ -63,14 +63,14 @@
               </ng-template>
             </p-columnFilter>
           </th>
-          <th pSortableColumn="email" style="min-width:10rem">E-mail
-            <p-sortIcon field="email"></p-sortIcon>
+          <th pSortableColumn="first_name" style="min-width:10rem">Keresztnév
+            <p-sortIcon field="first_name"></p-sortIcon>
           </th>
-          <th pSortableColumn="groups" style="min-width:10rem">Szerepkör
-            <p-sortIcon field="groups"></p-sortIcon>
+          <th pSortableColumn="last_name" style="min-width:10rem">Vezetéknév
+            <p-sortIcon field="last_name"></p-sortIcon>
           </th>
           <th pSortableColumn="user_permissions" style="min-width:10rem">
-            Jogosultság
+            Beosztás
             <p-sortIcon field="user_permissions"></p-sortIcon>
           </th>
           <!-- <th style="width: 9rem"></th> -->
@@ -82,14 +82,16 @@
           <td>
             <p-tableCheckbox [value]="user"></p-tableCheckbox>
           </td>
-          <td>{{user.last_name}} {{user.first_name}}</td>
+          <td>{{user.name}}</td>
           <td>
-            {{user.email}}</td>
+            {{user.first_name}}</td>
           <td>
+            {{user.last_name}}</td>
+          <!-- <td>
             <p-chip *ngFor="let group of user.groups" class="">
               {{group.name}}
             </p-chip>
-          </td>
+          </td> -->
           <td>
             <p-chip *ngFor="let permission of user.user_permissions" class="">
               {{permission.name}}
@@ -104,13 +106,13 @@
               (click)="openEditDialog($event, user)"></button>
             <button pButton pRipple icon="pi pi-trash"
               class="p-button-rounded p-button-warning"
-              (click)="deleteUser(user.id, user.last_name, user.first_name)"></button>
+              (click)="deleteWorker(user.id)"></button>
           </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="summary">
         <div class="flex align-items-center justify-content-between">
-          Összesen {{userSignal().length}}db napló lett
+          Összesen {{workerCount()}} dolgozó lett
           rögzítve.
         </div>
       </ng-template>
@@ -118,16 +120,16 @@
   </div>
 </div>
 
-<p-dialog [(visible)]="dialogs['newUserDialog']"
+<p-dialog [(visible)]="dialogs['newWorkerDialog']"
   [style]="{width: 'auto', height: '547px'}" header="Új dolgozó" [modal]="true"
   styleClass="p-fluid">
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Mégse" icon="pi pi-times"
       class="p-button-text" (click)="hideDialog()"></button>
     <button pButton pRipple label="Mentés" icon="pi pi-check"
-      class="p-button-text" (click)="saveUser()"></button>
+      class="p-button-text" (click)="saveWorker()"></button>
   </ng-template>
-  <app-user-creator (getUsers)="getUsers()"></app-user-creator>
+  <app-worker-creator></app-worker-creator>
 </p-dialog>
 
 <p-dialog [(visible)]="dialogs['editUserDialog']"
@@ -137,7 +139,7 @@
     <button pButton pRipple label="Mégse" icon="pi pi-times"
       class="p-button-text" (click)="hideDialog()"></button>
     <button pButton pRipple label="Mentés" icon="pi pi-check"
-      class="p-button-text" (click)="editUser()"></button>
+      class="p-button-text" (click)="editWorker()"></button>
   </ng-template>
   <app-user-editor></app-user-editor>
 </p-dialog>
