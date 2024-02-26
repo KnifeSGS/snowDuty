@@ -1,11 +1,12 @@
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
-import { InitialJournalDataValues } from "../models/journal-data";
+import { InitialJournalDataValues, JournalData } from "../models/journal-data";
 import { computed, inject } from "@angular/core";
 import { Observable, debounceTime, distinctUntilChanged, pipe, switchMap } from "rxjs";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators'
 import { JournalService } from "../services/journal.service";
 import { ApiOptions } from "../models/api-options";
+import { DataBase } from "../models/data-base";
 
 export const JournalStore = signalStore(
   { providedIn: 'root' },
@@ -32,7 +33,7 @@ export const JournalStore = signalStore(
             return journalService.getAllJournal(params)
           }),
           tapResponse({
-            next: (response) => {
+            next: (response: DataBase<JournalData>) => {
               patchState(store, {
                 'results': response.results,
                 'actual_page': response.actual_page,

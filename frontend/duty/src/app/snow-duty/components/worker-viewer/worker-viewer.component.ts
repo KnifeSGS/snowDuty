@@ -65,7 +65,8 @@ export class WorkerViewerComponent implements OnInit {
     if (window.screen.width < 420) { // 768px portrait
       this.mobile = true;
     };
-    this.#workerStore.load(this.queryParams)
+
+    this.getWorkers(this.queryParams)
   }
 
   openDialog(event: any) {
@@ -83,8 +84,12 @@ export class WorkerViewerComponent implements OnInit {
     this.submitted = false;
   }
 
-  deleteWorker(id: number | string) {
+  getWorkers(params: ApiOptions) {
+    this.#workerStore.load(params)
+  }
 
+  deleteWorker(id: number | string) {
+    this.#workerStore.delete(id)
   }
 
   saveWorker() {

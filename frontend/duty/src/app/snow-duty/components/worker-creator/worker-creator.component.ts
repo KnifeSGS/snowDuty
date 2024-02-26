@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { WorkerStore } from '../../store/worker.store';
-import { WorkerData } from '../../models/worker-data';
+import { Worker } from '../../models/worker-data';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -16,7 +16,7 @@ export class WorkerCreatorComponent implements OnInit {
   #workerStore = inject(WorkerStore)
 
   // view
-  worker: WorkerData = new WorkerData()
+  worker: Worker = new Worker()
   mobile: boolean = false
   workerForm: FormGroup
 

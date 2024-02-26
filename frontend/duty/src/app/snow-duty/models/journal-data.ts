@@ -1,4 +1,4 @@
-import { JournalDataBase } from "./data-base";
+import { DataBase } from "./data-base";
 import { DispersionsData } from "./dispersions-data";
 import { WorkerData } from "./worker-data";
 
@@ -24,7 +24,7 @@ export interface Monitoring {
   "roads"?: string
 }
 
-export const InitialJournalDataValues: JournalDataBase = {
+export const InitialJournalDataValues: DataBase<JournalData> = {
   'next': null,
   'previous': null,
   'count': 0,

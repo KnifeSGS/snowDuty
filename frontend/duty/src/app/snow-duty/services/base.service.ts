@@ -35,7 +35,7 @@ export class BaseService<T> {
   }
 
   create(entity: T): Observable<T> {
-    console.log("ezt hoznám létre: ", entity);
+    // console.log("ezt hoznám létre: ", entity);
     return this.http.post<T>(
       `${this.config.apiUrl}${this.entity}/`,
       entity
@@ -49,7 +49,7 @@ export class BaseService<T> {
     );
   }
 
-  remove(id: string): Observable<T> {
+  remove(id: string | number): Observable<T> {
     return this.http.delete<T>(`${this.config.apiUrl}${this.entity}/${id}/`);
   }
 

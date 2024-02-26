@@ -4,7 +4,7 @@ import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseService } from './base.service';
 import { ConfigService } from './config.service';
-import { JournalDataBase } from '../models/data-base';
+import { DataBase } from '../models/data-base';
 import { ApiOptions } from '../models/api-options';
 import { JournalData } from '../models/journal-data';
 
@@ -14,7 +14,7 @@ import { JournalData } from '../models/journal-data';
 export class JournalService extends BaseService<JournalData> {
 
   // journals$: BehaviorSubject<Journal[]> = new BehaviorSubject<Journal[]>([])
-  journals$: ReplaySubject<JournalDataBase> = new ReplaySubject<JournalDataBase>()
+  journals$: ReplaySubject<DataBase<JournalData>> = new ReplaySubject<DataBase<JournalData>>()
 
   constructor(
     public override config: ConfigService,
@@ -24,12 +24,12 @@ export class JournalService extends BaseService<JournalData> {
     this.entity = 'journal';
   }
 
-  getSelectedInterval(params: {}): Observable<JournalDataBase> {
-    return this.http.get<JournalDataBase>(`${this.config.apiUrl}${this.entity}/selectedinterval`, { params })
+  getSelectedInterval(params: {}): Observable<DataBase<JournalData>> {
+    return this.http.get<DataBase<JournalData>>(`${this.config.apiUrl}${this.entity}/selectedinterval`, { params })
   }
 
-  getAllJournal(params?: {}): Observable<JournalDataBase> {
-    return this.http.get<JournalDataBase>(`${this.config.apiUrl}${this.entity}withall/`, { params })
+  getAllJournal(params?: {}): Observable<DataBase<JournalData>> {
+    return this.http.get<DataBase<JournalData>>(`${this.config.apiUrl}${this.entity}withall/`, { params })
   }
 
   // override getAll(): Observable<Journal[]> {
