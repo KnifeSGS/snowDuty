@@ -4,7 +4,7 @@ import { ConfigService } from './config.service';
 import { BaseService } from './base.service';
 import { DataBase } from '../models/data-base';
 import { WorkerData } from '../models/worker-data';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +22,4 @@ export class WorkerService extends BaseService<WorkerData>  {
   getQuery(params?: {}): Observable<DataBase<WorkerData>> {
     return this.http.get<DataBase<WorkerData>>(`${this.config.apiUrl}${this.entity}/`, { params });
   }
-
 }

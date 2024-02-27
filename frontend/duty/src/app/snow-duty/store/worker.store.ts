@@ -1,6 +1,6 @@
-import { patchState, signalStore, type, withComputed, withMethods, withState } from "@ngrx/signals";
+import { getState, patchState, signalStore, type, withComputed, withMethods, withState } from "@ngrx/signals";
 import { computed, inject } from "@angular/core";
-import { debounceTime, distinctUntilChanged, mergeMap, pipe, switchMap, tap } from "rxjs";
+import { concatMap, debounceTime, distinctUntilChanged, mergeMap, pipe, switchMap, tap } from "rxjs";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators'
 import { WorkerService } from "../services/worker.service";
@@ -27,7 +27,7 @@ export const WorkerStore = signalStore(
   }),
   withMethods(store => {
     const workerService = inject(WorkerService)
-    const messageService = inject(MessageService)
+    let query: ApiOptions = new ApiOptions()
 
     return {
       load: rxMethod<ApiOptions>(
@@ -35,18 +35,12 @@ export const WorkerStore = signalStore(
           // debounceTime(1000),
           distinctUntilChanged(),
           switchMap((params) => {
+            query = params
             return workerService.getQuery(params)
           }),
           tapResponse({
             next: (response: DataBase<WorkerData>) => {
-              patchState(store, {
-                'results': response.results,
-                'actual_page': response.actual_page,
-                'total_pages': response.total_pages,
-                'count': response.count,
-                'next': response.next,
-                'previous': response.previous
-              })
+              patchState(store, response)
             },
             error: console.error
           })
@@ -58,34 +52,39 @@ export const WorkerStore = signalStore(
           switchMap((worker) => {
             return workerService.create(worker)
           }),
+          // tapResponse({
+          //   next: (response) => {
+          //     patchState(store, addEntity(response))
+          //     patchState(store, {
+          //       count: store.count() + 1,
+          //       results: [...store.results(), store.entityMap()[response.id]]
+          //     })
+          //   },
+          //   error: console.error
+          // }),
+          switchMap(() => {
+            return workerService.getQuery(query)
+          }),
           tapResponse({
-            next: (response) => {
-              console.log(response);
-              patchState(store, addEntity(response))
-              messageService.add({
-                severity: 'success',
-                summary: 'Successful',
-                detail: `${response.name} létrehozva`,
-                life: 3000
-              })
+            next: (response: DataBase<WorkerData>) => {
+              patchState(store, response)
             },
             error: console.error
           }),
-          tap(() => {
-            console.log(store);
-          })
         )
       ),
 
       delete: rxMethod<number | string>(
         pipe(
-          mergeMap((id) => {
-            patchState(store, removeEntity(id))
+          switchMap((id) => {
             return workerService.remove(id)
           }),
+          switchMap(() => {
+            return workerService.getQuery(query)
+          }),
           tapResponse({
-            next: (id) => {
-
+            next: (response: DataBase<WorkerData>) => {
+              patchState(store, response)
             },
             error: console.error
           }),

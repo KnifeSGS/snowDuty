@@ -186,7 +186,6 @@ export class JournalViewerComponent implements OnInit {
   saveUser() {
     this.childUser.buildForm();
     // this.userService.getAll$();
-    this.childJournal.getUsers();
     this.dialogs[this.openedDialogName] = false;
   }
 

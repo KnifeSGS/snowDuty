@@ -12,6 +12,12 @@ export class JournalData {
   "comments"?: string[]
 }
 
+export class Journal {
+  "person_on_duty": string | number;
+  "date_start": Date;
+  "date_end": Date | null
+}
+
 export interface Monitoring {
   "journal"?: number;
   "id"?: number;

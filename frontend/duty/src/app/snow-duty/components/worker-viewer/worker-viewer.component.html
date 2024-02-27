@@ -9,10 +9,9 @@
     </ng-template>
 
     <ng-template pTemplate="right">
-      <!-- <button pButton pRipple [label]="Delete" icon="pi pi-trash"
+      <button pButton pRipple [label]="Delete" icon="pi pi-trash"
         class="p-button-danger mr-2"
-        (click)="deleteSelectedJournals(selectedJournals)"
-        [disabled]="!selectedJournals || !selectedJournals.length"></button> -->
+        (click)="getWorkers(this.queryParams)"></button>
     </ng-template>
   </p-toolbar>
 

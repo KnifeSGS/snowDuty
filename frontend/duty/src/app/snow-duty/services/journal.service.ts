@@ -6,7 +6,7 @@ import { BaseService } from './base.service';
 import { ConfigService } from './config.service';
 import { DataBase } from '../models/data-base';
 import { ApiOptions } from '../models/api-options';
-import { JournalData } from '../models/journal-data';
+import { Journal, JournalData } from '../models/journal-data';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +30,14 @@ export class JournalService extends BaseService<JournalData> {
 
   getAllJournal(params?: {}): Observable<DataBase<JournalData>> {
     return this.http.get<DataBase<JournalData>>(`${this.config.apiUrl}${this.entity}withall/`, { params })
+  }
+
+  createJournal(entity: Journal): Observable<Journal> {
+    // console.log("ezt hoznám létre: ", entity);
+    return this.http.post<Journal>(
+      `${this.config.apiUrl}${this.entity}/`,
+      entity
+    );
   }
 
   // override getAll(): Observable<Journal[]> {
