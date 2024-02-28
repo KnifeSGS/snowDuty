@@ -40,9 +40,10 @@ export class JournalService extends BaseService<JournalData> {
     );
   }
 
-  // override getAll(): Observable<Journal[]> {
-  //   return this.http.get<Journal[]>(`${this.config.apiUrl}${this.entity}?_expand=user`)
-  // }
+  getQuery(params?: {}): Observable<DataBase<JournalData>> {
+    return this.http.get<DataBase<JournalData>>(`${this.config.apiUrl}${this.entity}withall/`, { params });
+  }
+
 
   async fetchAllForSignal(options: string = '?page_size=1000'): Promise<any> {
     const response = await fetch(`${this.config.apiUrl}${this.entity}withall/${options}`);

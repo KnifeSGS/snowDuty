@@ -114,14 +114,6 @@ export class JournalCreatorComponent {
     // console.log(this.journalForm.value)
     this.journalBuilder();
     // console.log(this.journal);
-    this.journalService.createJournal(this.journal)
-      .subscribe(
-      // () => this.journalService.getAll$()
-      // () => this.getJournals.emit()
-      // p => console.log(p)
-      // () => this.journalStore.load(`?page_size=1000`)
-    )
-
-    // this.ref.markForCheck()
+    this.#journalStore.create(this.journal)
   }
 }

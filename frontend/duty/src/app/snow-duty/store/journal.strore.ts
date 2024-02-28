@@ -1,7 +1,7 @@
-import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
+import { getState, patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { InitialJournalDataValues, JournalData } from "../models/journal-data";
 import { computed, inject } from "@angular/core";
-import { Observable, debounceTime, distinctUntilChanged, pipe, switchMap } from "rxjs";
+import { Observable, debounceTime, distinctUntilChanged, mergeMap, pipe, switchMap } from "rxjs";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators'
 import { JournalService } from "../services/journal.service";
@@ -22,7 +22,7 @@ export const JournalStore = signalStore(
   }),
   withMethods(store => {
     const journalService = inject(JournalService);
-
+    let query: ApiOptions = new ApiOptions()
 
     return {
       load: rxMethod<ApiOptions>(
@@ -30,7 +30,8 @@ export const JournalStore = signalStore(
           // debounceTime(1000),
           distinctUntilChanged(),
           switchMap((params) => {
-            return journalService.getAllJournal(params)
+            query = params
+            return journalService.getQuery(params)
           }),
           tapResponse({
             next: (response: DataBase<JournalData>) => {
@@ -47,19 +48,41 @@ export const JournalStore = signalStore(
           })
         ),
       ),
+      create: rxMethod<any>(
+        pipe(
+          switchMap((journal) => {
+            return journalService.create(journal)
+          }),
+          switchMap(() => {
+            return journalService.getQuery(query)
+          }),
+          tapResponse({
+            next: (response: DataBase<JournalData>) => {
+              patchState(store, response)
+              const state = getState(store)
+              console.log(state);
+            },
+            error: console.error
+          }),
+        )
+      ),
 
-      // deleteJournal: rxMethod<number>(
-      //   pipe(
-      //     switchMap()
-      //     tapResponse({
-      //       next: () => {
-
-      //       },
-      //       error: console.error
-      //     })
-      //   )
-      // ),
-
+      delete: rxMethod<number | string>(
+        pipe(
+          mergeMap((id) => {
+            return journalService.remove(id)
+          }),
+          mergeMap(() => {
+            return journalService.getQuery(query)
+          }),
+          tapResponse({
+            next: (response: DataBase<JournalData>) => {
+              patchState(store, response)
+            },
+            error: console.error
+          }),
+        ),
+      )
 
     }
   }

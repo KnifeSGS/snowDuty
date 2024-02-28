@@ -76,10 +76,10 @@ export const WorkerStore = signalStore(
 
       delete: rxMethod<number | string>(
         pipe(
-          switchMap((id) => {
+          mergeMap((id) => {
             return workerService.remove(id)
           }),
-          switchMap(() => {
+          mergeMap(() => {
             return workerService.getQuery(query)
           }),
           tapResponse({

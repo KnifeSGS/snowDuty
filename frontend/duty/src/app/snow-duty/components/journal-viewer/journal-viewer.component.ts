@@ -9,6 +9,7 @@ import { JournalStore } from '../../store/journal.strore';
 import { ApiOptions } from '../../models/api-options';
 import { JournalData } from '../../models/journal-data';
 import { HttpParams, HttpParamsOptions } from '@angular/common/http';
+import { WorkerCreatorComponent } from '../worker-creator/worker-creator.component';
 
 @Component({
   selector: 'app-journal-viewer',
@@ -20,28 +21,16 @@ import { HttpParams, HttpParamsOptions } from '@angular/common/http';
 export class JournalViewerComponent implements OnInit {
 
   journalStore = inject(JournalStore)
-  // storeData: Signal<any> = computed(() => {
-  //   return this.journalStore.results()
-  // })
   storeData = this.journalStore.results
-  // storeActualPage = computed(() => {
-  //   return this.journalStore.actual_page()
-  // })
   storeActualPage = this.journalStore.actual_page
-  // storeTotalPages = computed(() => {
-  //   return this.journalStore.total_pages()
-  // })
   storeTotalPage = this.journalStore.total_pages
-  // storeJournalCount = computed(() => {
-  //   return this.journalStore.count()
-  // })
   storeJournalCount = this.journalStore.count
 
   @ViewChild(JournalCreatorComponent)
   childJournal!: JournalCreatorComponent;
 
-  @ViewChild(UserCreatorComponent)
-  childUser!: UserCreatorComponent;
+  @ViewChild(WorkerCreatorComponent)
+  childWorker!: WorkerCreatorComponent;
 
   // feliratok
   Delete: string = "Törlés";
@@ -82,27 +71,22 @@ export class JournalViewerComponent implements OnInit {
   selectedJournals!: JournalData[];
 
   submitted!: boolean;
-
   statuses!: any[];
-
   mobile: boolean = false
+  queryParams: ApiOptions = {
+    page_size: 50
+  }
 
   constructor(
-    private userService: UserService,
     private journalService: JournalService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private ref: ChangeDetectorRef,
   ) {
-    // this.getJournals()
   }
 
-  queryParams: ApiOptions = {
-    page_size: 50
-  }
 
   ngOnInit() {
-    // this.userService.getAll$();
 
     if (window.screen.width < 420) { // 768px portrait
       this.mobile = true;
@@ -131,19 +115,12 @@ export class JournalViewerComponent implements OnInit {
 
   deleteSelectedJournals(journals: JournalData[]) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected journals?',
+      message: 'Biztosan törlöd a kijelölt naplókat?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         journals.forEach(journal => {
-          if (journal.id) {
-            this.journalService.remove(`${journal.id}`).subscribe(
-              () => {
-                // this.journalService.getSelectedInterval(this.params)
-                // this.journalStore.load(`?page_size=${this.pageSize}`)
-              }
-            )
-          }
+          this.journalStore.delete(journal.id)
         });
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Napló törölve', life: 3000 });
       }
@@ -152,17 +129,11 @@ export class JournalViewerComponent implements OnInit {
 
   deleteJournal(journalId: string, journalDate?: Date) {
     this.confirmationService.confirm({
-      message: 'Biztosan törlöd a ' + journalDate + 'napi naplót?',
+      message: 'Biztosan törlöd a ' + journalDate + ' időpontra rögzített naplót?',
       header: 'Megerősítés',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        if (journalId) {
-          this.journalService.remove(journalId).subscribe(
-            () => {
-              // this.journalService.getSelectedInterval(this.params)
-            }
-          )
-        }
+        this.journalStore.delete(journalId)
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Napló törölve', life: 3000 });
       }
     });
@@ -176,16 +147,9 @@ export class JournalViewerComponent implements OnInit {
   saveJournal() {
     this.childJournal.buildForm();
     this.dialogs[this.openedDialogName] = false;
-    // this.journalService.getAll().subscribe(
-    //   () => {
-    //     this.journalService.getSelectedInterval(this.params);
-    //   }
-    // )
-    // this.getJournals()
   }
-  saveUser() {
-    this.childUser.buildForm();
-    // this.userService.getAll$();
+  saveWorker() {
+    this.childWorker.buildForm();
     this.dialogs[this.openedDialogName] = false;
   }
 

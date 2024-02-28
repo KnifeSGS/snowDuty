@@ -3,7 +3,7 @@ import { DispersionsData } from "./dispersions-data";
 import { WorkerData } from "./worker-data";
 
 export class JournalData {
-  "id"?: number;
+  "id": number;
   "person_on_duty"?: WorkerData;
   "date_start"?: Date | null;
   "date_end"?: Date | null;
