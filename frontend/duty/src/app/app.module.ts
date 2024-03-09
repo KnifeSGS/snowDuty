@@ -3,7 +3,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { ToastModule } from 'primeng/toast';
 
@@ -27,8 +27,8 @@ import { JwtInterceptorService } from './login/services/jwt-interceptor.service'
     MessagesModule,
     ToastModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy },
-  { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true }],
+  providers: [MessageService, ConfirmationService, { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

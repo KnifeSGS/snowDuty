@@ -119,6 +119,6 @@ import { WorkerCreatorComponent } from './components/worker-creator/worker-creat
     ProgressSpinnerModule,
     SkeletonModule,
   ],
-  providers: [MessageService, ConfirmationService]
+  providers: []
 })
 export class SnowDutyModule { }

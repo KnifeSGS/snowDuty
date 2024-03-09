@@ -20,6 +20,10 @@ import { WorkerCreatorComponent } from '../worker-creator/worker-creator.compone
 })
 export class JournalViewerComponent implements OnInit {
 
+  #messageService = inject(MessageService)
+  #confirmationService = inject(ConfirmationService)
+  #ref = inject(ChangeDetectorRef)
+
   journalStore = inject(JournalStore)
   storeData = this.journalStore.results
   storeActualPage = this.journalStore.actual_page
@@ -77,12 +81,7 @@ export class JournalViewerComponent implements OnInit {
     page_size: 50
   }
 
-  constructor(
-    private journalService: JournalService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private ref: ChangeDetectorRef,
-  ) {
+  constructor() {
   }
 
 
@@ -91,7 +90,7 @@ export class JournalViewerComponent implements OnInit {
     if (window.screen.width < 420) { // 768px portrait
       this.mobile = true;
     };
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
 
     this.journalStore.load(this.queryParams)
   }
@@ -114,7 +113,7 @@ export class JournalViewerComponent implements OnInit {
   // }
 
   deleteSelectedJournals(journals: JournalData[]) {
-    this.confirmationService.confirm({
+    this.#confirmationService.confirm({
       message: 'Biztosan törlöd a kijelölt naplókat?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
@@ -122,19 +121,24 @@ export class JournalViewerComponent implements OnInit {
         journals.forEach(journal => {
           this.journalStore.delete(journal.id)
         });
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Napló törölve', life: 3000 });
+        this.#messageService.add({ severity: 'success', summary: 'Successful', detail: 'Napló törölve', life: 3000 });
       }
     });
   };
 
   deleteJournal(journalId: string, journalDate?: Date) {
-    this.confirmationService.confirm({
+    this.#confirmationService.confirm({
       message: 'Biztosan törlöd a ' + journalDate + ' időpontra rögzített naplót?',
       header: 'Megerősítés',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.journalStore.delete(journalId)
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Napló törölve', life: 3000 });
+        this.#messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'Napló törölve',
+          life: 3000
+        });
       }
     });
   }
@@ -148,6 +152,7 @@ export class JournalViewerComponent implements OnInit {
     this.childJournal.buildForm();
     this.dialogs[this.openedDialogName] = false;
   }
+
   saveWorker() {
     this.childWorker.buildForm();
     this.dialogs[this.openedDialogName] = false;

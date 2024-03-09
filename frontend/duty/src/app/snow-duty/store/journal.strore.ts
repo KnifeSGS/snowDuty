@@ -35,14 +35,7 @@ export const JournalStore = signalStore(
           }),
           tapResponse({
             next: (response: DataBase<JournalData>) => {
-              patchState(store, {
-                'results': response.results,
-                'actual_page': response.actual_page,
-                'total_pages': response.total_pages,
-                'count': response.count,
-                'next': response.next,
-                'previous': response.previous
-              })
+              patchState(store, response)
             },
             error: console.error
           })
@@ -53,7 +46,7 @@ export const JournalStore = signalStore(
           switchMap((journal) => {
             return journalService.create(journal)
           }),
-          switchMap(() => {
+          mergeMap(() => {
             return journalService.getQuery(query)
           }),
           tapResponse({
@@ -69,7 +62,7 @@ export const JournalStore = signalStore(
 
       delete: rxMethod<number | string>(
         pipe(
-          mergeMap((id) => {
+          switchMap((id) => {
             return journalService.remove(id)
           }),
           mergeMap(() => {

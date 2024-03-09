@@ -35,6 +35,6 @@ import { ToastModule } from 'primeng/toast';
     MessageModule,
     ToastModule
   ],
-  providers: [MessageService]
+  providers: []
 })
 export class LoginModule { }

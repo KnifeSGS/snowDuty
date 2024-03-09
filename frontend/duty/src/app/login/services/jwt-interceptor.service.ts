@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { catchError, Observable, switchMap, throwError } from 'rxjs';
+import { catchError, mergeMap, Observable, switchMap, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { TokenService } from './token.service';
 
@@ -32,18 +32,30 @@ export class JwtInterceptorService implements HttpInterceptor {
       return next.handle(req)
         .pipe(
           catchError((error: HttpErrorResponse) => {
-            if (error.status === 401 && !this.refresh && this.refreshCount < 2) {
+            if (error.status === 401 && !this.refresh && this.refreshCount < 1) {
               this.refresh = true;
               this.refreshCount++
               console.log(this.refreshCount);
-              this.messageService.add({ key: 'notification', severity: 'info', summary: 'Info', detail: 'Munkamenet lejárt', life: 2000 });
+              this.messageService.add({
+                key: 'notification',
+                severity: 'info',
+                summary: 'Info',
+                detail: 'Munkamenet lejárt',
+                life: 2000
+              });
               const refreshToken = this.tokenService.getRefreshToken();
               return this.auth.refreshingToken(refreshToken!).pipe(
-                switchMap((res: any) => {
+                mergeMap((res: any) => {
                   console.log('Must refresh token...');
                   this.refreshCount = 0;
                   this.refresh = false;
-                  this.messageService.add({ key: 'notification', severity: 'success', summary: 'Successful', detail: 'Munkamenet frissítve', life: 2000 });
+                  this.messageService.add({
+                    key: 'notification',
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'Munkamenet frissítve',
+                    life: 2000
+                  });
                   const newAccessToken = this.tokenService.getAccessToken();
                   return next.handle(req.clone({
                     setHeaders: {
@@ -55,12 +67,24 @@ export class JwtInterceptorService implements HttpInterceptor {
             }
             else if (error.status === 401 && error.statusText === 'Unauthorized' && !this.refresh) {
               this.auth.logout()
-              this.messageService.add({ key: 'notification', severity: 'error', summary: 'Hiba', detail: 'Kérlek jelentkezz be újra!', life: 5000 });
+              this.messageService.add({
+                key: 'notification',
+                severity: 'error',
+                summary: 'Hiba',
+                detail: 'Kérlek jelentkezz be újra!',
+                life: 5000
+              });
             }
 
             if (error.status === 400) {
               const errorMessage = Object.entries(error.error).map(a => a.join(': '))
-              this.messageService.add({ key: 'notification', severity: 'error', summary: 'Hiba', detail: `${errorMessage}`, life: 5000 });
+              this.messageService.add({
+                key: 'notification',
+                severity: 'error',
+                summary: 'Hiba',
+                detail: `${errorMessage}`,
+                life: 5000
+              });
             }
 
             // this.refreshCount = 0;
@@ -74,7 +98,13 @@ export class JwtInterceptorService implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && error.statusText === 'Unauthorized') {
           this.auth.logout()
-          this.messageService.add({ key: 'notification', severity: 'error', summary: 'Hiba', detail: 'Kérlek jelentkezz be újra!', life: 5000 });
+          this.messageService.add({
+            key: 'notification',
+            severity: 'error',
+            summary: 'Hiba',
+            detail: 'Kérlek jelentkezz be újra!',
+            life: 5000
+          });
         }
         return throwError(() => error)
       })
