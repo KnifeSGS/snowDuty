@@ -54,7 +54,7 @@
     <div class="card flex justify-content-center">
       <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8"
         fill="var(--surface-ground)"
-        animationDuration=".5s"></p-progressSpinner>
+        animationDuration=".2s"></p-progressSpinner>
     </div>
   </div>
 
@@ -71,17 +71,15 @@
           <h5 class="m-0">Naplók kezelése</h5>
           <span class="p-input-icon-left">
 
-            <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" [showIcon]="true"
-              selectionMode="range" [readonlyInput]="true"
-              [hideOnDateTimeSelect]="true" [(ngModel)]="interval"
-              placeholder="Válassz időintervallumot"
+            <p-calendar *ngIf="!mobile" dateFormat="yy. MM" [showIcon]="true"
+              view="month" [readonlyInput]="true" [hideOnDateTimeSelect]="true"
+              [(ngModel)]="interval" placeholder="Válassz hónapot"
               (onSelect)="selectInterval()">
             </p-calendar>
-            <p-calendar *ngIf="mobile" dateFormat="yy.MM.dd" [showIcon]="true"
-              selectionMode="range" [readonlyInput]="true" [touchUI]="true"
+            <p-calendar *ngIf="mobile" dateFormat="yy. MM" [showIcon]="true"
+              view="month" [readonlyInput]="true" [touchUI]="true"
               [hideOnDateTimeSelect]="true" [(ngModel)]="interval"
-              placeholder="Válassz időintervallumot"
-              (onSelect)="selectInterval()">
+              placeholder="Válassz hónapot" (onSelect)="selectInterval()">
             </p-calendar>
             <span>
               <i class="pi pi-search m-3"></i>

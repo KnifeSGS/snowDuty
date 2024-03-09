@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -9,6 +9,9 @@ import { UserService } from '../../services/user.service';
 import { PdfCreatorComponent } from '../pdf-creator/pdf-creator.component';
 import { ShiftCreatorComponent } from '../shift-creator/shift-creator.component';
 import { JournalData } from '../../models/journal-data';
+import { WorkerStore } from '../../store/worker.store';
+import { ApiOptions } from '../../models/api-options';
+import { WorkerData } from '../../models/worker-data';
 
 @Component({
   selector: 'app-journal-editor',
@@ -16,6 +19,13 @@ import { JournalData } from '../../models/journal-data';
   styleUrls: ['./journal-editor.component.scss']
 })
 export class JournalEditorComponent implements OnInit {
+
+  #workerStore = inject(WorkerStore)
+
+  workerNames = this.#workerStore.workerNames
+  workers = this.#workerStore.results
+  worker: WorkerData = new WorkerData();
+  onDutyId: string | number = '';
 
   @ViewChild(PdfCreatorComponent)
   pdf!: PdfCreatorComponent;
@@ -40,8 +50,12 @@ export class JournalEditorComponent implements OnInit {
   defaultSortOrder: number = 1
 
   selectedJournal: WritableSignal<JournalData> = signal(new JournalData());
-  worker: WritableSignal<User> = signal(new User());
+  // worker: WritableSignal<User> = signal(new User());
   journalDate: WritableSignal<Date> = signal(new Date());
+
+  queryParams: ApiOptions = {
+    page_size: 50
+  }
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -90,6 +104,7 @@ export class JournalEditorComponent implements OnInit {
     //     this.users = results
     //   }
     // );
+    this.#workerStore.load(this.queryParams)
   };
 
   async getJournal() {
@@ -123,10 +138,8 @@ export class JournalEditorComponent implements OnInit {
     this.canAddCheck = !this.canAddCheck;
   }
 
-  workerSelected(event: any) {
-    // console.log(event);
-    // const selectedUser = await this.userService.getOneSignal(event.value.id)
-    this.worker.set(event.value)
+  workerSelected() {
+    this.onDutyId = this.journalForm.value.person_on_duty.id;
   }
 
   journalBuilder() {
@@ -138,16 +151,16 @@ export class JournalEditorComponent implements OnInit {
 
     if (this.canAddCheck) {
       this.journalUpdateData = {
-        id: this.journal.id,
-        person_on_duty: this.journalForm.value.worker.id,
+        id: this.selectedJournal().id,
+        person_on_duty: this.journalForm.value.person_on_duty.id,
         date_start: utcDate,
         monitor: this.journalForm.value.checks,
         comments: this.journalForm.value.comment
       }
     } else {
       this.journalUpdateData = {
-        id: this.journal.id,
-        person_on_duty: this.journalForm.value.worker._id,
+        id: this.selectedJournal().id,
+        person_on_duty: this.journalForm.value.person_on_duty.id,
         date_start: utcDate,
         comments: this.journalForm.value.comment
       }
@@ -156,21 +169,23 @@ export class JournalEditorComponent implements OnInit {
   }
 
   buildForm() {
-    const id = this.journal.id
+    const id = this.activatedRoute.snapshot.params['id']
+    console.log(id);
     this.journalBuilder();
-    if (id) {
-      this.journalService.update(this.journalUpdateData, id)
-        .subscribe(
-          () => {
-            this.journalForm.reset();
-            // this.addCheck();
-            this.getUsers();
-            this.createForm();
-            this.getJournal();
-            this.canAddCheck = false;
-          }
-        )
-    }
+    // if (id) {
+    console.log(this.journalUpdateData);
+    this.journalService.updateJournal(this.journalUpdateData, id)
+      .subscribe(
+        () => {
+          this.journalForm.reset();
+          // this.addCheck();
+          this.getUsers();
+          this.createForm();
+          this.getJournal();
+          this.canAddCheck = false;
+        }
+      )
+    // }
     this.messageService.add({
       severity: 'success',
       summary: 'Sikeres',

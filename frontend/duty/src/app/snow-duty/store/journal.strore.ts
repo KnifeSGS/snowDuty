@@ -41,6 +41,7 @@ export const JournalStore = signalStore(
           })
         ),
       ),
+
       create: rxMethod<any>(
         pipe(
           switchMap((journal) => {
@@ -75,7 +76,24 @@ export const JournalStore = signalStore(
             error: console.error
           }),
         ),
-      )
+      ),
+
+      search: rxMethod<ApiOptions>(
+        pipe(
+          debounceTime(500),
+          distinctUntilChanged(),
+          switchMap((params) => {
+            query = params
+            return journalService.getQuery(params)
+          }),
+          tapResponse({
+            next: (response: DataBase<JournalData>) => {
+              patchState(store, response)
+            },
+            error: console.error
+          })
+        ),
+      ),
 
     }
   }

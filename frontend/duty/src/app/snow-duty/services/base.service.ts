@@ -44,7 +44,7 @@ export class BaseService<T> {
 
   update(entity: T, id: number | string): Observable<T> {
     return this.http.patch<T>(
-      `${this.config.apiUrl}${this.entity}/${entity}${id}/`,
+      `${this.config.apiUrl}${this.entity}/${id}/`,
       entity
     );
   }

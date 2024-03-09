@@ -24,9 +24,9 @@ export class JournalService extends BaseService<JournalData> {
     this.entity = 'journal';
   }
 
-  getSelectedInterval(params: {}): Observable<DataBase<JournalData>> {
-    return this.http.get<DataBase<JournalData>>(`${this.config.apiUrl}${this.entity}/selectedinterval`, { params })
-  }
+  // getSelectedInterval(params: {}): Observable<DataBase<JournalData>> {
+  //   return this.http.get<DataBase<JournalData>>(`${this.config.apiUrl}${this.entity}/selectedinterval`, { params })
+  // }
 
   getAllJournal(params?: {}): Observable<DataBase<JournalData>> {
     return this.http.get<DataBase<JournalData>>(`${this.config.apiUrl}${this.entity}withall/`, { params })
@@ -44,15 +44,22 @@ export class JournalService extends BaseService<JournalData> {
     return this.http.get<DataBase<JournalData>>(`${this.config.apiUrl}${this.entity}withall/`, { params });
   }
 
-
-  async fetchAllForSignal(options: string = '?page_size=1000'): Promise<any> {
-    const response = await fetch(`${this.config.apiUrl}${this.entity}withall/${options}`);
-    return await response.json()
+  updateJournal(entity: JournalData, id: number | string): Observable<JournalData> {
+    return this.http.patch<JournalData>(
+      `${this.config.apiUrl}${this.entity}withall/${id}/`,
+      entity
+    );
   }
 
-  getOne(_id: string): Observable<JournalData> {
-    return this.http.get<JournalData>(`${this.config.apiUrl}${this.entity}withall/${_id}/`);
-  }
+
+  // async fetchAllForSignal(options: string = '?page_size=1000'): Promise<any> {
+  //   const response = await fetch(`${this.config.apiUrl}${this.entity}withall/${options}`);
+  //   return await response.json()
+  // }
+
+  // getOne(_id: string): Observable<JournalData> {
+  //   return this.http.get<JournalData>(`${this.config.apiUrl}${this.entity}withall/${_id}/`);
+  // }
 
   override async getOneSignal(id: number): Promise<any> {
     const response = await fetch(`${this.config.apiUrl}${this.entity}withall/${id}`);

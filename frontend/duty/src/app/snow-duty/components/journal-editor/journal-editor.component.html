@@ -19,11 +19,11 @@
   <div class="col-12 p-fluid p-formgrid grid">
     <div class="workerDate grid col-12" *ngIf="editableWorker; else readWorker">
       <div class="field col-12 md:col-6">
-        <p-dropdown [options]="users" optionLabel="last_name" [filter]="true"
-          filterBy="last_name" [showClear]="true"
+        <p-dropdown [options]="workers()" optionLabel="name" [filter]="true"
+          filterBy="name" [showClear]="true"
           placeholder="Válassz ügyeletvezetőt" formControlName="person_on_duty"
-          (onChange)="workerSelected($event)">
-          <ng-template pTemplate="selectedItem">
+          (onChange)="workerSelected()">
+          <!-- <ng-template pTemplate="selectedItem">
             <div class="worker-item worker-item-value" *ngIf="worker">
               <div>{{worker().last_name}} {{worker().first_name}}</div>
             </div>
@@ -32,7 +32,7 @@
             <div class="worker-item">
               <div>{{worker.last_name}} {{worker.first_name}}</div>
             </div>
-          </ng-template>
+          </ng-template> -->
         </p-dropdown>
         <!-- <small>Jelenlegi: {{journal.worker.first_name}}
           {{journal.worker.last_name}}</small> -->
@@ -58,8 +58,7 @@
       </div>
       <div class="field col-12 md:col-5">
         <input pInputText id="date" type="text"
-          placeholder="{{selectedJournal().date_start | date:'YYYY.MM.dd. hh:mm:ss'}}"
-          disabled />
+          placeholder="{{selectedJournal().date_start}}" disabled />
       </div>
       <div class="col-12 md:col-2">
         <p-button (onClick)="editWorkerDate()" class="block"

@@ -1,28 +1,23 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, inject, OnInit, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { JournalService } from '../../services/journal.service';
-import { UserService } from '../../services/user.service';
 import { JournalCreatorComponent } from '../journal-creator/journal-creator.component';
-import { UserCreatorComponent } from '../user-creator/user-creator.component';
 import { JournalStore } from '../../store/journal.strore';
 import { ApiOptions } from '../../models/api-options';
 import { JournalData } from '../../models/journal-data';
-import { HttpParams, HttpParamsOptions } from '@angular/common/http';
 import { WorkerCreatorComponent } from '../worker-creator/worker-creator.component';
 
 @Component({
   selector: 'app-journal-viewer',
   templateUrl: './journal-viewer.component.html',
   styleUrls: ['./journal-viewer.component.scss'],
-  providers: [MessageService, ConfirmationService],
+  // providers: [MessageService, ConfirmationService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JournalViewerComponent implements OnInit {
 
   #messageService = inject(MessageService)
   #confirmationService = inject(ConfirmationService)
-  #ref = inject(ChangeDetectorRef)
 
   journalStore = inject(JournalStore)
   storeData = this.journalStore.results
@@ -54,31 +49,24 @@ export class JournalViewerComponent implements OnInit {
     journalDialog: false,
     userDialog: false
   }
+  submitted!: boolean;
 
   userNames: string[] = [];
-
-
-  interval: Date[] = [];
-  thisMonthFirstDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString()
-  today = new Date();
-  thisYear = this.today.getFullYear();
-  thisMonth = this.today.getMonth();
-  thisDay = this.today.getDate();
-  thisHour = this.today.getHours();
-  paramsold: { start?: string, end?: string } = {
-    start: this.thisMonthFirstDay,
-    end: new Date(this.thisYear, this.thisMonth, this.thisDay, this.thisHour + 1).toISOString()
-  }
 
   journal!: JournalData;
 
   selectedJournals!: JournalData[];
 
-  submitted!: boolean;
   statuses!: any[];
   mobile: boolean = false
+
+  interval: Date = new Date();
+  thisMonthFirstDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString()
+  thisMonthLastDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth() + 1, 0)).toISOString()
   queryParams: ApiOptions = {
-    page_size: 50
+    page_size: 50,
+    start_date_gte: this.thisMonthFirstDay,
+    start_date_lte: this.thisMonthLastDay
   }
 
   constructor() {
@@ -90,7 +78,7 @@ export class JournalViewerComponent implements OnInit {
     if (window.screen.width < 420) { // 768px portrait
       this.mobile = true;
     };
-    this.#ref.detectChanges();
+    // this.#ref.detectChanges();
 
     this.journalStore.load(this.queryParams)
   }
@@ -171,16 +159,14 @@ export class JournalViewerComponent implements OnInit {
   }
 
   selectInterval() {
-    const start = this.interval[0];
-    const end = this.interval[1];
-    // if (this.interval[0] && this.interval[1]) {
-    //   this.params.start = new Date(Date.UTC(start.getFullYear(), start.getMonth(), start.getDate())).toISOString();
-    //   this.params.end = new Date(Date.UTC(end.getFullYear(), end.getMonth(), end.getDate() + 1)).toISOString();
-    // }
-    // if (this.params.end) {
-    //   console.log(this.params);
-    //   this.journalService.getSelectedInterval(this.params)
-    // }
+    const start = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth(), this.interval.getDate())).toISOString();
+    const end = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth() + 1, 0)).toISOString();
+
+    // console.log(start + " - " + end);
+    this.queryParams.start_date_gte = start;
+    this.queryParams.start_date_lte = end;
+
+    this.journalStore.search(this.queryParams)
   }
 
 
