@@ -70,19 +70,17 @@
     <div class="field col-12">
       <span class="p-float-label">
         <textarea pInputTextarea id="comment" rows="3"
-          formControlName="comment"></textarea>
-        <label for="comment">Megjegyzések</label>
+          formControlName="comments"></textarea>
+        <label for="comment">Új megjegyzés</label>
       </span>
+      <button pButton pRipple label="Új" icon="pi pi-check"
+        class="p-button-text" (click)="createComment()"></button>
     </div>
     <div class="field col-12">
-      <label for="comment">Korábbi megjegyzések:</label>
+      <label for="comments">Korábbi megjegyzések:</label>
       <div class="comments" *ngFor="let comment of selectedJournal().comments">
         <div *ngIf="selectedJournal().comments!.length > 0">
-          <!-- <div *ngIf="comment === selectedJournal().comments![0]"></div> -->
-          <!-- <div *ngIf="comment !== selectedJournal().comments![0]"> -->
-          <!-- <p>{{comment.id}}: {{comment.comment}}</p> -->
-          <p>- {{comment}}</p>
-          <!-- </div> -->
+          <p>- {{comment.comment}}</p>
         </div>
         <div *ngIf="selectedJournal().comments!.length < 1">
           <p>-</p>

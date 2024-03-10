@@ -12,6 +12,8 @@ import { JournalData } from '../../models/journal-data';
 import { WorkerStore } from '../../store/worker.store';
 import { ApiOptions } from '../../models/api-options';
 import { WorkerData } from '../../models/worker-data';
+import { CommentsService } from '../../services/comments.service';
+import { Comment } from '../../models/comment';
 
 @Component({
   selector: 'app-journal-editor',
@@ -21,6 +23,11 @@ import { WorkerData } from '../../models/worker-data';
 export class JournalEditorComponent implements OnInit {
 
   #workerStore = inject(WorkerStore)
+  #activatedRoute = inject(ActivatedRoute)
+  #journalService = inject(JournalService)
+  #fb = inject(FormBuilder)
+  #messageService = inject(MessageService)
+  #commentService = inject(CommentsService)
 
   workerNames = this.#workerStore.workerNames
   workers = this.#workerStore.results
@@ -35,8 +42,8 @@ export class JournalEditorComponent implements OnInit {
   shiftDialog!: boolean;
   submitted!: boolean;
 
-  journal: JournalData = new JournalData();
-  journalId: number = 0;
+  // journal: JournalData = new JournalData();
+  // journalId: number = 0;
 
   shifts: Shift[] = []
   journalUpdateData: JournalData = new JournalData();
@@ -50,20 +57,16 @@ export class JournalEditorComponent implements OnInit {
   defaultSortOrder: number = 1
 
   selectedJournal: WritableSignal<JournalData> = signal(new JournalData());
-  // worker: WritableSignal<User> = signal(new User());
-  journalDate: WritableSignal<Date> = signal(new Date());
+  journalID: number
+
 
   queryParams: ApiOptions = {
     page_size: 50
   }
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private journalService: JournalService,
-    private fb: FormBuilder,
-    private userService: UserService,
-    private messageService: MessageService,
   ) {
+    this.journalID = this.#activatedRoute.snapshot.params['id'];
     this.createForm();
     this.getJournal();
     this.getUsers();
@@ -82,10 +85,10 @@ export class JournalEditorComponent implements OnInit {
   }
 
   createForm() {
-    this.journalForm = this.fb.group({
+    this.journalForm = this.#fb.group({
       person_on_duty: [''],
       date_start: [''],
-      monitor: this.fb.group({
+      monitor: this.#fb.group({
         start_time: [''],
         temperature: [''],
         percipitation: [''],
@@ -93,17 +96,11 @@ export class JournalEditorComponent implements OnInit {
         visibility: [''],
         roads: [''],
       }),
-      comment: ['']
+      comments: ['']
     })
   }
 
   getUsers() {
-    // this.userService.getAll().subscribe(
-    //   ({results}) => {
-    //     console.log(users);
-    //     this.users = results
-    //   }
-    // );
     this.#workerStore.load(this.queryParams)
   };
 
@@ -124,8 +121,8 @@ export class JournalEditorComponent implements OnInit {
     //       this.selectedJournal.set(journal)
     //     }
     //   )
-    const journalID = this.activatedRoute.snapshot.params['id'];
-    const data = await this.journalService.getOneSignal(journalID);
+
+    const data = await this.#journalService.getOneSignal(this.journalID);
     console.log(data);
     this.selectedJournal.set(data)
   }
@@ -144,7 +141,7 @@ export class JournalEditorComponent implements OnInit {
 
   journalBuilder() {
     const date = this.journalForm.value.date
-    let utcDate = this.journal.date_start;
+    let utcDate = this.selectedJournal().date_start;
     if (date) {
       utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
     }
@@ -168,13 +165,27 @@ export class JournalEditorComponent implements OnInit {
 
   }
 
+  createComment() {
+    console.log(this.journalForm.value.comment);
+    const commentData: Comment = {
+      active: true,
+      comment: this.journalForm.value.comments,
+      journal: this.journalID
+    }
+    this.#commentService.create(commentData).subscribe((response) => {
+      console.log(response);
+      this.journalForm.reset()
+      this.getJournal()
+    })
+  }
+
   buildForm() {
-    const id = this.activatedRoute.snapshot.params['id']
+    const id = this.#activatedRoute.snapshot.params['id']
     // console.log(id);
     this.journalBuilder();
     // if (id) {
     console.log(this.journalUpdateData);
-    this.journalService.update(this.journalUpdateData, id)
+    this.#journalService.update(this.journalUpdateData, id)
       .subscribe(
         () => {
           this.journalForm.reset();
@@ -187,7 +198,7 @@ export class JournalEditorComponent implements OnInit {
         }
       )
     // }
-    this.messageService.add({
+    this.#messageService.add({
       severity: 'success',
       summary: 'Sikeres',
       detail: 'Napló frissítve',
@@ -205,6 +216,6 @@ export class JournalEditorComponent implements OnInit {
   generatePDF() {
     // console.log(this.journal);
     // this.pdf.test(this.journal)
-    this.pdf.generatePDF(this.journal, this.shifts)
+    this.pdf.generatePDF(this.selectedJournal(), this.shifts)
   }
 }

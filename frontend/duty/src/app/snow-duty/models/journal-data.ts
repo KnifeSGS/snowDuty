@@ -1,6 +1,7 @@
 import { DataBase } from "./data-base";
 import { DispersionsData } from "./dispersions-data";
 import { WorkerData } from "./worker-data";
+import { Comment } from './comment';
 
 export class JournalData {
   "id": number;
@@ -9,7 +10,7 @@ export class JournalData {
   "date_end"?: Date | null;
   "dispersion"?: DispersionsData[];
   "monitor"?: Monitoring[] | [];
-  "comments"?: string[]
+  "comments"?: Comment[]
 }
 
 export class Journal {

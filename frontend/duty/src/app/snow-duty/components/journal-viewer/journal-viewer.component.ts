@@ -40,7 +40,7 @@ export class JournalViewerComponent implements OnInit {
   Search: string = "Keresés . . .";
 
   paginatorTemplate = "";
-  pageSize = 40;
+  pageSize = 6;
   defaultSortOrder: number = -1
 
 
@@ -105,6 +105,10 @@ export class JournalViewerComponent implements OnInit {
       message: 'Biztosan törlöd a kijelölt naplókat?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: "p-button-danger p-button-text",
+      rejectButtonStyleClass: "p-button-text p-button-text",
+      acceptIcon: 'pi pi-check mr-2',
+      rejectIcon: 'pi pi-times mr-2',
       accept: () => {
         journals.forEach(journal => {
           this.journalStore.delete(journal.id)

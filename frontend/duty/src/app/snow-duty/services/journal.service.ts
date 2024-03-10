@@ -14,7 +14,7 @@ import { Journal, JournalData } from '../models/journal-data';
 export class JournalService extends BaseService<JournalData> {
 
   // journals$: BehaviorSubject<Journal[]> = new BehaviorSubject<Journal[]>([])
-  journals$: ReplaySubject<DataBase<JournalData>> = new ReplaySubject<DataBase<JournalData>>()
+  // journals$: ReplaySubject<DataBase<JournalData>> = new ReplaySubject<DataBase<JournalData>>()
 
   constructor(
     public override config: ConfigService,
