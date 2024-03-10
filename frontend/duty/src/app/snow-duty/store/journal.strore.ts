@@ -80,9 +80,9 @@ export const JournalStore = signalStore(
 
       search: rxMethod<ApiOptions>(
         pipe(
-          debounceTime(500),
-          distinctUntilChanged(),
-          switchMap((params) => {
+          // debounceTime(500),
+          // distinctUntilChanged(),
+          mergeMap((params) => {
             query = params
             return journalService.getQuery(params)
           }),

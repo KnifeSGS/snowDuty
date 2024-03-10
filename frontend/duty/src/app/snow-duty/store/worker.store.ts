@@ -62,7 +62,7 @@ export const WorkerStore = signalStore(
           //   },
           //   error: console.error
           // }),
-          switchMap(() => {
+          mergeMap(() => {
             return workerService.getQuery(query)
           }),
           tapResponse({
@@ -76,7 +76,7 @@ export const WorkerStore = signalStore(
 
       delete: rxMethod<number | string>(
         pipe(
-          mergeMap((id) => {
+          switchMap((id) => {
             return workerService.remove(id)
           }),
           mergeMap(() => {

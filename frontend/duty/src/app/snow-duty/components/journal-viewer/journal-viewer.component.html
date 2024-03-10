@@ -60,7 +60,7 @@
 
   <div class="asyncDiv" *ngIf="storeActualPage() !== 0">
     <p-table #dt [value]="storeData()" [rows]="10" [paginator]="true"
-      [globalFilterFields]="['date_start', 'person_on_duty.last_name', 'comments']"
+      [globalFilterFields]="['date_start', 'person_on_duty.name', 'comments']"
       [tableStyle]="{'min-width': '70rem'}" [(selection)]="selectedJournals"
       [rowHover]="true" dataKey="id"
       currentPageReportTemplate="{last} bejegyzés látszik a {totalRecords} közül"
@@ -161,25 +161,27 @@
 </div>
 
 <p-dialog [(visible)]="dialogs['journalDialog']"
-  [style]="{width: '600px', height: 'auto'}" header="Ügyeleti napló"
+  [style]="{width: 'auto', height: 'auto'}" header="Ügyeleti napló"
   [modal]="true" styleClass="p-fluid">
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Mégse" icon="pi pi-times"
-      class="p-button-text" (click)="hideDialog()"></button>
+      class="p-button-warning p-button-text" (click)="hideDialog()"></button>
     <button pButton pRipple label="Mentés" icon="pi pi-check"
-      class="p-button-text" (click)="saveJournal()"></button>
+      class="p-button-outlined p-button-success"
+      (click)="saveJournal()"></button>
   </ng-template>
   <app-journal-creator></app-journal-creator>
 </p-dialog>
 
 <p-dialog [(visible)]="dialogs['userDialog']"
-  [style]="{width: 'auto', height: '547px'}" header="Új dolgozó" [modal]="true"
+  [style]="{width: 'auto', height: 'auto'}" header="Új dolgozó" [modal]="true"
   styleClass="p-fluid">
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Mégse" icon="pi pi-times"
-      class="p-button-text" (click)="hideDialog()"></button>
+      class="p-button-warning p-button-text" (click)="hideDialog()"></button>
     <button pButton pRipple label="Mentés" icon="pi pi-check"
-      class="p-button-text" (click)="saveWorker()"></button>
+      class="p-button-outlined p-button-success"
+      (click)="saveWorker()"></button>
   </ng-template>
   <app-worker-creator></app-worker-creator>
 </p-dialog>

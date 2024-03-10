@@ -1,20 +1,21 @@
 <!-- <div class="col-12 p-fluid grid"> -->
-<pre>{{workerNames()}}</pre>
+<!-- <pre>{{workerNames()}}</pre> -->
 
-<div class="" [formGroup]="journalForm">
+<div class="" [formGroup]="journalForm"
+  [style]="{width: '400px', height: 'auto'}">
   <!-- <h4>Ügyeleti napló</h4> -->
   <!-- <div class="p-fluid p-formgrid grid"> -->
 
   <div class="field col-12">
     <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" appendTo="body"
       [showIcon]="true" inputId="icon" formControlName="date_start"
-      [hideOnDateTimeSelect]="true"
+      [hideOnDateTimeSelect]="true" [defaultDate]="date"
       placeholder="Mai dátum, vagy válassz másikat">
     </p-calendar>
     <p-calendar appendTo="body" *ngIf="mobile" dateFormat="yy.MM.dd"
       [showIcon]="true" inputId="icon" formControlName="date_start"
-      [touchUI]="true" [hideOnDateTimeSelect]="true" [readonlyInput]="true"
-      placeholder="Mai dátum, vagy válassz másikat">
+      [touchUI]="true" [hideOnDateTimeSelect]="true" [defaultDate]="date"
+      [readonlyInput]="true" placeholder="Mai dátum, vagy válassz másikat">
     </p-calendar>
   </div>
   <div class="field col-12">

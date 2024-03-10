@@ -95,16 +95,20 @@ export class JournalCreatorComponent {
     console.log(this.onDutyId);
   }
 
+  isPristine(value: any) {
+    return this.journalForm.get(value)?.pristine
+  }
+
   journalBuilder() {
-    const date = this.journalForm.value.date
+    // console.log(this.isPristine("date_start"));
+    const date = this.journalForm.value.date_start
     let utcDate = new Date;
     if (date) {
-      utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+      utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()))
     }
-    // const { checking, temperature, percipitation, sky, visibility, roads } = this.journalForm.value;
     this.journal = {
       person_on_duty: this.onDutyId,
-      date_start: utcDate,
+      date_start: this.isPristine("date_start") ? new Date() : utcDate,
       date_end: null
       // comment: this.journalForm.value.comment
     }
@@ -115,5 +119,6 @@ export class JournalCreatorComponent {
     this.journalBuilder();
     // console.log(this.journal);
     this.#journalStore.create(this.journal)
+    this.journalForm.reset()
   }
 }

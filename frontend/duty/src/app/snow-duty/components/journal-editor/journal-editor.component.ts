@@ -149,20 +149,20 @@ export class JournalEditorComponent implements OnInit {
       utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
     }
 
-    if (this.canAddCheck) {
+    if (this.editableWorker) {
       this.journalUpdateData = {
         id: this.selectedJournal().id,
         person_on_duty: this.journalForm.value.person_on_duty.id,
-        date_start: utcDate,
-        monitor: this.journalForm.value.checks,
-        comments: this.journalForm.value.comment
+        date_start: this.journalForm.value.date_start,
+        // monitor: this.journalForm.value.checks,
+        // comments: this.journalForm.value.comment
       }
     } else {
       this.journalUpdateData = {
         id: this.selectedJournal().id,
         person_on_duty: this.journalForm.value.person_on_duty.id,
         date_start: utcDate,
-        comments: this.journalForm.value.comment
+        // comments: this.journalForm.value.comment
       }
     }
 
@@ -170,19 +170,20 @@ export class JournalEditorComponent implements OnInit {
 
   buildForm() {
     const id = this.activatedRoute.snapshot.params['id']
-    console.log(id);
+    // console.log(id);
     this.journalBuilder();
     // if (id) {
     console.log(this.journalUpdateData);
-    this.journalService.updateJournal(this.journalUpdateData, id)
+    this.journalService.update(this.journalUpdateData, id)
       .subscribe(
         () => {
           this.journalForm.reset();
           // this.addCheck();
-          this.getUsers();
+          // this.getUsers();
           this.createForm();
           this.getJournal();
           this.canAddCheck = false;
+          this.editableWorker = false
         }
       )
     // }

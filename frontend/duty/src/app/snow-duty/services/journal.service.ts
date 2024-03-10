@@ -44,14 +44,6 @@ export class JournalService extends BaseService<JournalData> {
     return this.http.get<DataBase<JournalData>>(`${this.config.apiUrl}${this.entity}withall/`, { params });
   }
 
-  updateJournal(entity: JournalData, id: number | string): Observable<JournalData> {
-    return this.http.patch<JournalData>(
-      `${this.config.apiUrl}${this.entity}withall/${id}/`,
-      entity
-    );
-  }
-
-
   // async fetchAllForSignal(options: string = '?page_size=1000'): Promise<any> {
   //   const response = await fetch(`${this.config.apiUrl}${this.entity}withall/${options}`);
   //   return await response.json()

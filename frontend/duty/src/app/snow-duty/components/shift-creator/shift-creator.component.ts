@@ -82,7 +82,7 @@ export class ShiftCreatorComponent implements OnInit {
     await this.userService.fetchForSignal(`?page_size=1000`)
       .then(
         users => {
-          console.log(users);
+          // console.log(users);
           users.forEach((user: User) => {
             const full_name = user.last_name || user.first_name
               ? `${user.last_name} ${user.first_name}`

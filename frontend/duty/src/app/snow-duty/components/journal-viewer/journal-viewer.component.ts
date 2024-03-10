@@ -65,8 +65,8 @@ export class JournalViewerComponent implements OnInit {
   thisMonthLastDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth() + 1, 0)).toISOString()
   queryParams: ApiOptions = {
     page_size: 50,
-    start_date_gte: this.thisMonthFirstDay,
-    start_date_lte: this.thisMonthLastDay
+    // date_start__gte: this.thisMonthFirstDay,
+    // date_start__lte: this.thisMonthLastDay
   }
 
   constructor() {
@@ -119,6 +119,10 @@ export class JournalViewerComponent implements OnInit {
       message: 'Biztosan törlöd a ' + journalDate + ' időpontra rögzített naplót?',
       header: 'Megerősítés',
       icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: "p-button-danger p-button-text",
+      rejectButtonStyleClass: "p-button-text p-button-text",
+      acceptIcon: 'pi pi-check mr-2',
+      rejectIcon: 'pi pi-times mr-2',
       accept: () => {
         this.journalStore.delete(journalId)
         this.#messageService.add({
@@ -163,8 +167,8 @@ export class JournalViewerComponent implements OnInit {
     const end = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth() + 1, 0)).toISOString();
 
     // console.log(start + " - " + end);
-    this.queryParams.start_date_gte = start;
-    this.queryParams.start_date_lte = end;
+    this.queryParams.date_start__gte = start;
+    this.queryParams.date_start__lte = end;
 
     this.journalStore.search(this.queryParams)
   }
