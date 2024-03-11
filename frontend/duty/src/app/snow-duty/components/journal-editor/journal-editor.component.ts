@@ -139,29 +139,27 @@ export class JournalEditorComponent implements OnInit {
     this.onDutyId = this.journalForm.value.person_on_duty.id;
   }
 
+  isPristine(value: any) {
+    return this.journalForm.get(value)?.pristine
+  }
+
   journalBuilder() {
-    const date = this.journalForm.value.date
-    let utcDate = this.selectedJournal().date_start;
+    // console.log(this.journalForm.value.date);
+    const date = this.journalForm.value.date_start
+    let utcDate = new Date;
     if (date) {
-      utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+      utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()))
     }
 
-    if (this.editableWorker) {
-      this.journalUpdateData = {
-        id: this.selectedJournal().id,
-        person_on_duty: this.journalForm.value.person_on_duty.id,
-        date_start: this.journalForm.value.date_start,
-        // monitor: this.journalForm.value.checks,
-        // comments: this.journalForm.value.comment
-      }
-    } else {
-      this.journalUpdateData = {
-        id: this.selectedJournal().id,
-        person_on_duty: this.journalForm.value.person_on_duty.id,
-        date_start: utcDate,
-        // comments: this.journalForm.value.comment
-      }
+    console.log(this.selectedJournal().date_start);
+
+    if (this.editableWorker && this.isPristine("date_start")) {
+      return
+    } else if (this.editableWorker) {
+      this.journalUpdateData.date_start = utcDate
     }
+    this.journalUpdateData.person_on_duty = this.journalForm.value.person_on_duty.id
+    this.journalUpdateData.id = this.selectedJournal().id;
 
   }
 
