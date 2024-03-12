@@ -147,18 +147,27 @@ export class JournalEditorComponent implements OnInit {
     // console.log(this.journalForm.value.date);
     const date = this.journalForm.value.date_start
     let utcDate = new Date;
+    let utcDate2 = new Date;
     if (date) {
       utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()))
     }
+    if (date) {
+      utcDate2 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours())
+    }
 
-    console.log(this.selectedJournal().date_start);
+    // console.log(this.selectedJournal().date_start);
+    console.log("raw: " + date.toLocaleString('sv-SE', { timeZone: 'CET' }));
+    console.log("raw2: " + date.toLocaleString('hu-HU'));
+    console.log("utc: " + utcDate.toISOString().split('.', 1)[0]);
+    console.log("hu tlts: " + utcDate2.toLocaleTimeString('hu-HU'));
 
     if (this.editableWorker && this.isPristine("date_start")) {
       return
     } else if (this.editableWorker) {
-      this.journalUpdateData.date_start = utcDate
+      // this.journalUpdateData.date_start = this.journalForm.value.date_start.toISOString().split('.', 1)[0]
+      this.journalUpdateData.date_start = this.journalForm.value.date_start.toLocaleString('hu-HU')
     }
-    this.journalUpdateData.person_on_duty = this.journalForm.value.person_on_duty.id
+    this.journalUpdateData.person_on_duty = this.isPristine("person_on_duty") ? this.selectedJournal().person_on_duty!.id : this.journalForm.value.person_on_duty.id
     this.journalUpdateData.id = this.selectedJournal().id;
 
   }

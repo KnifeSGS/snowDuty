@@ -60,7 +60,7 @@
 
   <div class="asyncDiv" *ngIf="storeActualPage() !== 0">
     <p-table #dt [value]="storeData()" [rows]="pageSize" [paginator]="true"
-      [globalFilterFields]="['date_start', 'person_on_duty.name', 'comments']"
+      [globalFilterFields]="['date_start', 'person_on_duty.name', 'comments[0].comment']"
       [tableStyle]="{'min-width': '70rem'}" [(selection)]="selectedJournals"
       [rowHover]="true" dataKey="id"
       currentPageReportTemplate="{last} bejegyzés látszik a {totalRecords} közül"

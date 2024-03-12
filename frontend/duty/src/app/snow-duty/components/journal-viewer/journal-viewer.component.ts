@@ -61,8 +61,8 @@ export class JournalViewerComponent implements OnInit {
   mobile: boolean = false
 
   interval: Date = new Date();
-  thisMonthFirstDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString()
-  thisMonthLastDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth() + 1, 0)).toISOString()
+  thisMonthFirstDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString().split('.', 1)[0]
+  thisMonthLastDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth() + 1, 0)).toISOString().split('.', 1)[0]
   queryParams: ApiOptions = {
     page_size: 50,
     // date_start__gte: this.thisMonthFirstDay,
@@ -167,12 +167,15 @@ export class JournalViewerComponent implements OnInit {
   }
 
   selectInterval() {
-    const start = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth(), this.interval.getDate())).toISOString();
-    const end = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth() + 1, 0)).toISOString();
+    console.log(this.interval);
+    const start = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth(), this.interval.getDate())).toISOString().split('.', 1)[0];
+    const end = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth() + 1, 1)).toISOString().split('.', 1)[0];
+    console.log(start);
+    console.log(end);
 
     // console.log(start + " - " + end);
     this.queryParams.date_start__gte = start;
-    this.queryParams.date_start__lte = end;
+    this.queryParams.date_start__lt = end;
 
     this.journalStore.search(this.queryParams)
   }

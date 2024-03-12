@@ -39,7 +39,7 @@
       </div>
       <div class="field col-12 md:col-6">
         <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" [showIcon]="true"
-          inputId="icon" formControlName="date_start"
+          inputId="icon" formControlName="date_start" utc="true"
           placeholder="Mai dátum, vagy válassz másikat">
         </p-calendar>
         <p-calendar *ngIf="mobile" dateFormat="yy.MM.dd" [showIcon]="true"
