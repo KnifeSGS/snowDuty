@@ -165,7 +165,8 @@ export class JournalEditorComponent implements OnInit {
       return
     } else if (this.editableWorker) {
       // this.journalUpdateData.date_start = this.journalForm.value.date_start.toISOString().split('.', 1)[0]
-      this.journalUpdateData.date_start = this.journalForm.value.date_start.toLocaleString('hu-HU')
+      // this.journalUpdateData.date_start = this.journalForm.value.date_start.toLocaleString('hu-HU')
+      this.journalUpdateData.date_start = this.journalForm.value.date_start.toISOString()
     }
     this.journalUpdateData.person_on_duty = this.isPristine("person_on_duty") ? this.selectedJournal().person_on_duty!.id : this.journalForm.value.person_on_duty.id
     this.journalUpdateData.id = this.selectedJournal().id;

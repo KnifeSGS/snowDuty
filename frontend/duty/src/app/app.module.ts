@@ -1,4 +1,4 @@
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { DATE_PIPE_DEFAULT_OPTIONS, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -28,7 +28,10 @@ import { JwtInterceptorService } from './login/services/jwt-interceptor.service'
     ToastModule
   ],
   providers: [MessageService, ConfirmationService, { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true }, {
+      provide: DATE_PIPE_DEFAULT_OPTIONS,
+      useValue: { dateFormat: "YYYY. MM. dd. HH:mm", timezone: 'CET' }
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

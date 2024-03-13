@@ -61,8 +61,10 @@ export class JournalViewerComponent implements OnInit {
   mobile: boolean = false
 
   interval: Date = new Date();
-  thisMonthFirstDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString().split('.', 1)[0]
-  thisMonthLastDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth() + 1, 0)).toISOString().split('.', 1)[0]
+  // thisMonthFirstDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString().split('.', 1)[0]
+  // thisMonthLastDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth() + 1, 0)).toISOString().split('.', 1)[0]
+  thisMonthFirstDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString()
+  thisMonthLastDay = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth() + 1, 0)).toISOString()
   queryParams: ApiOptions = {
     page_size: 50,
     // date_start__gte: this.thisMonthFirstDay,
@@ -168,8 +170,10 @@ export class JournalViewerComponent implements OnInit {
 
   selectInterval() {
     console.log(this.interval);
-    const start = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth(), this.interval.getDate())).toISOString().split('.', 1)[0];
-    const end = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth() + 1, 1)).toISOString().split('.', 1)[0];
+    // const start = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth(), this.interval.getDate())).toISOString().split('.', 1)[0];
+    // const end = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth() + 1, 1)).toISOString().split('.', 1)[0];
+    const start = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth(), this.interval.getDate(), this.interval.getHours() - 1)).toISOString();
+    const end = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth() + 1, this.interval.getHours(), this.interval.getMinutes() + 23)).toISOString();
     console.log(start);
     console.log(end);
 

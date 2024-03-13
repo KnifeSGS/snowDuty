@@ -129,7 +129,7 @@
           <td>
             <p-tableCheckbox [value]="journal"></p-tableCheckbox>
           </td>
-          <td>{{journal.date_start}}</td>
+          <td>{{journal.date_start | date}}</td>
           <td>{{journal.person_on_duty.name}}</td>
           <!-- <td *ngIf="journal.comments.length > 1">
             {{journal.comments[journal.comments.length - 1][0]}}:

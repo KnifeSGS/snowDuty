@@ -39,14 +39,14 @@
       </div>
       <div class="field col-12 md:col-6">
         <p-calendar *ngIf="!mobile" dateFormat="yy.MM.dd" [showIcon]="true"
-          inputId="icon" formControlName="date_start" utc="true"
+          inputId="icon" formControlName="date_start" [showTime]="true"
           placeholder="Mai dátum, vagy válassz másikat">
         </p-calendar>
         <p-calendar *ngIf="mobile" dateFormat="yy.MM.dd" [showIcon]="true"
           inputId="icon" formControlName="date_start" [touchUI]="true"
           [readonlyInput]="true" placeholder="Mai dátum, vagy válassz másikat">
         </p-calendar>
-        <small>Jelenlegi: {{selectedJournal().date_start}}</small>
+        <small>Jelenlegi: {{selectedJournal().date_start | date}}</small>
       </div>
 
     </div>
@@ -58,7 +58,7 @@
       </div>
       <div class="field col-12 md:col-5">
         <input pInputText id="date" type="text"
-          placeholder="{{selectedJournal().date_start}}" disabled />
+          placeholder="{{selectedJournal().date_start | date}}" disabled />
       </div>
       <div class="col-12 md:col-2">
         <p-button (onClick)="editWorkerDate()" class="block"
