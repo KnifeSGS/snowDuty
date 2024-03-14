@@ -168,14 +168,23 @@ export class JournalViewerComponent implements OnInit {
     return index;
   }
 
+  parseISOString(s: string) {
+    const b: any = s.split(/\D+/);
+    return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
+  }
+
   selectInterval() {
-    console.log(this.interval);
+    // console.log(this.interval);
+    // console.log(this.interval.toISOString());
     // const start = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth(), this.interval.getDate())).toISOString().split('.', 1)[0];
     // const end = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth() + 1, 1)).toISOString().split('.', 1)[0];
-    const start = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth(), this.interval.getDate(), this.interval.getHours() - 1)).toISOString();
-    const end = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth() + 1, this.interval.getHours(), this.interval.getMinutes() + 23)).toISOString();
-    console.log(start);
-    console.log(end);
+    // const start = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth(), this.interval.getDate(), this.interval.getHours() - 1)).toISOString();
+    const start = this.interval.toISOString();
+    const end = new Date(Date.UTC(this.interval.getFullYear(), this.interval.getMonth() + 1, this.interval.getDate(), this.interval.getHours() - 1, this.interval.getMinutes(), this.interval.getSeconds() - 1)).toISOString();
+    // console.log(start);
+    // console.log(end);
+    // console.log(this.parseISOString(this.interval.toISOString()));
+    // console.log(this.parseISOString(end))
 
     // console.log(start + " - " + end);
     this.queryParams.date_start__gte = start;
