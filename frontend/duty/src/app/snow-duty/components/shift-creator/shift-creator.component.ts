@@ -2,9 +2,9 @@ import { Component, Input, OnInit, signal, WritableSignal } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { User } from 'src/app/models/user';
-import { Shift } from '../../models/shift';
 import { ShiftService } from '../../services/shift.service';
 import { UserService } from '../../services/user.service';
+import { DispersionsData } from '../../models/dispersions-data';
 
 @Component({
   selector: 'app-shift-creator',
@@ -17,7 +17,7 @@ export class ShiftCreatorComponent implements OnInit {
   shiftForm: FormGroup;
   users!: User[];
   worker: User = new User();
-  shift: Shift = new Shift();
+  shift: DispersionsData = new DispersionsData();
 
   @Input() journalId: string = '';
 

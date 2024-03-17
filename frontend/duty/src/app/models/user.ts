@@ -1,5 +1,5 @@
+import { DispersionsData } from "../snow-duty/models/dispersions-data";
 import { JournalData } from "../snow-duty/models/journal-data";
-import { Shift } from "../snow-duty/models/shift";
 
 export class User {
   _id?: string = '';
@@ -20,7 +20,7 @@ export class User {
   password?: string = "";
   password2?: string = "";
   journals?: JournalData[] = [];
-  shifts?: Shift[] = [];
+  shifts?: DispersionsData[] = [];
   user?: string = '';
   username?: string = '';
   groups?: UserGroups[];

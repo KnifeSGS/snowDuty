@@ -1,14 +1,16 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, Input, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, inject, Input, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
-import { Shift } from '../../models/shift';
 import { JournalService } from '../../services/journal.service';
 import { ShiftService } from '../../services/shift.service';
 import { UserService } from '../../services/user.service';
 import { ShiftCreatorComponent } from '../shift-creator/shift-creator.component';
+import { DispersionsData } from '../../models/dispersions-data';
+import { DispersionStore } from '../../store/dispersion.store.';
+import { ApiOptions } from '../../models/api-options';
 
 @Component({
   selector: 'app-shift-viewer',
@@ -16,6 +18,12 @@ import { ShiftCreatorComponent } from '../shift-creator/shift-creator.component'
   styleUrls: ['./shift-viewer.component.scss']
 })
 export class ShiftViewerComponent implements OnInit {
+
+  #dispersionStore = inject(DispersionStore);
+  shiftFromStore = this.#dispersionStore.shifts
+  queryParams: ApiOptions = {
+    page_size: 50
+  }
 
   // feliratok
   Delete: string = "Törlés";
@@ -29,14 +37,14 @@ export class ShiftViewerComponent implements OnInit {
   child!: ShiftCreatorComponent;
 
   @Input() dispersions: number | null = null;
-  shiftSignal: WritableSignal<Shift[] | undefined> = signal([]);
+  shiftSignal: WritableSignal<DispersionsData[]> = signal([]);
   userSignal: WritableSignal<User[]> = signal([]);
 
   defaultSortOrder: number = -1;
   users$: BehaviorSubject<User[]> = this.userService.list$;
   userNames: string[] = [];
   // shifts$: BehaviorSubject<Shift[]> = this.shiftService.shifts$;
-  shift: Shift = new Shift();
+  shift: DispersionsData = new DispersionsData();
   shiftDialog = false;
   journalId: string = "";
   mobile: boolean = false;
@@ -79,7 +87,6 @@ export class ShiftViewerComponent implements OnInit {
   ) {
 
     this.getShifts();
-    // this.getUsers()
 
   }
 
@@ -104,23 +111,28 @@ export class ShiftViewerComponent implements OnInit {
       'max-height': '80vh'
     }
 
+    this.#dispersionStore.load(this.queryParams)
+
   }
 
-  async getUsers() {
-    await this.userService.fetchForSignal(`?page_size=1000`)
-      .then(
-        users => {
-          console.log(users);
-          users.forEach((user: User) => {
-            const full_name = user.last_name || user.first_name
-              ? `${user.last_name} ${user.first_name}`
-              : `${user.email}`
-            this.userNames.push(full_name)
-          })
-          return this.userSignal.set(users)
-        }
-      );
-  }
+  tesztArray = [
+    {
+      head: "fej1",
+      data: "01"
+    },
+    {
+      head: "fej2",
+      data: "02"
+    },
+    {
+      head: "fej3",
+      data: "03"
+    },
+    {
+      head: "fej4",
+      data: "04"
+    },
+  ]
 
   async getShifts() {
     // this.activatedRoute.params.subscribe(
@@ -181,7 +193,7 @@ export class ShiftViewerComponent implements OnInit {
   }
 
   addShift() {
-    this.shift = new Shift();
+    this.shift = new DispersionsData();
     this.submitted = false;
     this.shiftDialog = true;
   }
@@ -207,15 +219,15 @@ export class ShiftViewerComponent implements OnInit {
     }
   }
 
-  deleteShift(shift: Shift) {
+  deleteShift(shift: DispersionsData) {
     console.log(shift);
     this.confirmationService.confirm({
       message: 'Biztosan törlöd az ügyeleti bejegyzést?',
       header: 'Megerősítés',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        if (shift._id) {
-          this.shiftService.remove(shift._id).subscribe(
+        if (shift.id) {
+          this.shiftService.remove(shift.id).subscribe(
             () => {
               this.getShifts()
             }

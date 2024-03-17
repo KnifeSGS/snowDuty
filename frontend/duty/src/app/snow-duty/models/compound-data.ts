@@ -1,5 +1,6 @@
 export class CompoundData {
   "id": number;
+  "active"?: boolean;
   "name": string;
   "version"?: number;
   "is_used": boolean;
@@ -9,8 +10,9 @@ export class CompoundData {
 
 interface Compound {
   "id": number;
+  "active"?: boolean;
   "name": string;
   "version"?: number;
   "is_used": boolean;
-  "stock": number;
+  "stock": number | string;
 }

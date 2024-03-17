@@ -41,7 +41,7 @@ export class JournalService extends BaseService<JournalData> {
   }
 
   getQuery(params?: {}): Observable<DataBase<JournalData>> {
-    console.log(`${this.config.apiUrl}${this.entity}withall/`, { params });
+    // console.log(`${this.config.apiUrl}${this.entity}withall/`, { params });
     return this.http.get<DataBase<JournalData>>(`${this.config.apiUrl}${this.entity}withall/`, { params });
   }
 

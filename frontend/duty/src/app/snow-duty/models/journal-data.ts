@@ -15,8 +15,8 @@ export class JournalData {
 
 export class Journal {
   "person_on_duty": string | number;
-  "date_start": Date;
-  "date_end": Date | null
+  "date_start": Date | string | null;
+  "date_end": Date | string | null
 }
 
 export interface Monitoring {

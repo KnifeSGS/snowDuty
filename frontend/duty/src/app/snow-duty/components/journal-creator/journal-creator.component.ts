@@ -102,13 +102,11 @@ export class JournalCreatorComponent {
   journalBuilder() {
     // console.log(this.isPristine("date_start"));
     const date = this.journalForm.value.date_start
-    let utcDate = new Date;
-    if (date) {
-      utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()))
-    }
     this.journal = {
       person_on_duty: this.onDutyId,
-      date_start: this.isPristine("date_start") ? new Date() : utcDate,
+      date_start: this.isPristine("date_start")
+        ? new Date().toISOString()
+        : date.toISOString(),
       date_end: null
       // comment: this.journalForm.value.comment
     }

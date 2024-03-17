@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { User } from 'src/app/models/user';
-import { Shift } from '../../models/shift';
 import { JournalService } from '../../services/journal.service';
 import { UserService } from '../../services/user.service';
 import { PdfCreatorComponent } from '../pdf-creator/pdf-creator.component';
@@ -14,6 +13,7 @@ import { ApiOptions } from '../../models/api-options';
 import { WorkerData } from '../../models/worker-data';
 import { CommentsService } from '../../services/comments.service';
 import { Comment } from '../../models/comment';
+import { DispersionsData } from '../../models/dispersions-data';
 
 @Component({
   selector: 'app-journal-editor',
@@ -45,7 +45,7 @@ export class JournalEditorComponent implements OnInit {
   // journal: JournalData = new JournalData();
   // journalId: number = 0;
 
-  shifts: Shift[] = []
+  shifts: DispersionsData[] = []
   journalUpdateData: JournalData = new JournalData();
   journalForm!: FormGroup;
   users!: User[];
@@ -144,31 +144,14 @@ export class JournalEditorComponent implements OnInit {
   }
 
   journalBuilder() {
-    // console.log(this.journalForm.value.date);
-    const date = this.journalForm.value.date_start
-    let utcDate = new Date;
-    let utcDate2 = new Date;
-    if (date) {
-      utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()))
-    }
-    if (date) {
-      utcDate2 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours())
-    }
-
-    // console.log(this.selectedJournal().date_start);
-    console.log("raw: " + date.toLocaleString('sv-SE', { timeZone: 'CET' }));
-    console.log("raw2: " + date.toLocaleString('hu-HU'));
-    console.log("utc: " + utcDate.toISOString().split('.', 1)[0]);
-    console.log("hu tlts: " + utcDate2.toLocaleTimeString('hu-HU'));
-
     if (this.editableWorker && this.isPristine("date_start")) {
       return
     } else if (this.editableWorker) {
-      // this.journalUpdateData.date_start = this.journalForm.value.date_start.toISOString().split('.', 1)[0]
-      // this.journalUpdateData.date_start = this.journalForm.value.date_start.toLocaleString('hu-HU')
       this.journalUpdateData.date_start = this.journalForm.value.date_start.toISOString()
     }
-    this.journalUpdateData.person_on_duty = this.isPristine("person_on_duty") ? this.selectedJournal().person_on_duty!.id : this.journalForm.value.person_on_duty.id
+    this.journalUpdateData.person_on_duty = this.isPristine("person_on_duty")
+      ? this.selectedJournal().person_on_duty!.id
+      : this.journalForm.value.person_on_duty.id
     this.journalUpdateData.id = this.selectedJournal().id;
 
   }

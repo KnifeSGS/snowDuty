@@ -1,11 +1,12 @@
 <div class="col-12" *ngIf="shiftSignal()">
-  <!-- <pre>
-    Signal: {{shiftSignal()![0]}}; Disp: {{dispersions!}}
-  </pre> -->
-  <p-table #dt2 [value]="shiftSignal()!" [rows]="10" [paginator]="true"
-    [tableStyle]="{'min-width': '60rem'}" [rowHover]="true" dataKey="id"
-    sortField="dispersion_start" [sortOrder]="defaultSortOrder"
-    [globalFilterFields]="['dispersion_start']">
+  <pre>
+    <!-- Signal: {{shiftSignal()![0]}}; Disp: {{dispersions!}} -->
+    Store: {{shiftFromStore() | json}}
+  </pre>
+  <p-table #dt2 [value]="shiftSignal()!" [columns]="shiftFromStore()"
+    [rows]="10" [paginator]="true" [tableStyle]="{'min-width': '60rem'}"
+    [rowHover]="true" dataKey="id" sortField="dispersion_start"
+    [sortOrder]="defaultSortOrder" [globalFilterFields]="['dispersion_start']">
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
         <h5 class="m-0">Szórások:</h5>
@@ -18,7 +19,7 @@
         </span>
       </div>
     </ng-template>
-    <ng-template pTemplate="header">
+    <ng-template pTemplate="header" let-shiftHead>
       <tr>
         <th pSortableColumn="date" style="width:8rem">Idő
           <p-sortIcon field="date"></p-sortIcon>
@@ -29,17 +30,14 @@
         </th>
         <th style="min-width:5rem">Gép
         </th>
-        <th style="min-width:3rem">Só
-        </th>
-        <th style="min-width:3rem">Bazalt
-        </th>
-        <th style="min-width:3rem">CaCl2
-        </th>
-        <th style="min-width:3rem">Kalcinol
-        </th>
-        <th style="min-width:3rem">Keverék
-        </th>
-        <th style="min-width:3rem">Zeokal
+        <!-- <th *ngFor="let szorasok of shiftSignal()">
+          <span *ngFor="let szoras of szorasok.szortak">
+            {{szoras.compound.name}}
+          </span>
+
+        </th> -->
+        <th *ngFor="let szoras of shiftFromStore()">
+          {{szoras.szortNeve}}
         </th>
         <th style="min-width:3rem">km
         </th>
@@ -53,7 +51,7 @@
     <ng-template pTemplate="body" let-shift>
       <tr>
         <td>{{shift.dispersion_start | date:'YYYY.MM.dd. hh:mm'}}</td>
-        <td>{{shift.man}}</td>
+        <td>{{shift.man.name}}</td>
         <td>
           <span *ngIf="shift.daytime">
             06:00-18:00
@@ -62,13 +60,9 @@
             18:00-06:00
           </span>
         </td>
-        <td>{{shift.car}}</td>
-        <td>{{shift.salt}}</td>
-        <td>{{shift.basalt}}</td>
-        <td>{{shift.cacl2}}</td>
-        <td>{{shift.kalcinol}}</td>
-        <td>{{shift.mixture}}</td>
-        <td>{{shift.zeokal}}</td>
+        <td>{{shift.car.licence_plate}}</td>
+        <td *ngFor="let anyag of shiftFromStore()">{{anyag.szorasMennyisege}}
+        </td>
         <td>{{shift.km}}</td>
         <td>{{shift.workHour}}</td>
         <td>{{shift.orderedQuantity}}</td>
