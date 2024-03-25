@@ -11,12 +11,30 @@ export class DispersionsData {
   "car"?: CarData;
   "km"?: number | string;
   "szortak": DispersedData[];
-  "dispersion_start"?: Date | null;
-  "dispersion_end"?: Date | null;
+  "dispersion_start": Date | string;
+  "dispersion_end": Date | string;
   "version"?: number;
 
   "daytime"?: boolean;
   "workHour"?: number | string;
+  "ovs"?: number | string
+}
+
+export class DTable {
+  "header": string;
+  "field": string | number
+}
+
+export class DispersionsTable {
+  "id": number | string;
+  "journal"?: number | string;
+  "man"?: string;
+  "car"?: string;
+  "km"?: number | string;
+  "dispersion"?: number;
+  "compounds"?: DTable[];
+  "start"?: Date | string;
+  "workHour"?: number;
   "orderedQuantity"?: number | string
 }
 
@@ -66,11 +84,11 @@ export const InitialDispersionDataValues: DataBase<DispersionsData> = {
         "main_account": null
       }
     ],
-    "dispersion_start": null,
-    "dispersion_end": null,
+    "dispersion_start": "",
+    "dispersion_end": "",
 
     "daytime": true,
     "workHour": 0,
-    "orderedQuantity": 0
+    "ovs": 0
   }]
 }

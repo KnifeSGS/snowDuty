@@ -1,12 +1,15 @@
-<div class="col-12" *ngIf="shiftSignal()">
+<div class="col-12">
   <pre>
     <!-- Signal: {{shiftSignal()![0]}}; Disp: {{dispersions!}} -->
-    Store: {{shiftFromStore() | json}}
+    shiftStore: {{shiftFromStore() | json}}
+    <!-- Store: {{shiftStore() | json}} -->
+    <!-- itemStore: {{itemStore() | json}} -->
+    <!-- tableStore: {{tableFromStore() | json}} -->
   </pre>
-  <p-table #dt2 [value]="shiftSignal()!" [columns]="shiftFromStore()"
-    [rows]="10" [paginator]="true" [tableStyle]="{'min-width': '60rem'}"
-    [rowHover]="true" dataKey="id" sortField="dispersion_start"
-    [sortOrder]="defaultSortOrder" [globalFilterFields]="['dispersion_start']">
+  <p-table #dt2 [value]="shiftStore()" [columns]="itemStore()" [rows]="10"
+    [paginator]="true" [tableStyle]="{'min-width': '60rem'}" [rowHover]="true"
+    dataKey="id" sortField="dispersion_start" [sortOrder]="defaultSortOrder"
+    [globalFilterFields]="['dispersion_start']">
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
         <h5 class="m-0">Szórások:</h5>
@@ -19,7 +22,7 @@
         </span>
       </div>
     </ng-template>
-    <ng-template pTemplate="header" let-shiftHead>
+    <ng-template pTemplate="header" let-columns>
       <tr>
         <th pSortableColumn="date" style="width:8rem">Idő
           <p-sortIcon field="date"></p-sortIcon>
@@ -36,8 +39,8 @@
           </span>
 
         </th> -->
-        <th *ngFor="let szoras of shiftFromStore()">
-          {{szoras.szortNeve}}
+        <th *ngFor="let anyagNev of columns">
+          {{anyagNev.header}}
         </th>
         <th style="min-width:3rem">km
         </th>
@@ -48,28 +51,34 @@
         <th></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-shift>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
-        <td>{{shift.dispersion_start | date:'YYYY.MM.dd. hh:mm'}}</td>
-        <td>{{shift.man.name}}</td>
+        <td>{{rowData.dispersion_start | date:'YYYY.MM.dd. hh:mm'}}</td>
+        <td>{{rowData.man.name}}</td>
         <td>
-          <span *ngIf="shift.daytime">
+          <span *ngIf="rowData.daytime">
             06:00-18:00
           </span>
-          <span *ngIf="!shift.daytime">
+          <span *ngIf="!rowData.daytime">
             18:00-06:00
           </span>
         </td>
-        <td>{{shift.car.licence_plate}}</td>
-        <td *ngFor="let anyag of shiftFromStore()">{{anyag.szorasMennyisege}}
+        <td>{{rowData.car.licence_plate}}</td>
+        <td *ngFor="let anyag of columns">
+          <div class="div" *ngIf="anyag.field">
+            {{rowData.szortak | json}}
+          </div>
+          <div class="div" *ngIf="anyag.value">
+            {{anyag.value}}
+          </div>
         </td>
-        <td>{{shift.km}}</td>
-        <td>{{shift.workHour}}</td>
-        <td>{{shift.orderedQuantity}}</td>
+        <td>{{rowData.km}}</td>
+        <td>{{rowData.workHour}}</td>
+        <td>{{rowData.ovs}}</td>
         <td>
           <button pButton pRipple icon="pi pi-trash"
             class="p-button-rounded p-button-danger"
-            (click)="deleteShift(shift)"></button>
+            (click)="deleteShift(rowData)"></button>
         </td>
       </tr>
     </ng-template>

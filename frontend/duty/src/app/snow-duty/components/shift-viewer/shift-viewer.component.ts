@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, inject, Input, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Input, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -9,18 +9,71 @@ import { ShiftService } from '../../services/shift.service';
 import { UserService } from '../../services/user.service';
 import { ShiftCreatorComponent } from '../shift-creator/shift-creator.component';
 import { DispersionsData } from '../../models/dispersions-data';
-import { DispersionStore } from '../../store/dispersion.store.';
 import { ApiOptions } from '../../models/api-options';
+import { DispersionStore } from '../../store/dispersion.store';
 
 @Component({
   selector: 'app-shift-viewer',
   templateUrl: './shift-viewer.component.html',
-  styleUrls: ['./shift-viewer.component.scss']
+  styleUrls: ['./shift-viewer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShiftViewerComponent implements OnInit {
 
+  //   {
+  //     "active": true,
+  //     "journal": 46,
+  //     "man": 1,
+  //     "car": 1,
+  //     "dispersion_start": "2024-03-15T17:22:00Z",
+  //     "dispersion_end": "2024-03-15T19:22:00Z",
+  //     "km": "21.00",
+  //     "szortak": [{
+  //        "active": true,
+  //        "weight_in_kg": "17.00",
+  //        "storage": 1,
+  //        "compound": 2
+  //      }]
+  //    }
+
   #dispersionStore = inject(DispersionStore);
   shiftFromStore = this.#dispersionStore.shifts
+  tableFromStore = this.#dispersionStore.table
+  shiftStore = this.#dispersionStore.results
+  itemStore = computed(() => {
+    const items: any[] = []
+    this.shiftStore().forEach((shift) => {
+      const shiftItem: {
+        "header": string,
+        "id": string | number,
+        "field": string
+      } = {
+        "header": "",
+        "id": "",
+        "field": ""
+      }
+      shift.szortak.forEach((szoras) => {
+        const itemName = szoras.compound.name
+        console.log(itemName);
+        shiftItem.header = itemName
+        shiftItem.id = szoras.id
+        shiftItem.field = "weight_in_kg"
+        return itemName;
+      })
+      if (shiftItem.header !== "") {
+        items.push(shiftItem)
+      }
+    })
+    // console.log(items.flat(1));
+    return items.flat()
+  })
+  dispersionsSignal = computed(() => {
+    const dispersed: any[] = []
+    this.shiftStore().forEach((shift) => {
+      return dispersed.push(shift.szortak)
+    })
+    return dispersed.flat()
+  })
   queryParams: ApiOptions = {
     page_size: 50
   }
@@ -112,6 +165,7 @@ export class ShiftViewerComponent implements OnInit {
     }
 
     this.#dispersionStore.load(this.queryParams)
+    this.itemStore()
 
   }
 
@@ -135,33 +189,22 @@ export class ShiftViewerComponent implements OnInit {
   ]
 
   async getShifts() {
-    // this.activatedRoute.params.subscribe(
-    //   params => {
-    //     if (params['id']) {
-    //       this.journalService.get(params['id']).subscribe(
-    //         journal => {
-    //           if (journal._id) {
-    //             this.shiftService.getAllForOneJournal$(journal._id);
-    //             this.journalId = journal._id;
-    //             if (journal.shifts!.length > 0) {
-    //               this.getAllSums(journal._id)
-    //             }
-    //           }
-    //         })
-    //     } else {
-    //       this.shiftService.getAll$();
-    //     }
-    //   }
-    // );
     const journalID = this.activatedRoute.snapshot.params['id'];
-    let shifts;
+    // let shifts;
+    // if (journalID) {
+    //   shifts = await this.shiftService.getAllForOneJournalSignal(journalID);
+    // } else {
+    //   shifts = await this.shiftService.fetchForSignal()
+    // }
+    // console.log(shifts.results);
+    // this.shiftSignal.set(shifts.results)
     if (journalID) {
-      shifts = await this.shiftService.getAllForOneJournalSignal(journalID);
+      this.queryParams.journal = journalID
+      this.#dispersionStore.load(this.queryParams);
     } else {
-      shifts = await this.shiftService.fetchForSignal()
+      this.#dispersionStore.load(this.queryParams);
     }
-    console.log(shifts.results);
-    this.shiftSignal.set(shifts.results)
+    console.log(this.shiftStore());
   }
 
   getSums(field: "salt" | "basalt" | "cacl2" | "kalcinol" | "mixture" | "zeokal" | "km" | "workHour" | "orderedQuantity", journalId: string) {

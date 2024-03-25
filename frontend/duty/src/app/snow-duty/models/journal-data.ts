@@ -87,8 +87,8 @@ export const InitialJournalDataValues: DataBase<JournalData> = {
             "main_account": null
           }
         ],
-        "dispersion_start": null,
-        "dispersion_end": null,
+        "dispersion_start": "",
+        "dispersion_end": "",
       }
     ],
     "monitor": [],

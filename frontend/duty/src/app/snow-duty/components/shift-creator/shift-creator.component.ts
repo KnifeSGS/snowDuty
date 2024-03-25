@@ -65,7 +65,7 @@ export class ShiftCreatorComponent implements OnInit {
         zeokal: [''],
       }),
       workHour: ['', Validators.required],
-      orderedQuantity: [''],
+      ovs: [''],
     })
   }
 
@@ -104,7 +104,7 @@ export class ShiftCreatorComponent implements OnInit {
     if (date) {
       utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
     }
-    const { dispersion_start, dispersion_end, journal, daytime, car, salt, basalt, cacl2, kalcinol, mixture, zeokal, km, workHour, orderedQuantity } = this.shiftForm.value;
+    const { dispersion_start, dispersion_end, journal, daytime, car, salt, basalt, cacl2, kalcinol, mixture, zeokal, km, workHour, ovs } = this.shiftForm.value;
 
     this.shift = {
       dispersion_start: utcDate,
@@ -123,7 +123,7 @@ export class ShiftCreatorComponent implements OnInit {
         zeokal,
       ],
       workHour,
-      orderedQuantity
+      ovs
     }
   }
 
